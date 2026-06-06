@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.0/papaparse.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,7 +20,6 @@
       --text:     #18201a;
       --muted:    #6b7668;
 
-      /* 4 sub-program colors */
       --agr-reg:  #2d7d32;
       --agr-bpo:  #7cb342;
       --tbw-reg:  #d4650a;
@@ -47,12 +46,13 @@
     .h-title p  { font-size: .7rem; color: var(--muted); }
     .h-spacer   { flex: 1; }
     #statusBadge {
-      font-size: .68rem; padding: 3px 10px; border-radius: 20px;
+      font-size: .68rem; padding: 4px 12px; border-radius: 20px;
       background: var(--bg); border: 1px solid var(--border); color: var(--muted);
       transition: all .3s;
     }
     #statusBadge.ok  { background:#e8f5e9; border-color:#a5d6a7; color:#2d7d32; }
     #statusBadge.err { background:#ffebee; border-color:#ef9a9a; color:#c62828; }
+    #statusBadge.warn{ background:#fff8e1; border-color:#ffe082; color:#f57f17; }
 
     /* STATS */
     .stats-row {
@@ -76,12 +76,16 @@
     .bk-row b { font-weight: 600; }
     .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
     .sc-members { display: flex; gap: 16px; margin-top: 8px; }
-    .sc-m { flex: 1; }
     .sc-m .mv { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; }
     .sc-m .ml { font-size: .68rem; color: var(--muted); }
 
     /* BODY */
-    .body { display: grid; grid-template-columns: 300px 1fr; gap: 12px; padding: 14px 24px 24px; height: calc(100vh - 62px - 108px - 26px); min-height: 480px; }
+    .body {
+      display: grid; grid-template-columns: 300px 1fr;
+      gap: 12px; padding: 14px 24px 24px;
+      height: calc(100vh - 62px - 110px - 26px);
+      min-height: 480px;
+    }
 
     /* PANEL */
     .panel { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; padding-right: 2px; }
@@ -94,13 +98,12 @@
       border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px;
       cursor: pointer; transition: border-color .15s, background .15s;
     }
-    .kth-item:hover { border-color: var(--agr); background: #f6faf4; }
+    .kth-item:hover  { border-color: var(--agr); background: #f6faf4; }
     .kth-item.active { border-color: var(--agr); background: #edf7eb; }
-    .kth-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .kth-top  { display: flex; justify-content: space-between; align-items: flex-start; }
     .kth-name { font-size: .8rem; font-weight: 600; }
-    .kth-ha { font-family: 'Syne', sans-serif; font-size: .88rem; font-weight: 700; color: var(--agr); }
+    .kth-ha   { font-family: 'Syne', sans-serif; font-size: .88rem; font-weight: 700; color: var(--agr); }
     .kth-bars { margin-top: 7px; display: flex; flex-direction: column; gap: 4px; }
-    .kbar { }
     .kbar-top { display: flex; justify-content: space-between; font-size: .64rem; color: var(--muted); margin-bottom: 2px; }
     .kbar-track { height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; }
     .kbar-fill  { height: 100%; border-radius: 99px; }
@@ -109,7 +112,7 @@
     /* Legend */
     .leg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
     .leg-item { display: flex; align-items: center; gap: 6px; font-size: .72rem; }
-    .leg-sw { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+    .leg-sw   { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
     .leg-dash { width: 16px; height: 0; border-top: 2px dashed var(--muted); flex-shrink: 0; }
 
     /* Layer toggles */
@@ -145,17 +148,17 @@
     .leaflet-popup-tip-container { display: none; }
     .pu { padding: 13px 15px 15px; }
     .pu-badge {
-      display: inline-flex; align-items: center; gap: 4px;
+      display: inline-flex; align-items: center; gap: 5px;
       font-size: .62rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
       padding: 3px 8px; border-radius: 99px; margin-bottom: 9px;
     }
     .pu-name { font-family: 'Syne', sans-serif; font-size: .88rem; font-weight: 700; margin-bottom: 9px; }
     .pu-tbl { width: 100%; font-size: .72rem; border-collapse: collapse; }
     .pu-tbl td { padding: 2.5px 0; vertical-align: top; }
-    .pu-tbl td:first-child { color: var(--muted); width: 42%; }
-    .pu-tbl td:last-child { font-weight: 500; }
+    .pu-tbl td:first-child { color: var(--muted); width: 40%; }
+    .pu-tbl td:last-child  { font-weight: 500; }
 
-    /* LOADING OVERLAY */
+    /* LOADING */
     #loading {
       position: fixed; inset: 0; background: var(--bg);
       display: flex; align-items: center; justify-content: center;
@@ -169,7 +172,6 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     #loading p { font-size: .75rem; color: var(--muted); }
 
-    /* SCROLLBAR */
     .panel::-webkit-scrollbar { width: 4px; }
     .panel::-webkit-scrollbar-track { background: transparent; }
     .panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
@@ -202,7 +204,7 @@
   <div class="sc">
     <div class="sc-label">Total Lahan Garapan</div>
     <div class="sc-big" id="sTotalHa">—</div>
-    <div class="sc-sub" id="sTotalSub">—</div>
+    <div class="sc-sub" id="sTotalSub">memuat…</div>
     <div class="sc-pct"><span>Persentase terdaftar</span><span id="sPct">—</span></div>
     <div class="prog-bar"><div class="prog-fill" id="sProgFill"></div></div>
   </div>
@@ -248,11 +250,16 @@
     <div class="pbox">
       <div class="pbox-title">Kontrol Layer</div>
       <div class="lay-list">
-        <div class="lay-item"><span>Agro. Reguler</span><label class="tog"><input type="checkbox" checked onchange="toggleLayer('agrReg',this.checked)"><div class="tog-sl"></div></label></div>
-        <div class="lay-item"><span>Agro. BPO</span><label class="tog"><input type="checkbox" checked onchange="toggleLayer('agrBpo',this.checked)"><div class="tog-sl"></div></label></div>
-        <div class="lay-item"><span>Tembawang Reguler</span><label class="tog"><input type="checkbox" checked onchange="toggleLayer('tbwReg',this.checked)"><div class="tog-sl"></div></label></div>
-        <div class="lay-item"><span>Tembawang MTL</span><label class="tog"><input type="checkbox" checked onchange="toggleLayer('tbwMtl',this.checked)"><div class="tog-sl"></div></label></div>
-        <div class="lay-item"><span>Batas Wilayah</span><label class="tog"><input type="checkbox" checked onchange="toggleLayer('batas',this.checked)"><div class="tog-sl"></div></label></div>
+        <div class="lay-item"><span>Agro. Reguler</span>
+          <label class="tog"><input type="checkbox" checked onchange="toggleLayer('agrReg',this.checked)"><div class="tog-sl"></div></label></div>
+        <div class="lay-item"><span>Agro. BPO</span>
+          <label class="tog"><input type="checkbox" checked onchange="toggleLayer('agrBpo',this.checked)"><div class="tog-sl"></div></label></div>
+        <div class="lay-item"><span>Tembawang Reguler</span>
+          <label class="tog"><input type="checkbox" checked onchange="toggleLayer('tbwReg',this.checked)"><div class="tog-sl"></div></label></div>
+        <div class="lay-item"><span>Tembawang MTL</span>
+          <label class="tog"><input type="checkbox" checked onchange="toggleLayer('tbwMtl',this.checked)"><div class="tog-sl"></div></label></div>
+        <div class="lay-item"><span>Batas Wilayah</span>
+          <label class="tog"><input type="checkbox" checked onchange="toggleLayer('batas',this.checked)"><div class="tog-sl"></div></label></div>
       </div>
     </div>
 
@@ -263,21 +270,31 @@
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CONFIG
+   CONFIG — ganti CSV_SHEET_ID setelah publish spreadsheet
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-const CSV_URL   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRR5SntOMTVB2j-EUNYdOsamaW5KgOXjmGC4Ir8EevLR9F9M5BAWoolk7LRSp0DSoSZDWIOEeeKOFXS/pub?output=csv';
+const SHEET_ID  = '1ZWVhzR7k27Hb3hHorIfBvkglzRN8PH1YDsk4EUhCgx8';
+
+// Tiga opsi URL — dicoba berurutan sampai berhasil
+const CSV_ATTEMPTS = [
+  // 1. Jika sudah di-publish via File → Publish to web
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/pub?output=csv`,
+  // 2. Export langsung (butuh akses "Anyone with link")
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&id=${SHEET_ID}`,
+  // 3. Via allorigins proxy (fallback CORS)
+  `https://api.allorigins.win/raw?url=` + encodeURIComponent(
+    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/pub?output=csv`
+  ),
+];
+
 const AGRO_URL  = 'https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data/agro.json';
 const BATAS_URL = 'https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data/CMI.json';
 const TARGET_HA = 2000;
-
-// Proxy to bypass CORS on Google Sheets
-const CSV_PROXY = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(CSV_URL);
 
 const COLOR = { agrReg:'#2d7d32', agrBpo:'#7cb342', tbwReg:'#d4650a', tbwMtl:'#e8a800' };
 const LABEL = { agrReg:'Agroforestri Reguler', agrBpo:'Agroforestri BPO', tbwReg:'Tembawang Reguler', tbwMtl:'Tembawang MTL' };
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   MAP INIT
+   MAP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const map = L.map('map', { zoomControl: false });
 L.control.zoom({ position: 'topleft' }).addTo(map);
@@ -287,7 +304,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 map.setView([0.5, 111], 9);
 
 const gLayers = { agrReg: null, agrBpo: null, tbwReg: null, tbwMtl: null, batas: null };
-
 function toggleLayer(k, show) {
   if (!gLayers[k]) return;
   show ? map.addLayer(gLayers[k]) : map.removeLayer(gLayers[k]);
@@ -296,43 +312,57 @@ function toggleLayer(k, show) {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    HELPERS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-const fmt = n => (+n).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmt  = n => (+n).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtN = n => (+n).toLocaleString('id-ID');
 
-// Get sub-program key from CSV row using R/S/T/U columns
-// Since CSV is header-based, we try both header names and positional index
-function getSubProg(row, headers) {
-  // Find column indices for R, S, T, U by header letter or name
-  const get = (keys) => {
-    for (const k of keys) {
-      const v = row[k];
-      if (v !== undefined && v !== null && v !== '') {
-        const n = parseFloat(String(v).replace(',','.'));
-        if (!isNaN(n) && n > 0) return n;
-      }
-    }
-    return 0;
-  };
+// Fetch CSV — try each URL until one returns parseable data
+async function fetchCSV(urls) {
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) continue;
+      const text = await res.text();
+      // Reject obvious error pages
+      if (text.trim().startsWith('<') || text.length < 50) continue;
+      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+      if (parsed.data && parsed.data.length > 0) return parsed;
+    } catch(e) { /* try next */ }
+  }
+  return null;
+}
 
-  const R = get(['R', 'AGR']); // Agroforestri Reguler (MoU)
-  const S = get(['S', 'BPO']); // Agroforestri BPO
-  const T = get(['T', 'TBW']); // Tembawang Reguler
-  const U = get(['U', 'MTL']); // Tembawang MTL
+// Resolve a column by trying named header keys, then positional fallback
+function col(row, names, posIdx) {
+  for (const n of names) {
+    if (row[n] !== undefined && row[n] !== null) {
+      const v = String(row[n]).trim();
+      if (v !== '') return v;
+    }
+  }
+  if (posIdx !== undefined) {
+    const vals = Object.values(row);
+    if (vals[posIdx] !== undefined) return String(vals[posIdx] || '').trim();
+  }
+  return '';
+}
+
+// Determine sub-program from a CSV row using R/S/T/U columns
+// R=17, S=18, T=19, U=20 (0-based). Also tries letter-named headers.
+function subProgFromRow(row) {
+  const pick = (names, idx) => {
+    const v = col(row, names, idx);
+    const n = parseFloat(v.replace(',', '.'));
+    return (!isNaN(n) && n > 0) ? n : 0;
+  };
+  const R = pick(['R'], 17); // Agro Reguler (MoU)
+  const S = pick(['S'], 18); // Agro BPO
+  const T = pick(['T'], 19); // Tbw Reguler
+  const U = pick(['U'], 20); // Tbw MTL
 
   if (S > 0) return { key: 'agrBpo', ha: S };
   if (R > 0) return { key: 'agrReg', ha: R };
   if (T > 0) return { key: 'tbwReg', ha: T };
   if (U > 0) return { key: 'tbwMtl', ha: U };
-  return null;
-}
-
-// Fallback: classify by JSON Program field
-function classifyByJsonProgram(program, subHint) {
-  const p = (program || '').trim().toLowerCase();
-  if (p.includes('insentif') || p.includes('tutupan')) return 'tbwMtl';
-  if (p.includes('tembawang'))                          return 'tbwReg';
-  if (p.includes('bantuan pupuk') || p.includes('bpo') || p.includes('pupuk gratis')) return 'agrBpo';
-  if (p.includes('agroforestry') || p.includes('agroforestri')) return 'agrReg';
   return null;
 }
 
@@ -342,133 +372,97 @@ function classifyByJsonProgram(program, subHint) {
 async function main() {
   const setMsg = m => document.getElementById('loadMsg').textContent = m;
 
-  setMsg('Mengambil data JSON…');
+  setMsg('Mengambil data GeoJSON…');
   const [agroGeo, batasGeo] = await Promise.all([
     fetch(AGRO_URL).then(r => r.json()),
     fetch(BATAS_URL).then(r => r.json()),
   ]);
 
   setMsg('Mengambil data spreadsheet…');
-  let rows = [];
-  let csvHeaders = [];
-  let csvOk = false;
+  const parsed = await fetchCSV(CSV_ATTEMPTS);
 
-  try {
-    const csvText = await fetch(CSV_PROXY).then(r => {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    });
-    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-    rows = parsed.data;
-    csvHeaders = parsed.meta.fields || [];
-    csvOk = rows.length > 0;
-  } catch(e) {
-    console.warn('CSV fetch failed:', e);
+  if (!parsed) {
+    // Show map with batas only, display warning
+    gLayers.batas = L.geoJSON(batasGeo, {
+      style: { color:'#666', weight:2, dashArray:'6 4', fillOpacity:0, opacity:.55 }
+    }).addTo(map);
+    try { map.fitBounds(gLayers.batas.getBounds(), { padding:[24,24] }); } catch(e) {}
+
+    const badge = document.getElementById('statusBadge');
+    badge.textContent = 'Spreadsheet belum dipublikasi — buka README';
+    badge.className = 'warn';
+
+    // Show instruction overlay on stats
+    document.getElementById('sTotalHa').textContent = '—';
+    document.getElementById('sTotalSub').innerHTML =
+      '<span style="color:#f57f17;font-size:.68rem">⚠ Publish spreadsheet terlebih dahulu:<br>File → Publish to web → CSV</span>';
+
+    document.getElementById('kthList').innerHTML =
+      `<div class="kth-empty" style="color:#f57f17;text-align:left;line-height:1.6">
+        Spreadsheet belum dipublikasi.<br>
+        Buka Google Sheets → <b>File → Share → Publish to web</b> → pilih <b>CSV</b> → klik Publish.
+       </div>`;
+
+    document.getElementById('loading').style.display = 'none';
+    return;
   }
 
   setMsg('Memproses data…');
+  const rows = parsed.data;
 
-  // ── Detect column letter positions from header row ──────────
-  // Google Sheets sometimes exports with letter-named columns or actual headers
-  // We'll map header names to indices and also try letter keys
-  const colIdx = {}; // header name → index
-  csvHeaders.forEach((h, i) => { colIdx[h] = i; });
-
-  // Helper: get cell value by header name or fallback to positional index
-  const cell = (row, name, idx) => {
-    if (row[name] !== undefined) return String(row[name] || '').trim();
-    // Try position-based access
-    const vals = Object.values(row);
-    if (idx !== undefined && vals[idx] !== undefined) return String(vals[idx] || '').trim();
-    return '';
-  };
-
-  // ── Build CSV lookup maps ────────────────────────────────────
-  // Map: Kode Petak (col M = index 12) → row
+  // ── Build lookup: Kode Petak → CSV row ──────────────────────
+  // Kode Petak = column M = index 12
   const csvByKode = new Map();
-  // Map: Nama Petani (col C = index 2) → row (for popup enrichment)
-  const csvByNama = new Map();
 
-  let totalHaCSV = 0;
-  let agrRegHa = 0, agrBpoHa = 0, tbwRegHa = 0, tbwMtlHa = 0;
-  const uniqueMembers = new Map(); // name → gender
-  const kthMap = new Map(); // kth name → stats
+  let totalHa = 0, agrRegHa = 0, agrBpoHa = 0, tbwRegHa = 0, tbwMtlHa = 0;
+  const uniqueMembers = new Map(); // nama → gender
+  const kthMap = new Map();        // kth name → { agr, tbw, total }
 
   rows.forEach(row => {
-    const vals = Object.values(row);
-
-    // Kode Petak: column M (0-based index 12)
-    const kode = cell(row, 'Kode Petak', 12) || cell(row, 'M', 12);
+    // Kode Petak (col M / idx 12)
+    const kode = col(row, ['Kode Petak', 'M', 'kode_petak', 'ID Lahan', 'id_lahan'], 12);
     if (kode) csvByKode.set(kode, row);
 
-    // Luas: column G (index 6)
-    const luasRaw = cell(row, 'Luas', 6) || cell(row, 'G', 6);
-    const luas = parseFloat(luasRaw.replace(',', '.'));
-    if (!isNaN(luas) && luas > 0) totalHaCSV += luas;
+    // Luas (col G / idx 6)
+    const luasStr = col(row, ['Luas', 'G', 'luas', 'LUAS'], 6);
+    const luas    = parseFloat(luasStr.replace(',', '.'));
+    if (!isNaN(luas) && luas > 0) totalHa += luas;
 
-    // Sub-program from R/S/T/U
-    // Find R=index17, S=18, T=19, U=20 or by letter header
-    const getRSTV = (letterKey, fallbackIdx) => {
-      const v = cell(row, letterKey, fallbackIdx);
-      const n = parseFloat(v.replace(',', '.'));
-      return (!isNaN(n) && n > 0) ? n : 0;
-    };
-    const R = getRSTV('R', 17);
-    const S = getRSTV('S', 18);
-    const T = getRSTV('T', 19);
-    const U = getRSTV('U', 20);
-
-    let subProg = null;
-    if (S > 0)      subProg = { key: 'agrBpo', ha: S };
-    else if (R > 0) subProg = { key: 'agrReg', ha: R };
-    else if (T > 0) subProg = { key: 'tbwReg', ha: T };
-    else if (U > 0) subProg = { key: 'tbwMtl', ha: U };
-
-    if (subProg) {
-      if (subProg.key === 'agrReg') agrRegHa += subProg.ha;
-      if (subProg.key === 'agrBpo') agrBpoHa += subProg.ha;
-      if (subProg.key === 'tbwReg') tbwRegHa += subProg.ha;
-      if (subProg.key === 'tbwMtl') tbwMtlHa += subProg.ha;
+    // Sub-program
+    const sp = subProgFromRow(row);
+    if (sp) {
+      if (sp.key === 'agrReg') agrRegHa += sp.ha;
+      if (sp.key === 'agrBpo') agrBpoHa += sp.ha;
+      if (sp.key === 'tbwReg') tbwRegHa += sp.ha;
+      if (sp.key === 'tbwMtl') tbwMtlHa += sp.ha;
     }
 
-    // Anggota: col C (index 2)
-    const nama = cell(row, 'Nama Petani', 2) || cell(row, 'Nama', 2) || cell(row, 'C', 2);
+    // Anggota (col C / idx 2), gender col I (idx 8) & J (idx 9)
+    const nama = col(row, ['Nama Petani', 'Nama', 'nama', 'C'], 2);
     if (nama && !uniqueMembers.has(nama)) {
-      // Gender: col I (index 8) = laki, col J (index 9) = perempuan
-      const colI = parseFloat(cell(row, 'I', 8).replace(',','.'));
-      const colJ = parseFloat(cell(row, 'J', 9).replace(',','.'));
-      const gender = colI === 1 ? 'L' : colJ === 1 ? 'P' : '?';
-      uniqueMembers.set(nama, gender);
-      csvByNama.set(nama, row);
+      const i = parseFloat(col(row, ['I'], 8).replace(',', '.'));
+      const j = parseFloat(col(row, ['J'], 9).replace(',', '.'));
+      uniqueMembers.set(nama, i === 1 ? 'L' : j === 1 ? 'P' : '?');
     }
 
-    // KTH: col D or E (try index 3 and 4)
-    const kthName = (
-      cell(row, 'KTH', 3) || cell(row, 'Nama KTH', 3) ||
-      cell(row, 'Kelompok Tani Hutan', 3) || cell(row, 'D', 3) || 'Lainnya'
-    );
-    if (!kthMap.has(kthName)) kthMap.set(kthName, { agr: 0, tbw: 0, total: 0 });
-    const k = kthMap.get(kthName);
+    // KTH (col D / idx 3)
+    const kth = col(row, ['KTH', 'Nama KTH', 'Kelompok Tani Hutan', 'Kelompok Tani', 'D'], 3) || 'Lainnya';
+    if (!kthMap.has(kth)) kthMap.set(kth, { agr: 0, tbw: 0, total: 0 });
+    const k = kthMap.get(kth);
     if (!isNaN(luas) && luas > 0) k.total += luas;
-    if (subProg) {
-      if (subProg.key === 'agrReg' || subProg.key === 'agrBpo') k.agr += subProg.ha;
-      if (subProg.key === 'tbwReg' || subProg.key === 'tbwMtl') k.tbw += subProg.ha;
+    if (sp) {
+      if (sp.key === 'agrReg' || sp.key === 'agrBpo') k.agr += sp.ha;
+      if (sp.key === 'tbwReg' || sp.key === 'tbwMtl') k.tbw += sp.ha;
     }
   });
 
-  // ── Totals ────────────────────────────────────────────────────
-  // If CSV didn't load, use Luas from JSON as fallback
-  let totalHa = totalHaCSV;
-  if (!csvOk) {
-    totalHa = agroGeo.features.reduce((s, f) => s + (f.properties?.Luas || 0), 0);
-  }
+  // ── Stats ─────────────────────────────────────────────────────
   const agrTotal = agrRegHa + agrBpoHa;
   const tbwTotal = tbwRegHa + tbwMtlHa;
-  const pct = Math.min(100, totalHa / TARGET_HA * 100);
-  const laki = [...uniqueMembers.values()].filter(g => g === 'L').length;
-  const perempuan = [...uniqueMembers.values()].filter(g => g === 'P').length;
+  const pct      = Math.min(100, totalHa / TARGET_HA * 100);
+  const laki     = [...uniqueMembers.values()].filter(g => g === 'L').length;
+  const perempuan= [...uniqueMembers.values()].filter(g => g === 'P').length;
 
-  // ── Render Stats ──────────────────────────────────────────────
   document.getElementById('sTotalHa').textContent  = fmt(totalHa) + ' ha';
   document.getElementById('sTotalSub').textContent = `dari ${fmtN(TARGET_HA)} ha area eligible`;
   document.getElementById('sPct').textContent      = pct.toFixed(1) + '%';
@@ -484,23 +478,25 @@ async function main() {
     <div class="bk-row"><span><span class="dot" style="background:var(--tbw-reg)"></span>Reguler</span><b>${fmt(tbwRegHa)} ha</b></div>
     <div class="bk-row"><span><span class="dot" style="background:var(--tbw-mtl)"></span>MTL</span><b>${fmt(tbwMtlHa)} ha</b></div>`;
 
-  document.getElementById('sLaki').textContent      = fmtN(laki);
-  document.getElementById('sPerempuan').textContent = fmtN(perempuan);
-  document.getElementById('sAnggota').textContent   = `Total ${fmtN(uniqueMembers.size)} anggota`;
+  document.getElementById('sLaki').textContent       = fmtN(laki);
+  document.getElementById('sPerempuan').textContent  = fmtN(perempuan);
+  document.getElementById('sAnggota').textContent    = `Total ${fmtN(uniqueMembers.size)} anggota`;
 
-  // ── Render KTH ────────────────────────────────────────────────
+  // ── KTH List ──────────────────────────────────────────────────
   const kthEl = document.getElementById('kthList');
-  const kthEntries = [...kthMap.entries()].filter(([n,d]) => n !== 'Lainnya' || d.total > 0).sort((a,b) => b[1].total - a[1].total);
+  const kthEntries = [...kthMap.entries()]
+    .filter(([, d]) => d.total > 0)
+    .sort((a, b) => b[1].total - a[1].total);
 
   if (kthEntries.length === 0) {
     kthEl.innerHTML = `<div class="kth-empty">Data KTH tidak tersedia</div>`;
   } else {
     kthEl.innerHTML = '';
     kthEntries.forEach(([name, d]) => {
-      const total = d.agr + d.tbw || 1;
-      const ap = Math.round(d.agr / total * 100);
-      const tp = 100 - ap;
-      const el = document.createElement('div');
+      const tot = d.agr + d.tbw || 1;
+      const ap  = Math.round(d.agr / tot * 100);
+      const tp  = 100 - ap;
+      const el  = document.createElement('div');
       el.className = 'kth-item';
       el.innerHTML = `
         <div class="kth-top">
@@ -508,11 +504,11 @@ async function main() {
           <span class="kth-ha">${fmt(d.total)} ha</span>
         </div>
         <div class="kth-bars">
-          <div class="kbar">
+          <div>
             <div class="kbar-top"><span>Agroforestri</span><span>${fmt(d.agr)} ha · ${ap}%</span></div>
             <div class="kbar-track"><div class="kbar-fill" style="width:${ap}%;background:var(--agr)"></div></div>
           </div>
-          <div class="kbar">
+          <div>
             <div class="kbar-top"><span>Tembawang</span><span>${fmt(d.tbw)} ha · ${tp}%</span></div>
             <div class="kbar-track"><div class="kbar-fill" style="width:${tp}%;background:var(--tbw)"></div></div>
           </div>
@@ -521,80 +517,46 @@ async function main() {
     });
   }
 
-  // ── Classify each GeoJSON feature ────────────────────────────
-  // Strategy: try match id_lahan → CSV kode petak first,
-  // fallback to Nama → CSV nama, fallback to JSON Program field
-  function classifyFeature(feature) {
-    const p = feature.properties || {};
-    const id = (p.id_lahan || '').trim();
-    const namaJson = (p.Nama || '').trim();
-    const progJson = (p.Program || '').trim();
+  // ── GeoJSON: HANYA fitur yang id_lahan-nya ada di CSV kode petak ──
+  // (fitur tanpa id_lahan atau id_lahan tidak cocok → skip)
+  const buckets = { agrReg: [], agrBpo: [], tbwReg: [], tbwMtl: [] };
 
-    // 1. Match by id_lahan → Kode Petak
-    if (id && csvByKode.has(id)) {
-      const row = csvByKode.get(id);
-      const vals = Object.values(row);
-      const R = parseFloat((vals[17] || '').toString().replace(',','.')); 
-      const S = parseFloat((vals[18] || '').toString().replace(',','.')); 
-      const T = parseFloat((vals[19] || '').toString().replace(',','.'));
-      const U = parseFloat((vals[20] || '').toString().replace(',','.'));
-      if (S > 0) return { key: 'agrBpo', row };
-      if (R > 0) return { key: 'agrReg', row };
-      if (T > 0) return { key: 'tbwReg', row };
-      if (U > 0) return { key: 'tbwMtl', row };
-    }
+  agroGeo.features.forEach(feature => {
+    const idLahan = (feature.properties?.id_lahan || '').trim();
 
-    // 2. Match by Nama
-    if (namaJson && csvByNama.has(namaJson)) {
-      const row = csvByNama.get(namaJson);
-      const vals = Object.values(row);
-      const R = parseFloat((vals[17] || '').toString().replace(',','.')); 
-      const S = parseFloat((vals[18] || '').toString().replace(',','.')); 
-      const T = parseFloat((vals[19] || '').toString().replace(',','.'));
-      const U = parseFloat((vals[20] || '').toString().replace(',','.'));
-      if (S > 0) return { key: 'agrBpo', row };
-      if (R > 0) return { key: 'agrReg', row };
-      if (T > 0) return { key: 'tbwReg', row };
-      if (U > 0) return { key: 'tbwMtl', row };
-    }
+    // Skip jika id_lahan kosong
+    if (!idLahan) return;
 
-    // 3. Fallback: classify by JSON Program text
-    const fallKey = classifyByJsonProgram(progJson);
-    if (fallKey) return { key: fallKey, row: null };
+    // Skip jika tidak ada di CSV
+    if (!csvByKode.has(idLahan)) return;
 
-    return null;
-  }
+    const row = csvByKode.get(idLahan);
+    const sp  = subProgFromRow(row);
 
-  // Build popup HTML
-  function buildPopup(feature, classified) {
+    // Skip jika tidak bisa ditentukan sub-programnya
+    if (!sp) return;
+
+    buckets[sp.key].push({ feature, row });
+  });
+
+  // Build popup
+  function buildPopup(feature, row, subKey) {
     const p   = feature.properties || {};
-    const row = classified?.row;
-    const key = classified?.key;
-    const c   = COLOR[key] || '#888';
-    const lb  = LABEL[key] || 'Tidak Diketahui';
+    const c   = COLOR[subKey];
+    const lb  = LABEL[subKey];
 
-    const get = (keys, fallbackIdx) => {
-      if (row) {
-        const vals = Object.values(row);
-        for (const k of keys) {
-          const v = (row[k] || '').toString().trim();
-          if (v) return v;
-        }
-        if (fallbackIdx !== undefined) {
-          const v = (vals[fallbackIdx] || '').toString().trim();
-          if (v) return v;
-        }
-      }
-      return null;
-    };
+    const get = (names, idx) => col(row, names, idx) || '—';
 
-    const nama   = get(['Nama Petani','Nama','C'], 2) || p.Nama || '—';
-    const id     = p.id_lahan || get(['Kode Petak','M'], 12) || '—';
-    const luas   = get(['Luas','G'], 6) || (p.Luas ? fmt(p.Luas) : '—');
-    const desa   = get(['Desa','Nama Desa'], 5) || '—';
-    const kec    = get(['Kecamatan'], 6) || '—';
-    const kth    = get(['KTH','Nama KTH','Kelompok Tani Hutan','D'], 3) || '—';
-    const komp   = p.Komparteme?.trim() || '—';
+    const nama  = get(['Nama Petani','Nama','nama','C'], 2);
+    const kode  = get(['Kode Petak','M'], 12);
+    const luas  = get(['Luas','G'], 6);
+    const desa  = get(['Desa','Nama Desa','desa'], 5);
+    const kec   = get(['Kecamatan','kecamatan'], 6);
+    const kth   = get(['KTH','Nama KTH','Kelompok Tani Hutan','D'], 3);
+    const komp  = (p.Komparteme || '').trim() || '—';
+
+    // Optional: rencana tanam
+    const tanam = get(['Rencana Tanam','Rencana Penanaman','Tanaman'], 99);
 
     return `<div class="pu">
       <div class="pu-badge" style="background:${c}18;color:${c}">
@@ -602,29 +564,29 @@ async function main() {
       </div>
       <div class="pu-name">${nama}</div>
       <table class="pu-tbl">
-        <tr><td>ID Lahan</td><td>${id}</td></tr>
+        <tr><td>Kode Petak</td><td>${kode}</td></tr>
         <tr><td>Kompartemen</td><td>${komp}</td></tr>
         <tr><td>Luas</td><td>${luas} ha</td></tr>
-        ${desa !== '—' ? `<tr><td>Desa</td><td>${desa}</td></tr>` : ''}
-        ${kec  !== '—' ? `<tr><td>Kecamatan</td><td>${kec}</td></tr>` : ''}
-        ${kth  !== '—' ? `<tr><td>KTH</td><td>${kth}</td></tr>` : ''}
+        ${desa !== '—'  ? `<tr><td>Desa</td><td>${desa}</td></tr>` : ''}
+        ${kec  !== '—'  ? `<tr><td>Kecamatan</td><td>${kec}</td></tr>` : ''}
+        ${kth  !== '—'  ? `<tr><td>KTH</td><td>${kth}</td></tr>` : ''}
+        ${tanam !== '—' ? `<tr><td>Tanaman</td><td>${tanam}</td></tr>` : ''}
       </table>
     </div>`;
   }
 
-  // ── Build 4 sub-layers ────────────────────────────────────────
-  const buckets = { agrReg: [], agrBpo: [], tbwReg: [], tbwMtl: [] };
+  // Render layers
+  let totalDisplayed = 0;
+  Object.entries(buckets).forEach(([key, items]) => {
+    if (items.length === 0) return;
+    totalDisplayed += items.length;
 
-  agroGeo.features.forEach(f => {
-    const cl = classifyFeature(f);
-    if (cl && buckets[cl.key]) {
-      buckets[cl.key].push({ feature: f, classified: cl });
-    }
-  });
-
-  Object.keys(buckets).forEach(key => {
-    const fc = { type: 'FeatureCollection', features: buckets[key].map(b => b.feature) };
-    const clMap = new Map(buckets[key].map(b => [b.feature, b.classified]));
+    const fc = {
+      type: 'FeatureCollection',
+      features: items.map(b => b.feature)
+    };
+    // Map feature → row for popup
+    const rowMap = new Map(items.map(b => [b.feature, b.row]));
 
     gLayers[key] = L.geoJSON(fc, {
       style: {
@@ -634,51 +596,45 @@ async function main() {
         weight: 1.5,
       },
       onEachFeature(feature, layer) {
-        const cl = clMap.get(feature);
-        layer.bindPopup(buildPopup(feature, cl), { maxWidth: 260 });
+        const row = rowMap.get(feature);
+        layer.bindPopup(buildPopup(feature, row, key), { maxWidth: 270 });
         layer.on('mouseover', () => layer.setStyle({ fillOpacity: 1, weight: 2, color: '#333' }));
         layer.on('mouseout',  () => layer.setStyle({ fillOpacity: 0.75, weight: 1.5, color: '#fff' }));
       }
     }).addTo(map);
   });
 
-  // ── Batas layer (no popup) ────────────────────────────────────
+  // Batas — no popup
   gLayers.batas = L.geoJSON(batasGeo, {
-    style: { color: '#666', weight: 2, dashArray: '6 4', fillOpacity: 0, opacity: 0.55 }
+    style: { color:'#666', weight:2, dashArray:'6 4', fillOpacity:0, opacity:.55 }
   }).addTo(map);
 
-  // ── Fit bounds ────────────────────────────────────────────────
+  // Fit bounds
   const boundsArr = Object.values(gLayers)
     .filter(l => l)
     .map(l => { try { return l.getBounds(); } catch(e) { return null; } })
     .filter(b => b && b.isValid());
 
   if (boundsArr.length) {
-    const combined = boundsArr.reduce((acc, b) => acc.extend(b));
+    const combined = boundsArr.reduce((a, b) => a.extend(b));
     map.fitBounds(combined, { padding: [24, 24] });
   }
 
-  // ── Status badge ──────────────────────────────────────────────
+  // Status
   const badge = document.getElementById('statusBadge');
-  if (csvOk) {
-    badge.textContent = `${rows.length} baris data · ${agroGeo.features.length} fitur`;
-    badge.className = 'ok';
-  } else {
-    badge.textContent = 'CSV tidak dapat dimuat – tampil sebagian';
-    badge.className = 'err';
-  }
+  badge.textContent = `${rows.length} baris CSV · ${totalDisplayed} fitur ditampilkan`;
+  badge.className = 'ok';
 
   document.getElementById('loading').style.display = 'none';
 }
 
 main().catch(err => {
   console.error(err);
-  const el = document.getElementById('loading');
-  el.innerHTML = `
-    <div style="text-align:center;padding:20px;max-width:400px">
+  document.getElementById('loading').innerHTML = `
+    <div style="text-align:center;padding:20px;max-width:380px">
       <div style="font-size:2rem;margin-bottom:12px">⚠️</div>
       <p style="font-weight:600;margin-bottom:6px">Gagal memuat data</p>
-      <p style="font-size:.75rem;color:#6b7668;margin-bottom:14px">${err.message}</p>
+      <p style="font-size:.74rem;color:#6b7668;margin-bottom:14px">${err.message}</p>
       <button onclick="location.reload()" style="padding:8px 18px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer;font-size:.8rem">Coba Lagi</button>
     </div>`;
 });
