@@ -115,17 +115,16 @@
     #map{width:100%;height:100%}
     .leaflet-control-scale-line{font-family:'DM Sans',sans-serif;font-size:11px}
 
-    /* BASEMAP SWITCHER — bottom-left of map */
-    .basemap-panel{position:absolute;bottom:28px;left:16px;z-index:600;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-md);padding:8px;display:flex;flex-direction:column;gap:6px}
-    .bm-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);padding:0 2px 2px}
-    .bm-tiles{display:flex;gap:6px}
-    .bm-thumb{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
-    .bm-img{width:52px;height:40px;border-radius:7px;border:2px solid var(--border);overflow:hidden;transition:border-color .15s;background:#e2e8f0}
-    .bm-img img{width:100%;height:100%;object-fit:cover;display:block}
-    .bm-thumb.active .bm-img{border-color:var(--primary-md);box-shadow:0 0 0 2px var(--primary-bg)}
-    .bm-name{font-size:10px;font-weight:600;color:var(--text-2);transition:color .15s}
-    .bm-thumb.active .bm-name{color:var(--primary-md)}
-    .bm-thumb:hover .bm-img{border-color:var(--primary-lt)}
+    /* BASEMAP PANEL */
+    .basemap-panel{position:absolute;bottom:84px;left:16px;z-index:900;display:flex;flex-direction:column;gap:6px}
+    .basemap-label-row{font-size:8px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.7px;padding-left:2px}
+    .basemap-pills{display:flex;gap:5px;flex-wrap:wrap}
+    .bm-pill{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:transform .15s}
+    .bm-pill:hover .bm-thumb-wrap{box-shadow:0 0 0 2px #2d6a2d}
+    .bm-pill.active .bm-thumb-wrap{box-shadow:0 0 0 2.5px #2d6a2d;opacity:1}
+    .bm-thumb-wrap{width:44px;height:36px;border-radius:8px;overflow:hidden;border:1.5px solid rgba(255,255,255,.7);box-shadow:0 1px 4px rgba(0,0,0,.22);opacity:.82;transition:all .15s}
+    .bm-thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+    .bm-name{font-size:8px;font-weight:600;color:#374151;background:rgba(255,255,255,.88);padding:2px 5px;border-radius:4px;line-height:1.3;text-align:center;max-width:46px;backdrop-filter:blur(4px)}
 
     .loading-overlay{position:absolute;inset:0;z-index:998;background:rgba(255,255,255,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(2px)}
     .spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
@@ -143,8 +142,9 @@
     .pop-lbl{font-size:11px;color:var(--text-2);flex-shrink:0}
     .pop-val{font-size:12px;font-weight:600;color:var(--text);text-align:right;word-break:break-word}
 
+    /* MODAL */
     .modal-overlay{position:fixed;inset:0;z-index:900;background:rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
-    .kth-modal{background:#fff;border-radius:14px;width:min(860px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
+    .kth-modal{background:#fff;border-radius:14px;width:min(880px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
     .kth-modal-hd{padding:16px 20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
     .kth-modal-title{font-size:15px;font-weight:700}
     .kth-modal-sub{font-size:12px;opacity:.8;margin-top:1px}
@@ -155,11 +155,8 @@
     .kth-stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-2);margin-bottom:4px}
     .kth-stat-val{font-size:17px;font-weight:800}
     .kth-modal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
-    .modal-search-wrap{display:flex;align-items:center;gap:8px;flex:1;min-width:180px}
-    .modal-search{flex:1;padding:6px 10px 6px 32px;border-radius:8px;border:1px solid var(--border);font-size:12px;font-family:inherit;color:var(--text);background:#f8fafc;outline:none;transition:border-color .15s}
-    .modal-search:focus{border-color:var(--primary-lt);background:#fff}
-    .modal-search-icon{position:relative;flex:1;display:flex;align-items:center}
-    .modal-search-icon svg{position:absolute;left:9px;width:13px;height:13px;stroke:var(--text-3);pointer-events:none;stroke-width:2;fill:none}
+    .modal-search-icon{position:relative;flex:1;min-width:180px;max-width:320px;display:flex;align-items:center}
+    .modal-search-icon svg{position:absolute;left:9px;width:13px;height:13px;stroke:var(--text-3);pointer-events:none;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
     .modal-search-icon input{width:100%;padding:6px 10px 6px 30px;border-radius:8px;border:1px solid var(--border);font-size:12px;font-family:inherit;color:var(--text);background:#f8fafc;outline:none;transition:border-color .15s}
     .modal-search-icon input:focus{border-color:var(--primary-lt);background:#fff}
     .modal-toolbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
@@ -179,6 +176,9 @@
     .prog-tag.ab{background:#dbeafe;color:#1e40af}
     .prog-tag.tr{background:#ffedd5;color:#9a3412}
     .prog-tag.tm{background:#f3e8ff;color:#6b21a8}
+    .row-eye-btn{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:grid;place-items:center;color:var(--text-2);transition:all .15s;flex-shrink:0}
+    .row-eye-btn:hover{background:#eff6ff;border-color:#93c5fd;color:#2563eb}
+    .row-eye-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     .no-results{text-align:center;padding:28px 16px;color:var(--text-3);font-size:13px}
 
     ::-webkit-scrollbar{width:4px;height:4px}
@@ -193,8 +193,7 @@
   <div class="hdr-left">
     <img
       src="https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data/logo-cmi.png"
-      class="hdr-logo"
-      alt="CMI Logo"
+      class="hdr-logo" alt="CMI Logo"
       onerror="this.style.display='none';document.getElementById('logoFallback').style.display='grid'"
     />
     <div class="hdr-logo-fallback" id="logoFallback" style="display:none">
@@ -230,9 +229,7 @@
   <div class="sc">
     <div class="sc-lbl">Total Lahan Garapan</div>
     <div class="sc-val" id="sTotalHa" style="color:var(--primary)">—</div>
-    <div class="sc-meta">
-      <span class="sc-meta-item" id="sTotalMeta" style="color:var(--text-3)">Memuat...</span>
-    </div>
+    <div class="sc-meta"><span class="sc-meta-item" id="sTotalMeta" style="color:var(--text-3)">Memuat...</span></div>
   </div>
   <div class="sc">
     <div class="sc-lbl">Agroforestri</div>
@@ -308,28 +305,28 @@
   <div class="map-wrap">
     <div id="map"></div>
 
-    <!-- BASEMAP SWITCHER — bottom left of map -->
+    <!-- BASEMAP PANEL -->
     <div class="basemap-panel" id="basemapPanel">
-      <div class="bm-label">Basemap</div>
-      <div class="bm-tiles">
-        <div class="bm-thumb active" id="bm-light" onclick="switchBasemap('light')">
-          <div class="bm-img"><img src="https://a.basemaps.cartocdn.com/light_all/9/407/252.png" alt="Light"></div>
-          <div class="bm-name">Light</div>
+      <div class="basemap-label-row">Basemap</div>
+      <div class="basemap-pills">
+        <div class="bm-pill active" id="bm_esri_imagery" onclick="switchBasemap('esri_imagery')" title="ESRI Satellite">
+          <div class="bm-thumb-wrap"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/16/26" alt="ESRI"></div>
+          <div class="bm-name">ESRI St</div>
         </div>
-        <div class="bm-thumb" id="bm-topo" onclick="switchBasemap('topo')">
-          <div class="bm-img"><img src="https://a.tile.opentopomap.org/9/407/252.png" alt="Topo"></div>
+        <div class="bm-pill" id="bm_google_satellite" onclick="switchBasemap('google_satellite')" title="Google Satellite">
+          <div class="bm-thumb-wrap"><img src="https://mt1.google.com/vt/lyrs=s&x=26&y=16&z=5" alt="Google"></div>
+          <div class="bm-name">Google</div>
+        </div>
+        <div class="bm-pill" id="bm_esri_topo" onclick="switchBasemap('esri_topo')" title="ESRI Topo">
+          <div class="bm-thumb-wrap"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/5/16/26" alt="Topo"></div>
           <div class="bm-name">Topo</div>
         </div>
-        <div class="bm-thumb" id="bm-satellite" onclick="switchBasemap('satellite')">
-          <div class="bm-img"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/9/252/407" alt="Satelit"></div>
-          <div class="bm-name">Satelit</div>
-        </div>
-        <div class="bm-thumb" id="bm-streets" onclick="switchBasemap('streets')">
-          <div class="bm-img"><img src="https://a.tile.openstreetmap.org/9/407/252.png" alt="Streets"></div>
+        <div class="bm-pill" id="bm_osm" onclick="switchBasemap('osm')" title="OpenStreetMap">
+          <div class="bm-thumb-wrap"><img src="https://tile.openstreetmap.org/5/26/16.png" alt="OSM"></div>
           <div class="bm-name">Streets</div>
         </div>
-        <div class="bm-thumb" id="bm-dark" onclick="switchBasemap('dark')">
-          <div class="bm-img"><img src="https://a.basemaps.cartocdn.com/dark_all/9/407/252.png" alt="Dark"></div>
+        <div class="bm-pill" id="bm_carto_dark" onclick="switchBasemap('carto_dark')" title="Dark">
+          <div class="bm-thumb-wrap" style="background:#1a1a2e"><img src="https://basemaps.cartocdn.com/dark_all/5/26/16.png" alt="Dark"></div>
           <div class="bm-name">Dark</div>
         </div>
       </div>
@@ -354,7 +351,7 @@
     </div>
     <div class="kth-modal-stats" id="modalStats"></div>
     <div class="kth-modal-toolbar">
-      <div class="modal-search-icon" style="flex:1;min-width:180px;max-width:320px">
+      <div class="modal-search-icon">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" id="modalSearchInput" placeholder="Cari nama petani..." oninput="filterModalTable(this.value)" />
       </div>
@@ -369,7 +366,7 @@
     <div class="kth-modal-body">
       <table class="kth-tbl">
         <thead><tr>
-          <th>No</th><th>ID Lahan</th><th>Nama Petani</th><th>Desa</th>
+          <th>No</th><th>Lokasi</th><th>ID Lahan</th><th>Nama Petani</th><th>Desa</th>
           <th>Program</th><th>Luas (ha)</th><th>Tgl Realisasi</th>
         </tr></thead>
         <tbody id="modalTbody"></tbody>
@@ -397,18 +394,18 @@ const PROG = {
 };
 
 const BASEMAPS = {
-  light:     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',   { attribution:'&copy; OSM &copy; CARTO', subdomains:'abcd', maxZoom:19 }),
-  topo:      L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',                 { attribution:'&copy; OpenTopoMap', maxZoom:17 }),
-  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution:'&copy; Esri', maxZoom:19 }),
-  streets:   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',               { attribution:'&copy; OSM contributors', maxZoom:19 }),
-  dark:      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',    { attribution:'&copy; OSM &copy; CARTO', subdomains:'abcd', maxZoom:19 }),
+  esri_imagery:    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',    { attribution:'&copy; Esri', maxZoom:19 }),
+  google_satellite:L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',                                            { attribution:'&copy; Google', maxZoom:20 }),
+  esri_topo:       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',  { attribution:'&copy; Esri', maxZoom:19 }),
+  osm:             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',                                              { attribution:'&copy; OSM contributors', maxZoom:19 }),
+  carto_dark:      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',                                  { attribution:'&copy; OSM &copy; CARTO', subdomains:'abcd', maxZoom:19 }),
 };
-let currentBasemap = 'light';
+let currentBasemap = 'esri_imagery';
 
 const map = L.map('map', { zoomControl: false });
 L.control.zoom({ position: 'topright' }).addTo(map);
 L.control.scale({ position: 'bottomright', metric: true, imperial: false }).addTo(map);
-BASEMAPS.light.addTo(map);
+BASEMAPS.esri_imagery.addTo(map);
 map.setView([1.0, 111.5], 9);
 
 function switchBasemap(key) {
@@ -417,8 +414,8 @@ function switchBasemap(key) {
   BASEMAPS[key].addTo(map);
   BASEMAPS[key].bringToBack();
   currentBasemap = key;
-  document.querySelectorAll('.bm-thumb').forEach(b => b.classList.remove('active'));
-  document.getElementById('bm-' + key).classList.add('active');
+  document.querySelectorAll('.bm-pill').forEach(b => b.classList.remove('active'));
+  document.getElementById('bm_' + key).classList.add('active');
 }
 
 // hamburger menu
@@ -426,18 +423,17 @@ function toggleMenu() {
   document.getElementById('menuDropdown').classList.toggle('open');
 }
 document.addEventListener('click', e => {
-  if (!document.getElementById('menuBtn').contains(e.target) &&
-      !document.getElementById('menuDropdown').contains(e.target)) {
-    document.getElementById('menuDropdown').classList.remove('open');
+  const btn = document.getElementById('menuBtn');
+  const dd  = document.getElementById('menuDropdown');
+  if (btn && dd && !btn.contains(e.target) && !dd.contains(e.target)) {
+    dd.classList.remove('open');
   }
 });
 
 const lgAgro = L.layerGroup().addTo(map);
 const lgTemb = L.layerGroup().addTo(map);
 const lgCMI  = L.layerGroup().addTo(map);
-const layerState = { agro: true, temb: true, cmi: true };
-
-// per-KTH visibility state
+const layerState  = { agro: true, temb: true, cmi: true };
 const kthVisState = {};
 
 let sheetMap   = {};
@@ -535,7 +531,7 @@ function renderAgro(gj) {
         agro: 0, temb: 0, aReg: 0, aBPO: 0, tReg: 0, tMTL: 0,
         layers: [], rows: [], petaniSet: new Set(),
       };
-      kthVisState[row.kth] = true; // default visible
+      kthVisState[row.kth] = true;
     }
     const k = kthMap[row.kth];
     k.agro += row.aReg + row.aBPO;
@@ -566,6 +562,30 @@ function buildPopup(feat, row) {
     `<div class="pop-row"><span class="pop-lbl">${l}</span><span class="pop-val">${esc(v)}</span></div>`
   ).join('');
   return `<div class="pop-hd" style="background:${st.hd}"><div class="pop-hd-dot"></div>${esc(st.label)}</div><div class="pop-bd">${rows}</div>`;
+}
+
+// zoom to individual lahan from modal table (no preview panel)
+function zoomToLahan(id) {
+  const entry = featureMap[id];
+  if (!entry) return;
+
+  // close modal, zoom map to feature
+  document.getElementById('kthModal').style.display = 'none';
+  currentKTH = null;
+
+  try {
+    const bounds = L.geoJSON(entry.feature).getBounds();
+    map.fitBounds(bounds.pad(0.5));
+  } catch(e) {}
+
+  // flash highlight
+  entry.layer.setStyle({ weight: 4, fillOpacity: 0.95 });
+  setTimeout(() => { entry.layer.setStyle({ weight: 2, fillOpacity: 0.75 }); }, 2000);
+
+  // open popup
+  setTimeout(() => {
+    try { entry.layer.openPopup(); } catch(e) {}
+  }, 400);
 }
 
 function calcStats() {
@@ -600,8 +620,8 @@ function renderKTHList() {
   const el = document.getElementById('kthList');
   if (!list.length) { el.innerHTML = '<div class="empty-state">Tidak ada data KTH</div>'; return; }
 
-  const eyeIcon  = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-  const tblIcon  = `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`;
+  const eyeIcon    = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  const tblIcon    = `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`;
   const visOnIcon  = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
   const visOffIcon = `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 
@@ -697,12 +717,18 @@ function openKTH(name) {
     <div class="kth-stat-box"><div class="kth-stat-lbl">Jumlah Petak</div><div class="kth-stat-val">${k.rows.length}</div></div>`;
 
   document.getElementById('modalSearchInput').value = '';
+  document.getElementById('noResults').style.display = 'none';
   setText('modalRowCount', k.rows.length + ' lahan');
+
+  const eyeIcon = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 
   document.getElementById('modalTbody').innerHTML = k.rows.map((r, i) => {
     const st = PROG[r.prog];
     return `<tr data-petani="${esc(r.petani.toLowerCase())}">
       <td style="color:var(--text-3);font-size:11px">${i + 1}</td>
+      <td>
+        <button class="row-eye-btn" title="Zoom ke lokasi lahan di peta" onclick="zoomToLahan('${esc(r.id)}')">${eyeIcon}</button>
+      </td>
       <td style="font-family:monospace;font-size:11px">${esc(r.id)}</td>
       <td>${esc(r.petani)}</td>
       <td>${esc(r.desa)}</td>
@@ -712,7 +738,6 @@ function openKTH(name) {
     </tr>`;
   }).join('');
 
-  document.getElementById('noResults').style.display = 'none';
   document.getElementById('kthModal').style.display = 'flex';
 }
 
