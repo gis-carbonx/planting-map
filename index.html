@@ -19,7 +19,7 @@
       --c-temb-mtl:#7b1fa2;--c-temb-mtl-lt:#ce6be8;
       --bg:#f4f6f9;--surface:#fff;--border:#e2e8f0;--border-lt:#f1f5f9;
       --text:#1a2332;--text-2:#64748b;--text-3:#a0aec0;
-      --hdr-h:54px;--stats-h:130px;--sb-w:310px;
+      --hdr-h:54px;--stats-h:100px;--sb-w:310px;
       --shadow-sm:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
       --shadow-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
       --shadow-lg:0 20px 60px rgba(0,0,0,.2);
@@ -49,50 +49,14 @@
     .menu-item:hover svg{color:var(--primary-lt)}
     .menu-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 
-    /* STATS BAR — diperlebar */
-    .stats-bar{
-      height:var(--stats-h);
-      background:var(--surface);
-      border-bottom:1px solid var(--border);
-      display:flex;
-      align-items:stretch;
-      gap:0;
-      padding:0;
-      overflow:hidden;
-    }
-
-    /* tiap kartu stat */
-    .sc{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap:6px;
-      padding:14px 20px;
-      border-right:1px solid var(--border);
-      transition:background .15s;
-      min-width:0;
-    }
-    .sc:last-child{border-right:none}
-    .sc:hover{background:var(--bg)}
-
-    /* accent bar kiri per kartu */
-    .sc-inner{display:flex;flex-direction:column;gap:5px}
-    .sc-lbl{
-      font-size:10px;font-weight:700;text-transform:uppercase;
-      letter-spacing:.7px;color:var(--text-3);
-    }
-    .sc-val{
-      font-size:26px;font-weight:800;line-height:1;
-      letter-spacing:-.5px;
-    }
-    .sc-divider{height:1px;background:var(--border-lt);margin:2px 0}
-    .sc-meta{display:flex;flex-direction:column;gap:3px}
-    .sc-meta-item{
-      display:flex;align-items:center;gap:5px;
-      font-size:11.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;
-    }
-    .sc-meta-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    /* STATS BAR */
+    .stats-bar{height:var(--stats-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 16px;overflow-x:auto}
+    .sc{flex:1;min-width:170px;height:76px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;justify-content:space-between;transition:border-color .15s}
+    .sc:hover{border-color:var(--primary-lt)}
+    .sc-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--text-2)}
+    .sc-val{font-size:20px;font-weight:800;line-height:1}
+    .sc-meta{display:flex;flex-direction:column;gap:2px}
+    .sc-meta-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-2);white-space:nowrap}
     .dot{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0}
 
     /* LAYOUT */
@@ -152,7 +116,7 @@
     .leaflet-control-scale-line{font-family:'DM Sans',sans-serif;font-size:11px}
 
     /* BASEMAP PANEL */
-    .basemap-panel{position:absolute;bottom:84px;left:16px;z-index:900;display:flex;flex-direction:column;gap:6px}
+    .basemap-panel{position:absolute;bottom:10px;left:16px;z-index:900;display:flex;flex-direction:column;gap:6px}
     .basemap-label-row{font-size:8px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.7px;padding-left:2px}
     .basemap-pills{display:flex;gap:5px;flex-wrap:wrap}
     .bm-pill{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:transform .15s}
@@ -261,81 +225,42 @@
   </div>
 </header>
 
-<!-- STATS BAR diperlebar -->
 <div class="stats-bar">
-
-  <!-- Total Lahan -->
-  <div class="sc" style="border-left:3px solid var(--primary)">
-    <div class="sc-inner">
-      <div class="sc-lbl">Total Lahan Garapan</div>
-      <div class="sc-val" id="sTotalHa" style="color:var(--primary)">—</div>
-      <div class="sc-divider"></div>
-      <div class="sc-meta">
-        <span class="sc-meta-item" id="sTotalMeta" style="color:var(--text-3)">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          <span>Memuat...</span>
-        </span>
-      </div>
+  <div class="sc">
+    <div class="sc-lbl">Total Lahan Garapan</div>
+    <div class="sc-val" id="sTotalHa" style="color:var(--primary)">—</div>
+    <div class="sc-meta"><span class="sc-meta-item" id="sTotalMeta" style="color:var(--text-3)">Memuat...</span></div>
+  </div>
+  <div class="sc">
+    <div class="sc-lbl">Agroforestri</div>
+    <div class="sc-val" id="sAgroHa" style="color:var(--c-agro-reg)">—</div>
+    <div class="sc-meta">
+      <span class="sc-meta-item"><span class="dot" style="background:var(--c-agro-reg-lt)"></span><span id="sAgroReg">Agroforestri Reguler: —</span></span>
+      <span class="sc-meta-item"><span class="dot" style="background:var(--c-agro-bpo-lt)"></span><span id="sAgroBPO">Bantuan Pupuk Organik: —</span></span>
     </div>
   </div>
-
-  <!-- Agroforestri -->
-  <div class="sc" style="border-left:3px solid var(--c-agro-reg)">
-    <div class="sc-inner">
-      <div class="sc-lbl">Agroforestri</div>
-      <div class="sc-val" id="sAgroHa" style="color:var(--c-agro-reg)">—</div>
-      <div class="sc-divider"></div>
-      <div class="sc-meta">
-        <span class="sc-meta-item">
-          <span class="dot" style="background:var(--c-agro-reg-lt)"></span>
-          <span id="sAgroReg">Reguler: —</span>
-        </span>
-        <span class="sc-meta-item">
-          <span class="dot" style="background:var(--c-agro-bpo-lt)"></span>
-          <span id="sAgroBPO">BPO: —</span>
-        </span>
-      </div>
+  <div class="sc">
+    <div class="sc-lbl">Tembawang</div>
+    <div class="sc-val" id="sTembHa" style="color:var(--c-temb-reg)">—</div>
+    <div class="sc-meta">
+      <span class="sc-meta-item"><span class="dot" style="background:var(--c-temb-reg-lt)"></span><span id="sTembReg">Tembawang Reguler: —</span></span>
+      <span class="sc-meta-item"><span class="dot" style="background:var(--c-temb-mtl-lt)"></span><span id="sTembMTL">Menjaga Tutupan Lahan: —</span></span>
     </div>
   </div>
-
-  <!-- Tembawang -->
-  <div class="sc" style="border-left:3px solid var(--c-temb-reg)">
-    <div class="sc-inner">
-      <div class="sc-lbl">Tembawang</div>
-      <div class="sc-val" id="sTembHa" style="color:var(--c-temb-reg)">—</div>
-      <div class="sc-divider"></div>
-      <div class="sc-meta">
-        <span class="sc-meta-item">
-          <span class="dot" style="background:var(--c-temb-reg-lt)"></span>
-          <span id="sTembReg">Reguler: —</span>
-        </span>
-        <span class="sc-meta-item">
-          <span class="dot" style="background:var(--c-temb-mtl-lt)"></span>
-          <span id="sTembMTL">MTL: —</span>
-        </span>
-      </div>
+  <div class="sc">
+    <div class="sc-lbl">Anggota Terdaftar</div>
+    <div class="sc-val" id="sAnggota" style="color:#3b82f6">—</div>
+    <div class="sc-meta">
+      <span class="sc-meta-item" style="color:#3b82f6">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span id="sLaki">Laki-laki: —</span>
+      </span>
+      <span class="sc-meta-item" style="color:#ec4899">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span id="sPmp">Perempuan: —</span>
+      </span>
     </div>
   </div>
-
-  <!-- Anggota -->
-  <div class="sc" style="border-left:3px solid #3b82f6">
-    <div class="sc-inner">
-      <div class="sc-lbl">Anggota Terdaftar</div>
-      <div class="sc-val" id="sAnggota" style="color:#3b82f6">—</div>
-      <div class="sc-divider"></div>
-      <div class="sc-meta">
-        <span class="sc-meta-item" style="color:#3b82f6">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          <span id="sLaki">Laki-laki: —</span>
-        </span>
-        <span class="sc-meta-item" style="color:#ec4899">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          <span id="sPmp">Perempuan: —</span>
-        </span>
-      </div>
-    </div>
-  </div>
-
 </div>
 
 <div class="app-body">
@@ -384,32 +309,22 @@
     <div class="basemap-panel" id="basemapPanel">
       <div class="basemap-label-row">Basemap</div>
       <div class="basemap-pills">
-        <!-- CARTO LIGHT — default -->
-        <div class="bm-pill active" id="bm_carto_light" onclick="switchBasemap('carto_light')" title="Carto Light">
-          <div class="bm-thumb-wrap"><img src="https://a.basemaps.cartocdn.com/light_all/5/26/16.png" alt="Light"></div>
-          <div class="bm-name">Light</div>
-        </div>
-        <!-- ESRI IMAGERY -->
         <div class="bm-pill" id="bm_esri_imagery" onclick="switchBasemap('esri_imagery')" title="ESRI Satellite">
           <div class="bm-thumb-wrap"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/16/26" alt="ESRI"></div>
           <div class="bm-name">ESRI St</div>
         </div>
-        <!-- GOOGLE SATELLITE -->
         <div class="bm-pill" id="bm_google_satellite" onclick="switchBasemap('google_satellite')" title="Google Satellite">
           <div class="bm-thumb-wrap"><img src="https://mt1.google.com/vt/lyrs=s&x=26&y=16&z=5" alt="Google"></div>
           <div class="bm-name">Google</div>
         </div>
-        <!-- ESRI TOPO -->
-        <div class="bm-pill" id="bm_esri_topo" onclick="switchBasemap('esri_topo')" title="ESRI Topo">
+        <div class="bm-pill active" id="bm_esri_topo" onclick="switchBasemap('esri_topo')" title="ESRI Topo">
           <div class="bm-thumb-wrap"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/5/16/26" alt="Topo"></div>
           <div class="bm-name">Topo</div>
         </div>
-        <!-- OSM -->
         <div class="bm-pill" id="bm_osm" onclick="switchBasemap('osm')" title="OpenStreetMap">
           <div class="bm-thumb-wrap"><img src="https://tile.openstreetmap.org/5/26/16.png" alt="OSM"></div>
           <div class="bm-name">Streets</div>
         </div>
-        <!-- CARTO DARK -->
         <div class="bm-pill" id="bm_carto_dark" onclick="switchBasemap('carto_dark')" title="Dark">
           <div class="bm-thumb-wrap" style="background:#1a1a2e"><img src="https://basemaps.cartocdn.com/dark_all/5/26/16.png" alt="Dark"></div>
           <div class="bm-name">Dark</div>
@@ -479,19 +394,18 @@ const PROG = {
 };
 
 const BASEMAPS = {
-  carto_light:     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',                                   { attribution:'&copy; OSM &copy; CARTO', subdomains:'abcd', maxZoom:19 }),
   esri_imagery:    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',    { attribution:'&copy; Esri', maxZoom:19 }),
-  google_satellite:L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',                                             { attribution:'&copy; Google', maxZoom:20 }),
-  esri_topo:       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',   { attribution:'&copy; Esri', maxZoom:19 }),
-  osm:             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',                                               { attribution:'&copy; OSM contributors', maxZoom:19 }),
-  carto_dark:      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',                                   { attribution:'&copy; OSM &copy; CARTO', subdomains:'abcd', maxZoom:19 }),
+  google_satellite:L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',                                            { attribution:'&copy; Google', maxZoom:20 }),
+  esri_topo:       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',  { attribution:'&copy; Esri', maxZoom:19 }),
+  osm:             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',                                              { attribution:'&copy; OSM contributors', maxZoom:19 }),
+  carto_dark:      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',                                  { attribution:'&copy; OSM &copy; CARTO', subdomains:'abcd', maxZoom:19 }),
 };
-let currentBasemap = 'carto_light';
+let currentBasemap = 'esri_topo';
 
 const map = L.map('map', { zoomControl: false });
 L.control.zoom({ position: 'topright' }).addTo(map);
 L.control.scale({ position: 'bottomright', metric: true, imperial: false }).addTo(map);
-BASEMAPS.carto_light.addTo(map);
+BASEMAPS.esri_imagery.addTo(map);
 map.setView([1.0, 111.5], 9);
 
 function switchBasemap(key) {
@@ -650,17 +564,25 @@ function buildPopup(feat, row) {
   return `<div class="pop-hd" style="background:${st.hd}"><div class="pop-hd-dot"></div>${esc(st.label)}</div><div class="pop-bd">${rows}</div>`;
 }
 
+// zoom to individual lahan from modal table (no preview panel)
 function zoomToLahan(id) {
   const entry = featureMap[id];
   if (!entry) return;
+
+  // close modal, zoom map to feature
   document.getElementById('kthModal').style.display = 'none';
   currentKTH = null;
+
   try {
     const bounds = L.geoJSON(entry.feature).getBounds();
     map.fitBounds(bounds.pad(0.5));
   } catch(e) {}
+
+  // flash highlight
   entry.layer.setStyle({ weight: 4, fillOpacity: 0.95 });
   setTimeout(() => { entry.layer.setStyle({ weight: 2, fillOpacity: 0.75 }); }, 2000);
+
+  // open popup
   setTimeout(() => {
     try { entry.layer.openPopup(); } catch(e) {}
   }, 400);
@@ -680,19 +602,16 @@ function calcStats() {
     }
   });
   setText('sTotalHa',   fmt(totalHa) + ' ha');
-  // update meta dengan ikon
-  const metaEl = document.getElementById('sTotalMeta');
-  if (metaEl) metaEl.querySelector('span').textContent = matched.size + ' petak lahan';
-
-  setText('sAgroHa',  fmt(aReg + aBPO) + ' ha');
-  setText('sAgroReg', 'Reguler: ' + fmt(aReg) + ' ha');
-  setText('sAgroBPO', 'BPO: '     + fmt(aBPO) + ' ha');
-  setText('sTembHa',  fmt(tReg + tMTL) + ' ha');
-  setText('sTembReg', 'Reguler: ' + fmt(tReg) + ' ha');
-  setText('sTembMTL', 'MTL: '     + fmt(tMTL) + ' ha');
-  setText('sAnggota', uniq.size);
-  setText('sLaki',    'Laki-laki: '  + laki.size);
-  setText('sPmp',     'Perempuan: '  + pmp.size);
+  setText('sTotalMeta', matched.size + ' petak lahan');
+  setText('sAgroHa',    fmt(aReg + aBPO) + ' ha');
+  setText('sAgroReg',   'Agroforestri Reguler: ' + fmt(aReg) + ' ha');
+  setText('sAgroBPO',   'Bantuan Pupuk Organik: ' + fmt(aBPO) + ' ha');
+  setText('sTembHa',    fmt(tReg + tMTL) + ' ha');
+  setText('sTembReg',   'Tembawang Reguler: ' + fmt(tReg) + ' ha');
+  setText('sTembMTL',   'Menjaga Tutupan Lahan: ' + fmt(tMTL) + ' ha');
+  setText('sAnggota',   uniq.size);
+  setText('sLaki',      'Laki-laki: ' + laki.size);
+  setText('sPmp',       'Perempuan: ' + pmp.size);
 }
 
 function renderKTHList() {
@@ -769,6 +688,7 @@ function zoomKTH(name) {
   const card = document.querySelector(`.kth-card[data-kth="${name}"]`);
   if (card) { card.classList.add('active'); card.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
   if (kthBounds[name]) map.fitBounds(kthBounds[name].pad(0.22));
+
   const k = kthMap[name];
   if (k && kthVisState[name] !== false) {
     k.layers.forEach(l => { l.setStyle({ weight: 4, fillOpacity: 0.95 }); });
@@ -806,7 +726,9 @@ function openKTH(name) {
     const st = PROG[r.prog];
     return `<tr data-petani="${esc(r.petani.toLowerCase())}">
       <td style="color:var(--text-3);font-size:11px">${i + 1}</td>
-      <td><button class="row-eye-btn" title="Zoom ke lokasi lahan" onclick="zoomToLahan('${esc(r.id)}')">${eyeIcon}</button></td>
+      <td>
+        <button class="row-eye-btn" title="Zoom ke lokasi lahan di peta" onclick="zoomToLahan('${esc(r.id)}')">${eyeIcon}</button>
+      </td>
       <td style="font-family:monospace;font-size:11px">${esc(r.id)}</td>
       <td>${esc(r.petani)}</td>
       <td>${esc(r.desa)}</td>
