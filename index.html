@@ -26,7 +26,6 @@
       --shadow-lg:0 20px 60px rgba(0,0,0,.2);
     }
     html,body{height:100%;font-family:'DM Sans',system-ui,sans-serif;font-size:14px;color:var(--text);background:var(--bg);overflow:hidden}
-
     .hdr{height:var(--hdr-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative;z-index:999}
     .hdr-left{display:flex;align-items:center;gap:10px}
     .hdr-logo{height:36px;width:auto;object-fit:contain}
@@ -35,7 +34,6 @@
     .hdr-title{font-size:15px;font-weight:700;line-height:1.2}
     .hdr-sub{font-size:12px;color:var(--text-2)}
     .hdr-right{display:flex;align-items:center;gap:8px}
-
     .menu-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:grid;place-items:center;color:var(--text-2);transition:all .15s;position:relative;z-index:1000}
     .menu-btn:hover{background:var(--primary-bg);border-color:var(--primary-lt);color:var(--primary-md)}
     .menu-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
@@ -46,7 +44,6 @@
     .menu-item:hover{background:var(--primary-bg);color:var(--primary-md)}
     .menu-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;color:var(--text-2)}
     .menu-item:hover svg{color:var(--primary-lt)}
-
     .stats-bar{height:var(--stats-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:stretch;overflow-x:auto;z-index:10}
     .sc{flex:1;min-width:190px;padding:14px 20px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--border-lt);transition:background .15s}
     .sc:last-child{border-right:none}
@@ -56,9 +53,7 @@
     .sc-meta{display:flex;flex-direction:column;gap:4px}
     .sc-meta-item{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;color:var(--text-2);white-space:nowrap}
     .dot{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0}
-
     .app-body{height:calc(100vh - var(--hdr-h) - var(--stats-h));display:flex;overflow:hidden}
-
     .sb{width:var(--sb-w);flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
     .sb-hd{padding:13px 15px;border-bottom:1px solid var(--border-lt)}
     .sb-hd-row{display:flex;align-items:center;justify-content:space-between}
@@ -66,7 +61,6 @@
     .sb-count{font-size:12px;font-weight:700;color:var(--primary-md);background:var(--primary-bg);padding:2px 8px;border-radius:100px}
     .sb-hint{font-size:11px;color:var(--text-3);margin-top:3px}
     .kth-scroll{flex:1;overflow-y:auto;padding:8px}
-
     .kth-card{padding:11px 12px;margin-bottom:6px;border:1px solid var(--border);border-radius:9px;background:var(--surface);transition:border-color .12s,box-shadow .12s}
     .kth-card:hover{border-color:var(--primary-lt);box-shadow:var(--shadow-sm)}
     .kth-card.active{border-color:var(--primary-md);box-shadow:var(--shadow-sm)}
@@ -84,12 +78,9 @@
     .kth-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     .kth-pills{display:flex;gap:6px}
     .pill{flex:1;padding:6px 8px;border-radius:7px;font-size:11px}
-    .pill.a{background:#f0fdf4}
-    .pill.a .pv{color:var(--c-agro-reg);font-weight:700;font-size:12px}
-    .pill.t{background:#fff7ed}
-    .pill.t .pv{color:var(--c-temb-reg);font-weight:700;font-size:12px}
+    .pill.a{background:#f0fdf4}.pill.a .pv{color:var(--c-agro-reg);font-weight:700;font-size:12px}
+    .pill.t{background:#fff7ed}.pill.t .pv{color:var(--c-temb-reg);font-weight:700;font-size:12px}
     .pl{color:var(--text-2);margin-bottom:1px;font-size:10px}
-
     .sb-foot{border-top:1px solid var(--border)}
     .sb-sec{padding:10px 15px;border-bottom:1px solid var(--border-lt)}
     .sb-sec:last-child{border-bottom:none}
@@ -98,19 +89,16 @@
     .lyr-row:last-child{margin-bottom:0}
     .toggle{position:relative;width:30px;height:17px;border-radius:9px;background:var(--primary-lt);flex-shrink:0;transition:background .18s}
     .toggle::after{content:'';position:absolute;top:2.5px;right:2.5px;width:12px;height:12px;border-radius:50%;background:#fff;transition:right .18s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-    .toggle.off{background:var(--text-3)}
-    .toggle.off::after{right:15px}
+    .toggle.off{background:var(--text-3)}.toggle.off::after{right:15px}
     .lyr-lbl{font-size:12px;color:var(--text-2)}
     .leg-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px}
     .leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-2)}
     .leg-sq{width:12px;height:12px;border-radius:2px;flex-shrink:0;border:2px solid rgba(0,0,0,.2)}
     .leg-dash{width:18px;border-top:2px dashed #94a3b8;flex-shrink:0}
-
     .map-wrap{flex:1;position:relative;overflow:hidden;min-width:0;min-height:0;z-index:1}
     #map{position:absolute;inset:0;width:100%;height:100%;z-index:1}
     .leaflet-control-scale-line{font-family:'DM Sans',sans-serif;font-size:11px}
     .leaflet-control{z-index:900 !important}
-
     .basemap-panel{position:absolute;bottom:10px;left:16px;z-index:900;display:flex;flex-direction:column;gap:6px;pointer-events:auto;background:rgba(255,255,255,0.98);padding:10px;border-radius:10px;box-shadow:var(--shadow-md)}
     .basemap-label-row{font-size:8px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.7px;padding-left:2px}
     .basemap-pills{display:flex;gap:5px;flex-wrap:wrap}
@@ -120,12 +108,10 @@
     .bm-thumb-wrap{width:44px;height:36px;border-radius:8px;overflow:hidden;border:1.5px solid rgba(255,255,255,.7);box-shadow:0 1px 4px rgba(0,0,0,.22);opacity:.82;transition:all .15s}
     .bm-thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
     .bm-name{font-size:8px;font-weight:600;color:#374151;background:rgba(255,255,255,.88);padding:2px 5px;border-radius:4px;line-height:1.3;text-align:center;max-width:46px;backdrop-filter:blur(4px)}
-
     .loading-overlay{position:absolute;inset:0;z-index:998;background:rgba(255,255,255,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(3px)}
     .spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .load-txt{font-size:13px;color:var(--text-2);font-weight:500}
-
     .leaflet-popup-content-wrapper{border-radius:11px!important;box-shadow:0 8px 30px rgba(0,0,0,.14)!important;padding:0!important;overflow:hidden;font-family:'DM Sans',sans-serif!important}
     .leaflet-popup-content{margin:0!important;min-width:220px}
     .leaflet-popup-tip-container{display:none}
@@ -136,7 +122,6 @@
     .pop-row:last-child{border-bottom:none}
     .pop-lbl{font-size:11px;color:var(--text-2);flex-shrink:0}
     .pop-val{font-size:12px;font-weight:600;color:var(--text);text-align:right;word-break:break-word}
-
     .modal-overlay{position:fixed;inset:0;z-index:900;background:rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
     .kth-modal{background:#fff;border-radius:14px;width:min(900px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
     .kth-modal-hd{padding:16px 20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -176,13 +161,12 @@
     .row-print-btn{width:24px;height:24px;border-radius:6px;border:1px solid #e2e8f0;background:#fff;cursor:pointer;display:grid;place-items:center;color:#7b1fa2;transition:all .15s;flex-shrink:0}
     .row-print-btn:hover{background:#f3e8ff;border-color:#d8b4fe}
     .row-print-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .row-print-btn:disabled{opacity:0.5;cursor:not-allowed}
     .no-results{text-align:center;padding:28px 16px;color:var(--text-3);font-size:13px}
-
     ::-webkit-scrollbar{width:4px;height:4px}
     ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
     ::-webkit-scrollbar-track{background:transparent}
     .empty-state{text-align:center;padding:32px 16px;color:var(--text-3);font-size:13px}
-
     #printMapContainer{display:none;position:fixed;top:-9999px;left:-9999px}
   </style>
 </head>
@@ -190,11 +174,7 @@
 
 <header class="hdr">
   <div class="hdr-left">
-    <img
-      src="https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data/logo-cmi.png"
-      class="hdr-logo" alt="CMI Logo"
-      onerror="this.style.display='none';document.getElementById('logoFallback').style.display='grid'"
-    />
+    <img src="https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data/logo-cmi.png" class="hdr-logo" alt="CMI Logo" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='grid'" />
     <div class="hdr-logo-fallback" id="logoFallback" style="display:none">
       <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-8 2 2-5 6-5 6-5-5 0-9 2.5-9.5 7.5C10 8.5 17 8 17 8z"/></svg>
     </div>
@@ -222,64 +202,19 @@
 </header>
 
 <div class="stats-bar">
-  <div class="sc">
-    <div class="sc-lbl">Total Lahan Garapan</div>
-    <div class="sc-val" id="sTotalHa" style="color:var(--primary)">—</div>
-    <div class="sc-meta">
-      <span class="sc-meta-item" id="sTotalMeta" style="color:var(--text-3)">Memuat...</span>
-    </div>
-  </div>
-  <div class="sc">
-    <div class="sc-lbl">Agroforestri</div>
-    <div class="sc-val" id="sAgroHa" style="color:var(--c-agro-reg)">—</div>
-    <div class="sc-meta">
-      <span class="sc-meta-item"><span class="dot" style="background:var(--c-agro-reg-lt)"></span><span id="sAgroReg">Agro Reguler: —</span></span>
-      <span class="sc-meta-item"><span class="dot" style="background:var(--c-agro-bpo-lt)"></span><span id="sAgroBPO">Bantuan Pupuk Organik: —</span></span>
-    </div>
-  </div>
-  <div class="sc">
-    <div class="sc-lbl">Tembawang</div>
-    <div class="sc-val" id="sTembHa" style="color:var(--c-temb-reg)">—</div>
-    <div class="sc-meta">
-      <span class="sc-meta-item"><span class="dot" style="background:var(--c-temb-reg-lt)"></span><span id="sTembReg">Temb. Reguler: —</span></span>
-      <span class="sc-meta-item"><span class="dot" style="background:var(--c-temb-mtl-lt)"></span><span id="sTembMTL">Temb. MTL: —</span></span>
-    </div>
-  </div>
-  <div class="sc">
-    <div class="sc-lbl">Anggota Terdaftar</div>
-    <div class="sc-val" id="sAnggota" style="color:#3b82f6">—</div>
-    <div class="sc-meta">
-      <span class="sc-meta-item" style="color:#3b82f6">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span id="sLaki">Laki-laki: —</span>
-      </span>
-      <span class="sc-meta-item" style="color:#ec4899">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span id="sPmp">Perempuan: —</span>
-      </span>
-    </div>
-  </div>
+  <div class="sc"><div class="sc-lbl">Total Lahan Garapan</div><div class="sc-val" id="sTotalHa" style="color:var(--primary)">—</div><div class="sc-meta"><span class="sc-meta-item" id="sTotalMeta" style="color:var(--text-3)">Memuat...</span></div></div>
+  <div class="sc"><div class="sc-lbl">Agroforestri</div><div class="sc-val" id="sAgroHa" style="color:var(--c-agro-reg)">—</div><div class="sc-meta"><span class="sc-meta-item"><span class="dot" style="background:var(--c-agro-reg-lt)"></span><span id="sAgroReg">Agro Reguler: —</span></span><span class="sc-meta-item"><span class="dot" style="background:var(--c-agro-bpo-lt)"></span><span id="sAgroBPO">Bantuan Pupuk Organik: —</span></span></div></div>
+  <div class="sc"><div class="sc-lbl">Tembawang</div><div class="sc-val" id="sTembHa" style="color:var(--c-temb-reg)">—</div><div class="sc-meta"><span class="sc-meta-item"><span class="dot" style="background:var(--c-temb-reg-lt)"></span><span id="sTembReg">Temb. Reguler: —</span></span><span class="sc-meta-item"><span class="dot" style="background:var(--c-temb-mtl-lt)"></span><span id="sTembMTL">Temb. MTL: —</span></span></div></div>
+  <div class="sc"><div class="sc-lbl">Anggota Terdaftar</div><div class="sc-val" id="sAnggota" style="color:#3b82f6">—</div><div class="sc-meta"><span class="sc-meta-item" style="color:#3b82f6"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span id="sLaki">Laki-laki: —</span></span><span class="sc-meta-item" style="color:#ec4899"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span id="sPmp">Perempuan: —</span></span></div></div>
 </div>
 
 <div class="app-body">
   <aside class="sb">
     <div class="sb-hd">
-      <div class="sb-hd-row">
-        <div class="sb-ttl">KTH Terdaftar</div>
-        <div class="sb-count" id="kthCount">—</div>
-      </div>
-      <div class="sb-hint">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/></svg>
-        Zoom &nbsp;
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-        Tabel &nbsp;
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/></svg>
-        On/Off
-      </div>
+      <div class="sb-hd-row"><div class="sb-ttl">KTH Terdaftar</div><div class="sb-count" id="kthCount">—</div></div>
+      <div class="sb-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/></svg> Zoom &nbsp;<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><rect x="3" y="3" width="18" height="18" rx="2"/></svg> Tabel &nbsp;<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/></svg> On/Off</div>
     </div>
-    <div class="kth-scroll" id="kthList">
-      <div class="empty-state">Memuat data...</div>
-    </div>
+    <div class="kth-scroll" id="kthList"><div class="empty-state">Memuat data...</div></div>
     <div class="sb-foot">
       <div class="sb-sec">
         <div class="sec-ttl">Kontrol Layer</div>
@@ -302,41 +237,18 @@
 
   <div class="map-wrap" id="mapWrap">
     <div id="map"></div>
-
     <div class="basemap-panel" id="basemapPanel">
       <div class="basemap-label-row">BASEMAP</div>
       <div class="basemap-pills">
-        <div class="bm-pill" id="bm_esri_imagery" onclick="switchBasemap('esri_imagery')" title="ESRI Satellite">
-          <div class="bm-thumb-wrap"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/16/26" alt="ESRI"></div>
-          <div class="bm-name">ESRI St</div>
-        </div>
-        <div class="bm-pill" id="bm_google_satellite" onclick="switchBasemap('google_satellite')" title="Google Satellite">
-          <div class="bm-thumb-wrap"><img src="https://mt1.google.com/vt/lyrs=s&x=26&y=16&z=5" alt="Google"></div>
-          <div class="bm-name">Google</div>
-        </div>
-        <div class="bm-pill" id="bm_esri_topo" onclick="switchBasemap('esri_topo')" title="ESRI Topo">
-          <div class="bm-thumb-wrap"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/5/16/26" alt="Topo"></div>
-          <div class="bm-name">Topo</div>
-        </div>
-        <div class="bm-pill" id="bm_osm" onclick="switchBasemap('osm')" title="OpenStreetMap">
-          <div class="bm-thumb-wrap"><img src="https://tile.openstreetmap.org/5/26/16.png" alt="OSM"></div>
-          <div class="bm-name">Streets</div>
-        </div>
-        <div class="bm-pill active" id="bm_carto_light" onclick="switchBasemap('carto_light')" title="Carto Light">
-          <div class="bm-thumb-wrap"><img src="https://basemaps.cartocdn.com/light_all/5/26/16.png" alt="Light"></div>
-          <div class="bm-name">Light</div>
-        </div>
-        <div class="bm-pill" id="bm_carto_dark" onclick="switchBasemap('carto_dark')" title="Dark">
-          <div class="bm-thumb-wrap" style="background:#1a1a2e"><img src="https://basemaps.cartocdn.com/dark_all/5/26/16.png" alt="Dark"></div>
-          <div class="bm-name">Dark</div>
-        </div>
+        <div class="bm-pill" id="bm_esri_imagery" onclick="switchBasemap('esri_imagery')" title="ESRI Satellite"><div class="bm-thumb-wrap"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/16/26" alt="ESRI"></div><div class="bm-name">ESRI St</div></div>
+        <div class="bm-pill" id="bm_google_satellite" onclick="switchBasemap('google_satellite')" title="Google Satellite"><div class="bm-thumb-wrap"><img src="https://mt1.google.com/vt/lyrs=s&x=26&y=16&z=5" alt="Google"></div><div class="bm-name">Google</div></div>
+        <div class="bm-pill" id="bm_esri_topo" onclick="switchBasemap('esri_topo')" title="ESRI Topo"><div class="bm-thumb-wrap"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/5/16/26" alt="Topo"></div><div class="bm-name">Topo</div></div>
+        <div class="bm-pill" id="bm_osm" onclick="switchBasemap('osm')" title="OpenStreetMap"><div class="bm-thumb-wrap"><img src="https://tile.openstreetmap.org/5/26/16.png" alt="OSM"></div><div class="bm-name">Streets</div></div>
+        <div class="bm-pill active" id="bm_carto_light" onclick="switchBasemap('carto_light')" title="Carto Light"><div class="bm-thumb-wrap"><img src="https://basemaps.cartocdn.com/light_all/5/26/16.png" alt="Light"></div><div class="bm-name">Light</div></div>
+        <div class="bm-pill" id="bm_carto_dark" onclick="switchBasemap('carto_dark')" title="Dark"><div class="bm-thumb-wrap" style="background:#1a1a2e"><img src="https://basemaps.cartocdn.com/dark_all/5/26/16.png" alt="Dark"></div><div class="bm-name">Dark</div></div>
       </div>
     </div>
-
-    <div class="loading-overlay" id="loadingOverlay">
-      <div class="spinner"></div>
-      <div class="load-txt" id="loadTxt">Menginisialisasi...</div>
-    </div>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div class="load-txt" id="loadTxt">Menginisialisasi...</div></div>
   </div>
 </div>
 
@@ -344,10 +256,7 @@
 <div class="modal-overlay" id="kthModal" style="display:none" onclick="closeModal(event)">
   <div class="kth-modal" onclick="event.stopPropagation()">
     <div class="kth-modal-hd">
-      <div>
-        <div class="kth-modal-title" id="modalTitle">—</div>
-        <div class="kth-modal-sub" id="modalSub">—</div>
-      </div>
+      <div><div class="kth-modal-title" id="modalTitle">—</div><div class="kth-modal-sub" id="modalSub">—</div></div>
       <button class="kth-modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="kth-modal-stats" id="modalStats"></div>
@@ -358,18 +267,12 @@
       </div>
       <div class="modal-toolbar-right">
         <span class="modal-count" id="modalRowCount">0 lahan</span>
-        <button class="btn-dl" onclick="downloadCSV()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Unduh CSV
-        </button>
+        <button class="btn-dl" onclick="downloadCSV()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh CSV</button>
       </div>
     </div>
     <div class="kth-modal-body">
       <table class="kth-tbl">
-        <thead><tr>
-          <th>No</th><th style="width:32px">Aksi</th><th>ID Lahan</th><th>Nama Petani</th><th>Desa</th>
-          <th>Program</th><th>Luas (ha)</th><th>Tgl Realisasi</th>
-        </tr></thead>
+        <thead><tr><th>No</th><th style="width:40px">Print</th><th>ID Lahan</th><th>Nama Petani</th><th>Desa</th><th>Program</th><th>Luas (ha)</th><th>Tgl Realisasi</th></tr></thead>
         <tbody id="modalTbody"></tbody>
       </table>
       <div class="no-results" id="noResults" style="display:none">Tidak ada hasil ditemukan</div>
@@ -407,20 +310,12 @@ const BASEMAPS = {
 };
 let currentBasemap = 'carto_light';
 
-const map = L.map('map', { 
-  zoomControl:false, 
-  fadeAnimation:false, 
-  zoomAnimation:false, 
-  markerZoomAnimation:false,
-  preferCanvas: true 
-});
+const map = L.map('map', { zoomControl:false, fadeAnimation:false, zoomAnimation:false, markerZoomAnimation:false, preferCanvas: true });
 L.control.zoom({ position:'topright' }).addTo(map);
 L.control.scale({ position:'bottomright', metric:true, imperial:false }).addTo(map);
 map.setView([1.0, 111.5], 9);
 
-const resizeObserver = new ResizeObserver(() => { 
-  map.invalidateSize({ animate:false, pan:false });
-});
+const resizeObserver = new ResizeObserver(() => { map.invalidateSize({ animate:false, pan:false }); });
 resizeObserver.observe(document.getElementById('mapWrap'));
 
 requestAnimationFrame(() => {
@@ -429,17 +324,13 @@ requestAnimationFrame(() => {
   requestAnimationFrame(() => { 
     map.invalidateSize({ animate:false, pan:false });
     const canvases = document.querySelectorAll('#map canvas');
-    canvases.forEach(c => {
-      if (c.style) c.style.willChange = 'auto';
-    });
+    canvases.forEach(c => { if (c.style) c.style.willChange = 'auto'; });
   });
 });
 
 window.addEventListener('load', () => {
   requestAnimationFrame(() => { 
-    requestAnimationFrame(() => { 
-      map.invalidateSize({ animate:false, pan:false });
-    }); 
+    requestAnimationFrame(() => { map.invalidateSize({ animate:false, pan:false }); }); 
   });
 });
 
@@ -447,9 +338,7 @@ let glitchFixTimer;
 document.getElementById('map').addEventListener('mousemove', () => {
   clearTimeout(glitchFixTimer);
   glitchFixTimer = setTimeout(() => {
-    if (map._renderer && map._renderer._update) {
-      map._renderer._update();
-    }
+    if (map._renderer && map._renderer._update) { map._renderer._update(); }
   }, 300);
 });
 
@@ -468,9 +357,7 @@ function toggleMenu() {
   const dd = document.getElementById('menuDropdown');
   dd.classList.toggle('open');
   if (dd.classList.contains('open')) {
-    setTimeout(() => {
-      document.addEventListener('click', closeMenuOnClickOutside);
-    }, 10);
+    setTimeout(() => { document.addEventListener('click', closeMenuOnClickOutside); }, 10);
   } else {
     document.removeEventListener('click', closeMenuOnClickOutside);
   }
@@ -536,14 +423,9 @@ function resolveProgram(aReg, aBPO, tReg, tMTL, tipeStr) {
 
 function parseSheet(csvText) {
   const { data } = Papa.parse(csvText, { header:true, skipEmptyLines:true, transformHeader: h => h.trim() });
-
   data.forEach(raw => {
-    const id = str(
-      raw['ID_Petak'] || raw['id_petak'] || raw['ID Petak'] ||
-      raw['I'] || ''
-    );
+    const id = str(raw['ID_Petak'] || raw['id_petak'] || raw['ID Petak'] || raw['I'] || '');
     if (!id) return;
-
     const kth    = str(raw['KTH']            || raw['C'] || '');
     const luas   = num(raw['Luas']           || raw['D'] || 0);
     const tipe   = str(raw['Tipe']           || raw['E'] || '');
@@ -551,67 +433,44 @@ function parseSheet(csvText) {
     const jk     = str(raw['Jenis Kelamin']  || raw['Jenis_Kelamin'] || raw['G'] || '');
     const desa   = str(raw['Desa']           || raw['H'] || '');
     const tgl    = str(raw['Tgl_Realisasi']  || raw['Tgl Realisasi'] || raw['J'] || '');
-
     const aReg = num(raw['Agro_Reg'] || raw['Agro Reg'] || raw['K'] || 0);
     const aBPO = num(raw['Agro_BPO'] || raw['Agro BPO'] || raw['L'] || 0);
     const tReg = num(raw['Temb_Reg'] || raw['Temb Reg'] || raw['M'] || 0);
     const tMTL = num(raw['Temb_MTL'] || raw['Temb MTL'] || raw['N'] || 0);
-
     const prog = resolveProgram(aReg, aBPO, tReg, tMTL, tipe);
     if (!prog) return;
-
     const luasFinal = luas > 0 ? luas : (aReg || aBPO || tReg || tMTL || 0);
     sheetMap[id] = { id, kth, luas: luasFinal, tipe, petani, jk, desa, tgl, aReg, aBPO, tReg, tMTL, prog };
   });
-
   console.log(`[sheet] ${Object.keys(sheetMap).length} baris valid dimuat`);
 }
 
 function renderCMI(gj) {
-  L.geoJSON(gj, {
-    style: () => ({ color:'#475569', weight:2.5, dashArray:'8 5', fillOpacity:0, opacity:0.9 })
-  }).addTo(lgCMI);
+  L.geoJSON(gj, { style: () => ({ color:'#475569', weight:2.5, dashArray:'8 5', fillOpacity:0, opacity:0.9 }) }).addTo(lgCMI);
 }
 
 function renderAgro(gj) {
   const features = gj.type === 'FeatureCollection' ? gj.features : [gj];
   let rendered = 0;
-
   features.forEach(feat => {
     const props   = feat.properties || {};
-    const idLahan = str(
-      props.id_lahan || props.ID_Petak || props.id_petak ||
-      props.ID_LAHAN || props.Id_Lahan || props.IDLAHAN || ''
-    );
+    const idLahan = str(props.id_lahan || props.ID_Petak || props.id_petak || props.ID_LAHAN || props.Id_Lahan || props.IDLAHAN || '');
     if (!idLahan) return;
-
     const row = sheetMap[idLahan];
     if (!row) return;
     if (!PROG[row.prog]) return;
-
     matched.add(idLahan);
     rendered++;
     const st = PROG[row.prog];
-
-    const layer = L.geoJSON(feat, {
-      style: () => ({ color:st.stroke, weight:2, fillColor:st.fill, fillOpacity:0.75, opacity:1 })
-    });
-
+    const layer = L.geoJSON(feat, { style: () => ({ color:st.stroke, weight:2, fillColor:st.fill, fillOpacity:0.75, opacity:1 }) });
     layer.bindPopup(() => buildPopup(feat, row), { maxWidth:270, minWidth:220, autoPan:true });
     layer.on('mouseover', e => { e.target.setStyle({ fillOpacity:0.92, weight:3 }); e.target.bringToFront(); });
     layer.on('mouseout',  e => { e.target.setStyle({ fillOpacity:0.75, weight:2 }); });
-
     const target = st.group === 'agro' ? lgAgro : lgTemb;
     target.addLayer(layer);
-
     featureMap[idLahan] = { feature:feat, row, layer };
-
     if (!kthMap[row.kth]) {
-      kthMap[row.kth] = {
-        name:row.kth, desa:row.desa,
-        agro:0, temb:0, aReg:0, aBPO:0, tReg:0, tMTL:0,
-        layers:[], rows:[], petaniSet: new Set(),
-      };
+      kthMap[row.kth] = { name:row.kth, desa:row.desa, agro:0, temb:0, aReg:0, aBPO:0, tReg:0, tMTL:0, layers:[], rows:[], petaniSet: new Set() };
       kthVisState[row.kth] = true;
     }
     const k = kthMap[row.kth];
@@ -622,11 +481,9 @@ function renderAgro(gj) {
     k.layers.push(layer);
     k.rows.push(row);
   });
-
   Object.entries(kthMap).forEach(([name, k]) => {
     if (k.layers.length) kthBounds[name] = L.featureGroup(k.layers).getBounds();
   });
-
   console.log(`[geo] ${rendered} polygon dirender dari ${features.length} fitur GeoJSON`);
 }
 
@@ -642,9 +499,7 @@ function buildPopup(feat, row) {
     ['Program',       st.label],
     ['Tgl Realisasi', row.tgl || '—'],
   ];
-  const rows = fields.map(([l, v]) =>
-    `<div class="pop-row"><span class="pop-lbl">${l}</span><span class="pop-val">${esc(v)}</span></div>`
-  ).join('');
+  const rows = fields.map(([l, v]) => `<div class="pop-row"><span class="pop-lbl">${l}</span><span class="pop-val">${esc(v)}</span></div>`).join('');
   return `<div class="pop-hd" style="background:${st.hd}"><div class="pop-hd-dot"></div>${esc(st.label)}</div><div class="pop-bd">${rows}</div>`;
 }
 
@@ -663,13 +518,10 @@ function zoomToLahan(id) {
 function calcStats() {
   let totalHa = 0, aReg = 0, aBPO = 0, tReg = 0, tMTL = 0;
   const uniq = new Set(), laki = new Set(), pmp = new Set();
-
   Object.values(sheetMap).forEach(r => {
     if (!matched.has(r.id)) return;
-
     const luasEfektif = r.luas > 0 ? r.luas : (r.aReg + r.aBPO + r.tReg + r.tMTL);
     totalHa += luasEfektif;
-
     if (r.aReg > 0 || r.aBPO > 0 || r.tReg > 0 || r.tMTL > 0) {
       aReg += r.aReg; aBPO += r.aBPO; tReg += r.tReg; tMTL += r.tMTL;
     } else {
@@ -678,7 +530,6 @@ function calcStats() {
       else if (r.prog === 'Temb_Reg') tReg += luasEfektif;
       else if (r.prog === 'Temb_MTL') tMTL += luasEfektif;
     }
-
     if (r.petani) {
       const pk = r.petani.toLowerCase();
       uniq.add(pk);
@@ -686,15 +537,14 @@ function calcStats() {
       else if (r.jk.toLowerCase().includes('perempuan')) pmp.add(pk);
     }
   });
-
   setText('sTotalHa',   fmt(totalHa) + ' ha');
   setText('sTotalMeta', matched.size + ' petak lahan');
   setText('sAgroHa',    fmt(aReg + aBPO) + ' ha');
-  setText('sAgroReg',   'Agro Reguler: '         + fmt(aReg) + ' ha');
+  setText('sAgroReg',   'Agro Reguler: ' + fmt(aReg) + ' ha');
   setText('sAgroBPO',   'Bantuan Pupuk Organik: ' + fmt(aBPO) + ' ha');
   setText('sTembHa',    fmt(tReg + tMTL) + ' ha');
-  setText('sTembReg',   'Temb. Reguler: '         + fmt(tReg) + ' ha');
-  setText('sTembMTL',   'Temb. MTL: '             + fmt(tMTL) + ' ha');
+  setText('sTembReg',   'Temb. Reguler: ' + fmt(tReg) + ' ha');
+  setText('sTembMTL',   'Temb. MTL: ' + fmt(tMTL) + ' ha');
   setText('sAnggota',   uniq.size);
   setText('sLaki',      'Laki-laki: '  + laki.size);
   setText('sPmp',       'Perempuan: '  + pmp.size);
@@ -705,21 +555,15 @@ function renderKTHList() {
   setText('kthCount', list.length);
   const el = document.getElementById('kthList');
   if (!list.length) { el.innerHTML = '<div class="empty-state">Tidak ada data KTH</div>'; return; }
-
   const eyeIcon    = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
   const tblIcon    = `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`;
   const visOnIcon  = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
   const visOffIcon = `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-5.07 5.93"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
-
   el.innerHTML = list.map(k => {
     const isOn = kthVisState[k.name] !== false;
-    return `
-    <div class="kth-card${isOn ? '' : ' hidden-kth'}" data-kth="${esc(k.name)}">
+    return `<div class="kth-card${isOn ? '' : ' hidden-kth'}" data-kth="${esc(k.name)}">
       <div class="kth-card-top">
-        <div class="kth-info">
-          <div class="kth-nm">${esc(k.name)}</div>
-          <div class="kth-ds">${esc(k.desa)}</div>
-        </div>
+        <div class="kth-info"><div class="kth-nm">${esc(k.name)}</div><div class="kth-ds">${esc(k.desa)}</div></div>
         <div class="kth-actions">
           <button class="kth-btn eye" title="Zoom ke area KTH" onclick="zoomKTH('${esc(k.name)}')">${eyeIcon}</button>
           <button class="kth-btn" title="Lihat tabel lahan" onclick="openKTH('${esc(k.name)}')">${tblIcon}</button>
@@ -740,10 +584,8 @@ function toggleKTHVis(name) {
   const wasOn = kthVisState[name] !== false;
   kthVisState[name] = !wasOn;
   const isOn = kthVisState[name];
-
   const visOnIcon  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
   const visOffIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-5.07 5.93"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
-
   k.layers.forEach(l => {
     if (isOn) {
       const row = k.rows.find(r => featureMap[r.id]?.layer === l);
@@ -757,10 +599,8 @@ function toggleKTHVis(name) {
       lgTemb.removeLayer(l);
     }
   });
-
   const card = document.querySelector(`.kth-card[data-kth="${name}"]`);
   if (card) card.classList.toggle('hidden-kth', !isOn);
-
   const btn = document.getElementById('visbtn-' + name);
   if (btn) {
     btn.className = `kth-btn ${isOn ? 'vis-on' : 'vis-off'}`;
@@ -785,14 +625,11 @@ function openKTH(name) {
   const k = kthMap[name];
   if (!k) return;
   currentKTH = name;
-
   document.querySelectorAll('.kth-card').forEach(el => el.classList.remove('active'));
   const card = document.querySelector(`.kth-card[data-kth="${name}"]`);
   if (card) { card.classList.add('active'); card.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
-
   setText('modalTitle', k.name);
   setText('modalSub', `${k.desa} · ${k.rows.length} lahan · ${k.petaniSet.size} petani`);
-
   const total = k.agro + k.temb;
   document.getElementById('modalStats').innerHTML = `
     <div class="kth-stat-box"><div class="kth-stat-lbl">Total Lahan</div><div class="kth-stat-val" style="color:var(--primary)">${fmt(total)} ha</div></div>
@@ -800,33 +637,23 @@ function openKTH(name) {
     <div class="kth-stat-box"><div class="kth-stat-lbl">Tembawang</div><div class="kth-stat-val" style="color:var(--c-temb-reg)">${fmt(k.temb)} ha</div></div>
     <div class="kth-stat-box"><div class="kth-stat-lbl">Jumlah Petani</div><div class="kth-stat-val" style="color:#3b82f6">${k.petaniSet.size}</div></div>
     <div class="kth-stat-box"><div class="kth-stat-lbl">Jumlah Petak</div><div class="kth-stat-val">${k.rows.length}</div></div>`;
-
   document.getElementById('modalSearchInput').value = '';
   document.getElementById('noResults').style.display = 'none';
   setText('modalRowCount', k.rows.length + ' lahan');
-
-  const eyeIcon = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
   const printIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>`;
-
   document.getElementById('modalTbody').innerHTML = k.rows.map((r, i) => {
     const st = PROG[r.prog];
     return `<tr data-petani="${esc(r.petani.toLowerCase())}">
-      <td style="color:var(--text-3);font-size:11px">${i + 1}</td>
-      <td style="padding:6px 4px">
-        <div style="display:flex;gap:4px">
-          <button class="row-eye-btn" title="Zoom ke lokasi lahan di peta" onclick="zoomToLahan('${esc(r.id)}')">${eyeIcon}</button>
-          <button class="row-print-btn" title="Print peta lahan ini" onclick="printSingleLahan('${esc(r.id)}')">${printIcon}</button>
-        </div>
-      </td>
+      <td style="color:var(--text-3);font-size:11px;text-align:center">${i + 1}</td>
+      <td style="padding:6px 4px;text-align:center"><button class="row-print-btn" title="Print PDF peta lahan ini" onclick="printSingleLahan('${esc(r.id)}')" style="margin:0">${printIcon}</button></td>
       <td style="font-family:monospace;font-size:11px">${esc(r.id)}</td>
       <td>${esc(r.petani)}</td>
       <td>${esc(r.desa)}</td>
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
-      <td style="font-weight:600">${fmt(r.luas)}</td>
+      <td style="font-weight:600;text-align:right">${fmt(r.luas)}</td>
       <td style="color:var(--text-2)">${esc(r.tgl)||'—'}</td>
     </tr>`;
   }).join('');
-
   document.getElementById('kthModal').style.display = 'flex';
 }
 
@@ -869,28 +696,34 @@ function downloadCSV() {
 }
 
 function printSingleLahan(id) {
+  console.log('Print called for ID:', id);
   const entry = featureMap[id];
-  if (!entry) return;
+  if (!entry) {
+    console.error('Lahan tidak ditemukan:', id);
+    return;
+  }
 
   const container = document.getElementById('printMapContainer');
   container.innerHTML = '';
 
   const mapDiv = document.createElement('div');
-  mapDiv.id = 'singlePrintMap';
+  mapDiv.id = 'singlePrintMap_' + Date.now();
   mapDiv.style.width = '800px';
   mapDiv.style.height = '500px';
   mapDiv.style.position = 'fixed';
   mapDiv.style.top = '-9999px';
   mapDiv.style.left = '-9999px';
+  mapDiv.style.zIndex = '-1';
   container.appendChild(mapDiv);
 
-  const printMap = L.map('singlePrintMap', {
+  const printMap = L.map(mapDiv.id, {
     zoomControl: false,
     attributionControl: false,
     dragging: false,
     touchZoom: false,
     scrollWheelZoom: false,
-    doubleClickZoom: false
+    doubleClickZoom: false,
+    preferCanvas: true
   });
 
   BASEMAPS.carto_light.addTo(printMap);
@@ -901,139 +734,152 @@ function printSingleLahan(id) {
   }).addTo(printMap);
 
   setTimeout(() => {
-    const bounds = geoLayer.getBounds();
-    printMap.fitBounds(bounds.pad(0.1));
+    try {
+      const bounds = geoLayer.getBounds();
+      printMap.fitBounds(bounds.pad(0.1));
 
-    setTimeout(() => {
-      try {
-        const canvas = document.querySelector('#singlePrintMap canvas');
-        if (canvas) {
-          const mapImage = canvas.toDataURL('image/png');
-          generateSingleLahanPDF(entry.row, mapImage);
+      setTimeout(() => {
+        try {
+          const canvas = mapDiv.querySelector('canvas');
+          if (canvas) {
+            const mapImage = canvas.toDataURL('image/png');
+            console.log('Map image generated, size:', mapImage.length);
+            generateSingleLahanPDF(entry.row, mapImage);
+          } else {
+            console.error('Canvas not found');
+          }
+        } catch (e) {
+          console.error('Error generating map image:', e);
         }
-      } catch (e) {
-        console.error('Error generating map image:', e);
-      }
 
-      printMap.remove();
-      mapDiv.remove();
-    }, 1200);
-  }, 800);
+        try {
+          printMap.remove();
+          mapDiv.remove();
+        } catch (e) {
+          console.error('Error cleaning up:', e);
+        }
+      }, 1500);
+    } catch (e) {
+      console.error('Error in setTimeout callback:', e);
+    }
+  }, 1000);
 }
 
 function generateSingleLahanPDF(row, mapImage) {
+  console.log('Generating PDF for row:', row.id);
   const now = new Date();
   const dateStr = now.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' });
   const st = PROG[row.prog];
 
   const htmlContent = `
-    <html>
-      <head>
-        <style>
-          * { margin: 0; padding: 0; box-sizing: border-box; }
-          body { font-family: Arial, sans-serif; color: #1a2332; }
-          .page { width: 210mm; height: 297mm; padding: 20px; display: flex; flex-direction: column; }
-          .header { background: linear-gradient(135deg, #1b5e40 0%, #2d7a55 100%); color: white; padding: 20px; text-align: center; border-radius: 6px; margin-bottom: 20px; }
-          .header h1 { font-size: 20px; margin-bottom: 5px; }
-          .header p { font-size: 12px; opacity: 0.9; }
-          .map-container { width: 100%; height: 220px; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; margin-bottom: 20px; }
-          .map-container img { width: 100%; height: 100%; object-fit: cover; }
-          .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-          .info-box { padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; }
-          .info-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 8px; }
-          .info-value { font-size: 14px; font-weight: 700; color: #1b5e40; }
-          .details { padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 20px; }
-          .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
-          .detail-row:last-child { border-bottom: none; }
-          .detail-label { font-size: 11px; color: #64748b; font-weight: 600; }
-          .detail-value { font-size: 11px; color: #1a2332; font-weight: 700; }
-          .footer { font-size: 9px; color: #64748b; text-align: center; margin-top: auto; padding-top: 10px; border-top: 1px solid #e2e8f0; }
-          .tag { display: inline-block; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
-          .tag.ar { background: #dcfce7; color: #166534; }
-          .tag.ab { background: #dbeafe; color: #1e40af; }
-          .tag.tr { background: #ffedd5; color: #9a3412; }
-          .tag.tm { background: #f3e8ff; color: #6b21a8; }
-        </style>
-      </head>
-      <body>
-        <div class="page">
-          <div class="header">
-            <h1>Laporan Peta Lahan Agroforestri</h1>
-            <p>${row.kth}</p>
-          </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; color: #1a2332; background: white; }
+    .page { width: 210mm; height: 297mm; padding: 20px; display: flex; flex-direction: column; background: white; }
+    .header { background: linear-gradient(135deg, #1b5e40 0%, #2d7a55 100%); color: white; padding: 20px; text-align: center; border-radius: 6px; margin-bottom: 20px; }
+    .header h1 { font-size: 20px; margin-bottom: 5px; font-weight: bold; }
+    .header p { font-size: 12px; opacity: 0.9; }
+    .map-container { width: 100%; height: 220px; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; margin-bottom: 20px; background: #f0fdf4; }
+    .map-container img { width: 100%; height: 100%; object-fit: cover; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .info-box { padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; }
+    .info-label { font-size: 10px; font-weight: bold; text-transform: uppercase; color: #64748b; margin-bottom: 8px; }
+    .info-value { font-size: 14px; font-weight: bold; color: #1b5e40; }
+    .details { padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 20px; }
+    .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: 11px; color: #64748b; font-weight: 600; }
+    .detail-value { font-size: 11px; color: #1a2332; font-weight: bold; }
+    .footer { font-size: 9px; color: #64748b; text-align: center; margin-top: auto; padding-top: 10px; border-top: 1px solid #e2e8f0; }
+    .tag { display: inline-block; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: bold; }
+    .tag.ar { background: #dcfce7; color: #166534; }
+    .tag.ab { background: #dbeafe; color: #1e40af; }
+    .tag.tr { background: #ffedd5; color: #9a3412; }
+    .tag.tm { background: #f3e8ff; color: #6b21a8; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>Laporan Peta Lahan Agroforestri</h1>
+      <p>${esc(row.kth)}</p>
+    </div>
 
-          <div class="map-container">
-            ${mapImage ? `<img src="${mapImage}" alt="Peta Lahan">` : '<div style="width:100%;height:100%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;color:#64748b">Peta tidak tersedia</div>'}
-          </div>
+    <div class="map-container">
+      ${mapImage ? `<img src="${mapImage}" alt="Peta Lahan" style="display:block">` : '<div style="width:100%;height:100%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:12px">Peta tidak tersedia</div>'}
+    </div>
 
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-label">Luas Lahan</div>
-              <div class="info-value">${fmt(row.luas)} ha</div>
-            </div>
-            <div class="info-box">
-              <div class="info-label">Program</div>
-              <div class="tag ${st?.tagCls||''}">${esc(st?.label||row.prog)}</div>
-            </div>
-          </div>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="info-label">Luas Lahan</div>
+        <div class="info-value">${fmt(row.luas)} ha</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">Program</div>
+        <div class="tag ${st?.tagCls||''}">${esc(st?.label||row.prog)}</div>
+      </div>
+    </div>
 
-          <div class="details">
-            <div class="detail-row">
-              <span class="detail-label">ID Lahan:</span>
-              <span class="detail-value">${esc(row.id)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Nama Petani:</span>
-              <span class="detail-value">${esc(row.petani)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Jenis Kelamin:</span>
-              <span class="detail-value">${esc(row.jk)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Desa:</span>
-              <span class="detail-value">${esc(row.desa)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Tipe:</span>
-              <span class="detail-value">${esc(row.tipe || '—')}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Tgl Realisasi:</span>
-              <span class="detail-value">${esc(row.tgl || '—')}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Tanggal Cetak:</span>
-              <span class="detail-value">${dateStr}</span>
-            </div>
-          </div>
+    <div class="details">
+      <div class="detail-row">
+        <span class="detail-label">ID Lahan:</span>
+        <span class="detail-value">${esc(row.id)}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Nama Petani:</span>
+        <span class="detail-value">${esc(row.petani)}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Jenis Kelamin:</span>
+        <span class="detail-value">${esc(row.jk)}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Desa:</span>
+        <span class="detail-value">${esc(row.desa)}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Tipe:</span>
+        <span class="detail-value">${esc(row.tipe || '—')}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Tgl Realisasi:</span>
+        <span class="detail-value">${esc(row.tgl || '—')}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Tanggal Cetak:</span>
+        <span class="detail-value">${dateStr}</span>
+      </div>
+    </div>
 
-          <div class="footer">
-            <p>Dokumen ini dibuat secara otomatis oleh Sistem Sebaran Lahan Garapan Masyarakat - PT. Citra Mulia Inti</p>
-          </div>
-        </div>
-      </body>
-    </html>
+    <div class="footer">
+      <p>Dokumen ini dibuat secara otomatis oleh Sistem Sebaran Lahan Garapan Masyarakat - PT. Citra Mulia Inti</p>
+    </div>
+  </div>
+</body>
+</html>
   `;
 
-  const element = document.createElement('div');
-  element.innerHTML = htmlContent;
-  document.body.appendChild(element);
-
   const opt = {
-    margin: 0,
-    filename: `Lahan_${row.id}_${now.getTime()}.pdf`,
-    image: { type: 'png', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, logging: false },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    margin: [5, 5, 5, 5],
+    filename: `Lahan_${row.id.replace(/\s+/g, '_')}_${now.getTime()}.pdf`,
+    image: { type: 'png', quality: 0.95 },
+    html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
   };
 
-  html2pdf().set(opt).from(element).save().then(() => {
-    document.body.removeChild(element);
-  }).catch(err => {
-    console.error('PDF generation error:', err);
-    document.body.removeChild(element);
-  });
+  try {
+    html2pdf().set(opt).from(htmlContent).save().then(() => {
+      console.log('PDF saved successfully');
+    }).catch(err => {
+      console.error('PDF save error:', err);
+    });
+  } catch (e) {
+    console.error('HTML2PDF error:', e);
+  }
 }
 
 function toggleLayer(which) {
