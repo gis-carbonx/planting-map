@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planting Monitoring</title>
+  <title>Planting Monitoring 1</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -110,6 +110,7 @@
     #map{position:absolute;inset:0;width:100%;height:100%;z-index:1}
     .leaflet-control-scale-line{font-family:'DM Sans',sans-serif;font-size:11px}
     .leaflet-control{z-index:900 !important}
+    #map svg,#map canvas{image-rendering:crisp-edges;-ms-interpolation-mode:nearest-neighbor}
 
     .basemap-panel{position:absolute;bottom:10px;left:16px;z-index:900;display:flex;flex-direction:column;gap:6px;pointer-events:auto;background:rgba(255,255,255,0.98);padding:10px;border-radius:10px;box-shadow:var(--shadow-md)}
     .basemap-label-row{font-size:8px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.7px;padding-left:2px}
@@ -399,57 +400,36 @@ const BASEMAPS = {
 };
 let currentBasemap = 'carto_light';
 
-// Inisialisasi map dengan opsi untuk mengurangi glitch rendering
+// Inisialisasi map dengan opsi SMOOTH tapi anti-glitch
 const map = L.map('map', { 
-  zoomControl:false, 
-  fadeAnimation:false, 
-  zoomAnimation:false, 
-  markerZoomAnimation:false,
-  preferCanvas: true 
+  zoomControl: false, 
+  fadeAnimation: true,        // KEEP smooth fade
+  zoomAnimation: true,        // KEEP smooth zoom
+  markerZoomAnimation: true,
+  renderer: L.SVG({padding: 0.5})  // SVG lebih smooth
 });
 L.control.zoom({ position:'topright' }).addTo(map);
 L.control.scale({ position:'bottomright', metric:true, imperial:false }).addTo(map);
 map.setView([1.0, 111.5], 9);
 
-// Observer untuk menangani resize dengan lebih baik
+// Observer untuk resize
 const resizeObserver = new ResizeObserver(() => { 
   map.invalidateSize({ animate:false, pan:false });
 });
 resizeObserver.observe(document.getElementById('mapWrap'));
 
-// Inisialisasi basemap dengan timing yang lebih baik
+// Inisialisasi dengan timing optimal
 requestAnimationFrame(() => {
   BASEMAPS.carto_light.addTo(map);
-  // Flush rendering sebelum invalidateSize
-  map.getPane('tilePane').style.willChange = 'auto';
   requestAnimationFrame(() => { 
     map.invalidateSize({ animate:false, pan:false });
-    // Reset canvas untuk menghindari glitch
-    const canvases = document.querySelectorAll('#map canvas');
-    canvases.forEach(c => {
-      if (c.style) c.style.willChange = 'auto';
-    });
   });
 });
 
 window.addEventListener('load', () => {
   requestAnimationFrame(() => { 
-    requestAnimationFrame(() => { 
-      map.invalidateSize({ animate:false, pan:false });
-    }); 
+    map.invalidateSize({ animate:false, pan:false });
   });
-});
-
-// Tambahan: deteksi scroll/mouse dan force re-render untuk mengatasi glitch
-let glitchFixTimer;
-document.getElementById('map').addEventListener('mousemove', () => {
-  clearTimeout(glitchFixTimer);
-  glitchFixTimer = setTimeout(() => {
-    // Trigger minor update untuk refresh canvas
-    if (map._renderer && map._renderer._update) {
-      map._renderer._update();
-    }
-  }, 300);
 });
 
 function switchBasemap(key) {
@@ -459,9 +439,6 @@ function switchBasemap(key) {
   BASEMAPS[key].bringToBack();
   currentBasemap = key;
   
-  // Force re-render untuk mencegah glitch saat switching basemap
-  map.invalidateSize({ animate:false, pan:false });
-  
   document.querySelectorAll('.bm-pill').forEach(b => b.classList.remove('active'));
   document.getElementById('bm_' + key).classList.add('active');
 }
@@ -469,7 +446,6 @@ function switchBasemap(key) {
 function toggleMenu() { 
   const dd = document.getElementById('menuDropdown');
   dd.classList.toggle('open');
-  // Close menu ketika diklik di luar
   if (dd.classList.contains('open')) {
     setTimeout(() => {
       document.addEventListener('click', closeMenuOnClickOutside);
@@ -526,27 +502,16 @@ let featureMap = {};
 async function getText(url) { const r = await fetch(url); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); }
 async function getJSON(url)  { const r = await fetch(url); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
 
-// ────────────────────────────────────────────────────────────────────────────────
-// FUNGSI UTAMA: Tentukan program dari kolom K/L/M/N (angka) atau fallback ke
-// kolom E (Tipe) jika semua angka 0/kosong.
-// Kolom baru (setelah penambahan Tipe di kolom E):
-//   A=No, B=Grid, C=KTH, D=Luas, E=Tipe, F=Petani,
-//   G=Jenis Kelamin, H=Desa, I=ID_Petak, J=Tgl_Realisasi,
-//   K=Agro_Reg, L=Agro_BPO, M=Temb_Reg, N=Temb_MTL
-// ────────────────────────────────────────────────────────────────────────────────
 function resolveProgram(aReg, aBPO, tReg, tMTL, tipeStr) {
-  // Prioritas 1: ada nilai angka di kolom program
   if (aReg > 0) return 'Agro_Reg';
   if (aBPO > 0) return 'Agro_BPO';
   if (tReg > 0) return 'Temb_Reg';
   if (tMTL > 0) return 'Temb_MTL';
 
-  // Prioritas 2: fallback dari kolom Tipe (E)
   const t = tipeStr.toLowerCase().trim();
   if (t.includes('tembawang')) return 'Temb_Reg';
   if (t.includes('agroforestri') || t.includes('agroforestry')) return 'Agro_Reg';
 
-  // Tidak bisa ditentukan
   return null;
 }
 
@@ -554,38 +519,30 @@ function parseSheet(csvText) {
   const { data } = Papa.parse(csvText, { header:true, skipEmptyLines:true, transformHeader: h => h.trim() });
 
   data.forEach(raw => {
-    // ── ID Petak ──────────────────────────────────────────────────────────────
-    // Header name bisa beragam; coba beberapa kemungkinan + fallback kolom I
     const id = str(
       raw['ID_Petak'] || raw['id_petak'] || raw['ID Petak'] ||
       raw['I'] || ''
     );
     if (!id) return;
 
-    // ── Kolom data (header-based lebih andal dari index) ──────────────────
     const kth    = str(raw['KTH']            || raw['C'] || '');
     const luas   = num(raw['Luas']           || raw['D'] || 0);
-    const tipe   = str(raw['Tipe']           || raw['E'] || '');   // ← KOLOM BARU
+    const tipe   = str(raw['Tipe']           || raw['E'] || '');
     const petani = str(raw['Petani']         || raw['F'] || '');
     const jk     = str(raw['Jenis Kelamin']  || raw['Jenis_Kelamin'] || raw['G'] || '');
     const desa   = str(raw['Desa']           || raw['H'] || '');
     const tgl    = str(raw['Tgl_Realisasi']  || raw['Tgl Realisasi'] || raw['J'] || '');
 
-    // ── Nilai program (kolom K–N) ─────────────────────────────────────────
     const aReg = num(raw['Agro_Reg'] || raw['Agro Reg'] || raw['K'] || 0);
     const aBPO = num(raw['Agro_BPO'] || raw['Agro BPO'] || raw['L'] || 0);
     const tReg = num(raw['Temb_Reg'] || raw['Temb Reg'] || raw['M'] || 0);
     const tMTL = num(raw['Temb_MTL'] || raw['Temb MTL'] || raw['N'] || 0);
 
-    // ── Tentukan program ──────────────────────────────────────────────────
     const prog = resolveProgram(aReg, aBPO, tReg, tMTL, tipe);
-    if (!prog) return; // lewati baris yang tidak bisa ditentukan programnya
+    if (!prog) return;
 
-    // ── Pastikan luas terisi: jika 0 tapi ada nilai di kolom program, pakai itu
-    const luasFinal = luas > 0 ? luas
-      : (aReg || aBPO || tReg || tMTL || 0);
+    const luasFinal = luas > 0 ? luas : (aReg || aBPO || tReg || tMTL || 0);
 
-    // ── Simpan ke sheetMap ────────────────────────────────────────────────
     sheetMap[id] = { id, kth, luas: luasFinal, tipe, petani, jk, desa, tgl, aReg, aBPO, tReg, tMTL, prog };
   });
 
@@ -604,7 +561,6 @@ function renderAgro(gj) {
 
   features.forEach(feat => {
     const props   = feat.properties || {};
-    // Coba berbagai nama field id lahan di GeoJSON
     const idLahan = str(
       props.id_lahan || props.ID_Petak || props.id_petak ||
       props.ID_LAHAN || props.Id_Lahan || props.IDLAHAN || ''
@@ -612,8 +568,8 @@ function renderAgro(gj) {
     if (!idLahan) return;
 
     const row = sheetMap[idLahan];
-    if (!row) return;               // tidak ada di sheet
-    if (!PROG[row.prog]) return;    // program tidak dikenali
+    if (!row) return;
+    if (!PROG[row.prog]) return;
 
     matched.add(idLahan);
     rendered++;
@@ -695,15 +651,12 @@ function calcStats() {
   Object.values(sheetMap).forEach(r => {
     if (!matched.has(r.id)) return;
 
-    // Hitung luas: ambil dari kolom luas, atau sum dari kolom program
     const luasEfektif = r.luas > 0 ? r.luas : (r.aReg + r.aBPO + r.tReg + r.tMTL);
     totalHa += luasEfektif;
 
-    // Hitung per-program — jika kolom K-N kosong/0, pakai luas dari tipe
     if (r.aReg > 0 || r.aBPO > 0 || r.tReg > 0 || r.tMTL > 0) {
       aReg += r.aReg; aBPO += r.aBPO; tReg += r.tReg; tMTL += r.tMTL;
     } else {
-      // fallback: akumulasi ke program yang ditentukan dari kolom Tipe
       if      (r.prog === 'Agro_Reg') aReg += luasEfektif;
       else if (r.prog === 'Agro_BPO') aBPO += luasEfektif;
       else if (r.prog === 'Temb_Reg') tReg += luasEfektif;
@@ -921,7 +874,9 @@ function setLoad(msg, isErr = false) {
 
 function hideLoad() {
   document.getElementById('loadingOverlay').style.display = 'none';
-  requestAnimationFrame(() => { requestAnimationFrame(() => { map.invalidateSize({ animate:false, pan:false }); }); });
+  requestAnimationFrame(() => { 
+    map.invalidateSize({ animate:false, pan:false });
+  });
 }
 
 function str(v)  { return (v ?? '').toString().trim(); }
