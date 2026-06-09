@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -157,6 +158,8 @@
     .modal-count{font-size:12px;color:var(--text-2);font-weight:600;white-space:nowrap}
     .btn-dl{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--primary-md);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
     .btn-dl:hover{background:var(--primary-bg);border-color:var(--primary-lt)}
+    .btn-print{padding:7px 14px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;font-size:12px;font-weight:600;color:#7b1fa2;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+    .btn-print:hover{background:#f3e8ff;border-color:#e9d5ff}
     .kth-modal-body{overflow-y:auto;padding:0}
     .kth-tbl{width:100%;border-collapse:collapse;font-size:12px}
     .kth-tbl thead tr{background:#f8fafc;position:sticky;top:0;z-index:1}
@@ -179,6 +182,30 @@
     ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
     ::-webkit-scrollbar-track{background:transparent}
     .empty-state{text-align:center;padding:32px 16px;color:var(--text-3);font-size:13px}
+
+    /* PDF Print Styles */
+    .pdf-container{display:none;width:210mm;height:297mm;background:#fff;padding:0}
+    .pdf-header{padding:20px;background:linear-gradient(135deg,#1b5e40 0%,#2d7a55 100%);color:#fff;text-align:center;border-bottom:3px solid #52b788}
+    .pdf-header h1{font-size:24px;margin:0;font-weight:700}
+    .pdf-header p{font-size:12px;opacity:.9;margin:4px 0 0 0}
+    .pdf-content{padding:20px;display:flex;flex-direction:column;gap:15px}
+    .pdf-map-container{width:100%;height:200px;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden}
+    .pdf-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:15px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0}
+    .pdf-stat-item{padding:10px}
+    .pdf-stat-label{font-size:10px;font-weight:700;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+    .pdf-stat-value{font-size:18px;font-weight:800;color:#1b5e40}
+    .pdf-details{padding:15px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0}
+    .pdf-details h3{font-size:12px;font-weight:700;color:#1a2332;margin-bottom:10px;text-transform:uppercase}
+    .pdf-detail-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e2e8f0;font-size:11px}
+    .pdf-detail-row:last-child{border-bottom:none}
+    .pdf-detail-label{color:#64748b;font-weight:600}
+    .pdf-detail-value{color:#1a2332;font-weight:700}
+    .pdf-footer{padding:10px 20px;border-top:1px solid #e2e8f0;font-size:9px;color:#64748b;text-align:center;margin-top:auto}
+    .pdf-table{width:100%;border-collapse:collapse;font-size:10px;margin-top:10px}
+    .pdf-table thead tr{background:#e2e8f0}
+    .pdf-table th{padding:8px;text-align:left;font-weight:700;color:#1a2332;border:1px solid #cbd5e1}
+    .pdf-table td{padding:6px 8px;border:1px solid #e2e8f0}
+    .pdf-table tr:nth-child(even){background:#f8fafc}
   </style>
 </head>
 <body>
@@ -353,6 +380,10 @@
       </div>
       <div class="modal-toolbar-right">
         <span class="modal-count" id="modalRowCount">0 lahan</span>
+        <button class="btn-print" id="printBtn" onclick="printMapPDF()" title="Download peta ke PDF">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/></svg>
+          Print Peta
+        </button>
         <button class="btn-dl" onclick="downloadCSV()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Unduh CSV
@@ -371,6 +402,9 @@
     </div>
   </div>
 </div>
+
+<!-- Hidden PDF Container -->
+<div id="pdfContainer" class="pdf-container"></div>
 
 <script>
 'use strict';
@@ -399,7 +433,6 @@ const BASEMAPS = {
 };
 let currentBasemap = 'carto_light';
 
-// Inisialisasi map dengan opsi untuk mengurangi glitch rendering
 const map = L.map('map', { 
   zoomControl:false, 
   fadeAnimation:false, 
@@ -411,20 +444,16 @@ L.control.zoom({ position:'topright' }).addTo(map);
 L.control.scale({ position:'bottomright', metric:true, imperial:false }).addTo(map);
 map.setView([1.0, 111.5], 9);
 
-// Observer untuk menangani resize dengan lebih baik
 const resizeObserver = new ResizeObserver(() => { 
   map.invalidateSize({ animate:false, pan:false });
 });
 resizeObserver.observe(document.getElementById('mapWrap'));
 
-// Inisialisasi basemap dengan timing yang lebih baik
 requestAnimationFrame(() => {
   BASEMAPS.carto_light.addTo(map);
-  // Flush rendering sebelum invalidateSize
   map.getPane('tilePane').style.willChange = 'auto';
   requestAnimationFrame(() => { 
     map.invalidateSize({ animate:false, pan:false });
-    // Reset canvas untuk menghindari glitch
     const canvases = document.querySelectorAll('#map canvas');
     canvases.forEach(c => {
       if (c.style) c.style.willChange = 'auto';
@@ -440,12 +469,10 @@ window.addEventListener('load', () => {
   });
 });
 
-// Tambahan: deteksi scroll/mouse dan force re-render untuk mengatasi glitch
 let glitchFixTimer;
 document.getElementById('map').addEventListener('mousemove', () => {
   clearTimeout(glitchFixTimer);
   glitchFixTimer = setTimeout(() => {
-    // Trigger minor update untuk refresh canvas
     if (map._renderer && map._renderer._update) {
       map._renderer._update();
     }
@@ -458,10 +485,7 @@ function switchBasemap(key) {
   BASEMAPS[key].addTo(map);
   BASEMAPS[key].bringToBack();
   currentBasemap = key;
-  
-  // Force re-render untuk mencegah glitch saat switching basemap
   map.invalidateSize({ animate:false, pan:false });
-  
   document.querySelectorAll('.bm-pill').forEach(b => b.classList.remove('active'));
   document.getElementById('bm_' + key).classList.add('active');
 }
@@ -469,7 +493,6 @@ function switchBasemap(key) {
 function toggleMenu() { 
   const dd = document.getElementById('menuDropdown');
   dd.classList.toggle('open');
-  // Close menu ketika diklik di luar
   if (dd.classList.contains('open')) {
     setTimeout(() => {
       document.addEventListener('click', closeMenuOnClickOutside);
@@ -526,27 +549,14 @@ let featureMap = {};
 async function getText(url) { const r = await fetch(url); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); }
 async function getJSON(url)  { const r = await fetch(url); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
 
-// ────────────────────────────────────────────────────────────────────────────────
-// FUNGSI UTAMA: Tentukan program dari kolom K/L/M/N (angka) atau fallback ke
-// kolom E (Tipe) jika semua angka 0/kosong.
-// Kolom baru (setelah penambahan Tipe di kolom E):
-//   A=No, B=Grid, C=KTH, D=Luas, E=Tipe, F=Petani,
-//   G=Jenis Kelamin, H=Desa, I=ID_Petak, J=Tgl_Realisasi,
-//   K=Agro_Reg, L=Agro_BPO, M=Temb_Reg, N=Temb_MTL
-// ────────────────────────────────────────────────────────────────────────────────
 function resolveProgram(aReg, aBPO, tReg, tMTL, tipeStr) {
-  // Prioritas 1: ada nilai angka di kolom program
   if (aReg > 0) return 'Agro_Reg';
   if (aBPO > 0) return 'Agro_BPO';
   if (tReg > 0) return 'Temb_Reg';
   if (tMTL > 0) return 'Temb_MTL';
-
-  // Prioritas 2: fallback dari kolom Tipe (E)
   const t = tipeStr.toLowerCase().trim();
   if (t.includes('tembawang')) return 'Temb_Reg';
   if (t.includes('agroforestri') || t.includes('agroforestry')) return 'Agro_Reg';
-
-  // Tidak bisa ditentukan
   return null;
 }
 
@@ -554,38 +564,29 @@ function parseSheet(csvText) {
   const { data } = Papa.parse(csvText, { header:true, skipEmptyLines:true, transformHeader: h => h.trim() });
 
   data.forEach(raw => {
-    // ── ID Petak ──────────────────────────────────────────────────────────────
-    // Header name bisa beragam; coba beberapa kemungkinan + fallback kolom I
     const id = str(
       raw['ID_Petak'] || raw['id_petak'] || raw['ID Petak'] ||
       raw['I'] || ''
     );
     if (!id) return;
 
-    // ── Kolom data (header-based lebih andal dari index) ──────────────────
     const kth    = str(raw['KTH']            || raw['C'] || '');
     const luas   = num(raw['Luas']           || raw['D'] || 0);
-    const tipe   = str(raw['Tipe']           || raw['E'] || '');   // ← KOLOM BARU
+    const tipe   = str(raw['Tipe']           || raw['E'] || '');
     const petani = str(raw['Petani']         || raw['F'] || '');
     const jk     = str(raw['Jenis Kelamin']  || raw['Jenis_Kelamin'] || raw['G'] || '');
     const desa   = str(raw['Desa']           || raw['H'] || '');
     const tgl    = str(raw['Tgl_Realisasi']  || raw['Tgl Realisasi'] || raw['J'] || '');
 
-    // ── Nilai program (kolom K–N) ─────────────────────────────────────────
     const aReg = num(raw['Agro_Reg'] || raw['Agro Reg'] || raw['K'] || 0);
     const aBPO = num(raw['Agro_BPO'] || raw['Agro BPO'] || raw['L'] || 0);
     const tReg = num(raw['Temb_Reg'] || raw['Temb Reg'] || raw['M'] || 0);
     const tMTL = num(raw['Temb_MTL'] || raw['Temb MTL'] || raw['N'] || 0);
 
-    // ── Tentukan program ──────────────────────────────────────────────────
     const prog = resolveProgram(aReg, aBPO, tReg, tMTL, tipe);
-    if (!prog) return; // lewati baris yang tidak bisa ditentukan programnya
+    if (!prog) return;
 
-    // ── Pastikan luas terisi: jika 0 tapi ada nilai di kolom program, pakai itu
-    const luasFinal = luas > 0 ? luas
-      : (aReg || aBPO || tReg || tMTL || 0);
-
-    // ── Simpan ke sheetMap ────────────────────────────────────────────────
+    const luasFinal = luas > 0 ? luas : (aReg || aBPO || tReg || tMTL || 0);
     sheetMap[id] = { id, kth, luas: luasFinal, tipe, petani, jk, desa, tgl, aReg, aBPO, tReg, tMTL, prog };
   });
 
@@ -604,7 +605,6 @@ function renderAgro(gj) {
 
   features.forEach(feat => {
     const props   = feat.properties || {};
-    // Coba berbagai nama field id lahan di GeoJSON
     const idLahan = str(
       props.id_lahan || props.ID_Petak || props.id_petak ||
       props.ID_LAHAN || props.Id_Lahan || props.IDLAHAN || ''
@@ -612,8 +612,8 @@ function renderAgro(gj) {
     if (!idLahan) return;
 
     const row = sheetMap[idLahan];
-    if (!row) return;               // tidak ada di sheet
-    if (!PROG[row.prog]) return;    // program tidak dikenali
+    if (!row) return;
+    if (!PROG[row.prog]) return;
 
     matched.add(idLahan);
     rendered++;
@@ -695,15 +695,12 @@ function calcStats() {
   Object.values(sheetMap).forEach(r => {
     if (!matched.has(r.id)) return;
 
-    // Hitung luas: ambil dari kolom luas, atau sum dari kolom program
     const luasEfektif = r.luas > 0 ? r.luas : (r.aReg + r.aBPO + r.tReg + r.tMTL);
     totalHa += luasEfektif;
 
-    // Hitung per-program — jika kolom K-N kosong/0, pakai luas dari tipe
     if (r.aReg > 0 || r.aBPO > 0 || r.tReg > 0 || r.tMTL > 0) {
       aReg += r.aReg; aBPO += r.aBPO; tReg += r.tReg; tMTL += r.tMTL;
     } else {
-      // fallback: akumulasi ke program yang ditentukan dari kolom Tipe
       if      (r.prog === 'Agro_Reg') aReg += luasEfektif;
       else if (r.prog === 'Agro_BPO') aBPO += luasEfektif;
       else if (r.prog === 'Temb_Reg') tReg += luasEfektif;
@@ -891,6 +888,194 @@ function downloadCSV() {
   const a    = document.createElement('a');
   a.href = url; a.download = `KTH_${currentKTH.replace(/\s+/g,'_')}.csv`; a.click();
   URL.revokeObjectURL(url);
+}
+
+function printMapPDF() {
+  if (!currentKTH) return;
+  
+  const k = kthMap[currentKTH];
+  const printMap = L.map('printMapInPDF', { 
+    zoomControl:false, 
+    attributionControl:false,
+    dragging:false,
+    touchZoom:false,
+    scrollWheelZoom:false,
+    doubleClickZoom:false
+  });
+
+  BASEMAPS.carto_light.addTo(printMap);
+  
+  const visibleRows = document.querySelectorAll('#modalTbody tr:not(.hidden-row)');
+  const visibleIds = Array.from(visibleRows).map(tr => {
+    const cells = tr.querySelectorAll('td');
+    return cells[2]?.textContent?.trim();
+  }).filter(Boolean);
+
+  const printLayers = L.featureGroup();
+  let hasFeatures = false;
+
+  visibleIds.forEach(id => {
+    const entry = featureMap[id];
+    if (entry) {
+      const st = PROG[entry.row.prog];
+      const layer = L.geoJSON(entry.feature, {
+        style: () => ({ color:st.stroke, weight:2, fillColor:st.fill, fillOpacity:0.75, opacity:1 })
+      });
+      printLayers.addLayer(layer);
+      hasFeatures = true;
+    }
+  });
+
+  printLayers.addTo(printMap);
+
+  setTimeout(() => {
+    if (hasFeatures) {
+      const bounds = printLayers.getBounds();
+      printMap.fitBounds(bounds.pad(0.1));
+    }
+    
+    setTimeout(() => {
+      const mapCanvas = document.querySelector('#printMapInPDF canvas');
+      const mapImage = mapCanvas ? mapCanvas.toDataURL('image/png') : null;
+      
+      generatePDF(k, visibleRows, mapImage);
+      
+      printMap.remove();
+    }, 800);
+  }, 500);
+}
+
+function generatePDF(kthData, rows, mapImage) {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' });
+  
+  let totalLuas = 0;
+  let agroTotal = 0, tembTotal = 0;
+  
+  Array.from(rows).forEach(row => {
+    const cells = row.querySelectorAll('td');
+    const luas = parseFloat(cells[6]?.textContent?.replace(',', '.') || 0);
+    const prog = cells[5]?.textContent?.trim() || '';
+    totalLuas += luas;
+    
+    if (prog.includes('Agro')) agroTotal += luas;
+    else if (prog.includes('Temb')) tembTotal += luas;
+  });
+
+  const tableRows = Array.from(rows).map((row, idx) => {
+    const cells = row.querySelectorAll('td');
+    const prog = cells[5]?.innerHTML || '—';
+    return `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>${cells[2]?.textContent || '—'}</td>
+        <td>${cells[3]?.textContent || '—'}</td>
+        <td>${cells[4]?.textContent || '—'}</td>
+        <td>${prog}</td>
+        <td>${cells[6]?.textContent || '—'}</td>
+        <td>${cells[7]?.textContent || '—'}</td>
+      </tr>
+    `;
+  }).join('');
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;padding:0;margin:0">
+      <div style="padding:20px;background:linear-gradient(135deg,#1b5e40 0%,#2d7a55 100%);color:white;text-align:center;border-bottom:3px solid #52b788">
+        <h1 style="margin:0;font-size:24px;font-weight:700">Laporan Peta Lahan Agroforestri</h1>
+        <p style="margin:4px 0 0 0;font-size:12px;opacity:0.9">${kthData.name}</p>
+      </div>
+      
+      <div style="padding:20px">
+        <!-- MAP -->
+        <div style="width:100%;height:200px;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;margin-bottom:15px">
+          ${mapImage ? `<img src="${mapImage}" style="width:100%;height:100%;object-fit:cover">` : '<div style="width:100%;height:100%;background:#f0fdf4;display:flex;align-items:center;justify-content:center">Peta tidak tersedia</div>'}
+        </div>
+
+        <!-- STATS -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:15px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0;margin-bottom:15px">
+          <div style="padding:10px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#64748b;margin-bottom:4px">Total Luas</div>
+            <div style="font-size:18px;font-weight:800;color:#1b5e40">${fmt(totalLuas)} ha</div>
+          </div>
+          <div style="padding:10px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#64748b;margin-bottom:4px">Agroforestri</div>
+            <div style="font-size:18px;font-weight:800;color:#1a6b3a">${fmt(agroTotal)} ha</div>
+          </div>
+          <div style="padding:10px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#64748b;margin-bottom:4px">Tembawang</div>
+            <div style="font-size:18px;font-weight:800;color:#b84c00">${fmt(tembTotal)} ha</div>
+          </div>
+          <div style="padding:10px">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#64748b;margin-bottom:4px">Jumlah Petak</div>
+            <div style="font-size:18px;font-weight:800;color:#1b5e40">${kthData.rows.length}</div>
+          </div>
+        </div>
+
+        <!-- DETAILS -->
+        <div style="padding:15px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0;margin-bottom:15px">
+          <h3 style="font-size:12px;font-weight:700;color:#1a2332;margin:0 0 10px 0;text-transform:uppercase">Informasi KTH</h3>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e2e8f0;font-size:11px">
+            <span style="color:#64748b;font-weight:600">Nama KTH</span>
+            <span style="color:#1a2332;font-weight:700">${esc(kthData.name)}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e2e8f0;font-size:11px">
+            <span style="color:#64748b;font-weight:600">Desa</span>
+            <span style="color:#1a2332;font-weight:700">${esc(kthData.desa)}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e2e8f0;font-size:11px">
+            <span style="color:#64748b;font-weight:600">Jumlah Petani</span>
+            <span style="color:#1a2332;font-weight:700">${kthData.petaniSet.size}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:11px">
+            <span style="color:#64748b;font-weight:600">Tanggal Cetak</span>
+            <span style="color:#1a2332;font-weight:700">${dateStr}</span>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div style="margin-bottom:15px">
+          <h3 style="font-size:12px;font-weight:700;color:#1a2332;margin:0 0 10px 0;text-transform:uppercase">Data Lahan Terpilih</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:10px">
+            <thead>
+              <tr style="background:#e2e8f0">
+                <th style="padding:8px;text-align:left;font-weight:700;color:#1a2332;border:1px solid #cbd5e1">No</th>
+                <th style="padding:8px;text-align:left;font-weight:700;color:#1a2332;border:1px solid #cbd5e1">ID Lahan</th>
+                <th style="padding:8px;text-align:left;font-weight:700;color:#1a2332;border:1px solid #cbd5e1">Petani</th>
+                <th style="padding:8px;text-align:left;font-weight:700;color:#1a2332;border:1px solid #cbd5e1">Desa</th>
+                <th style="padding:8px;text-align:left;font-weight:700;color:#1a2332;border:1px solid #cbd5e1">Program</th>
+                <th style="padding:8px;text-align:left;font-weight:700;color:#1a2332;border:1px solid #cbd5e1">Luas (ha)</th>
+                <th style="padding:8px;text-align:left;font-weight:700;color:#1a2332;border:1px solid #cbd5e1">Tgl Realisasi</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRows}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="padding:10px 0;border-top:1px solid #e2e8f0;font-size:9px;color:#64748b;text-align:center">
+          <p>Dokumen ini dibuat secara otomatis oleh Sistem Sebaran Lahan Garapan Masyarakat - PT. Citra Mulia Inti</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const element = document.createElement('div');
+  element.innerHTML = html;
+  document.body.appendChild(element);
+
+  const opt = {
+    margin: 5,
+    filename: `Peta_${currentKTH.replace(/\s+/g,'_')}_${now.getTime()}.pdf`,
+    image: { type: 'png', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save().then(() => {
+    document.body.removeChild(element);
+  });
 }
 
 function toggleLayer(which) {
