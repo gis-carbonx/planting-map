@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planting Monitoring 1</title>
+  <title>Planting Monitoring</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -158,7 +158,6 @@
     .detail-empty-icon svg{width:20px;height:20px;stroke:var(--text-3);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
     .detail-empty-txt{font-size:12px;color:var(--text-3);font-weight:500;line-height:1.5}
 
-    /* detail blocks */
     .d-block{margin-bottom:14px}
     .d-block:last-child{margin-bottom:0}
     .d-block-ttl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--text-3);margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--border-lt)}
@@ -170,15 +169,13 @@
     .d-luas{font-size:24px;font-weight:800;color:var(--primary);letter-spacing:-1px;line-height:1}
     .d-luas-unit{font-size:12px;font-weight:500;color:var(--text-2);margin-left:3px}
 
-    /* CARBON block — redesign */
     .d-carbon-block{background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%);border:1px solid #6ee7b7;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px}
     .d-carbon-icon{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#059669,#047857);display:grid;place-items:center;flex-shrink:0}
     .d-carbon-icon svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     .d-carbon-body{}
     .d-carbon-val{font-size:20px;font-weight:800;color:#047857;letter-spacing:-0.5px;line-height:1}
     .d-carbon-lbl{font-size:10px;font-weight:600;color:#065f46;margin-top:2px;line-height:1.3}
-
-    /* GENDER block — redesign */
+    
     .d-gender-wrap{display:flex;gap:6px;margin-top:2px}
     .d-gender-pill{flex:1;display:flex;align-items:center;gap:6px;padding:7px 9px;border-radius:9px;font-size:12px;font-weight:600}
     .d-gender-pill.laki{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8}
@@ -429,7 +426,7 @@
         <div class="detail-hd-top">
           <div class="detail-dot" id="detailDot" style="background:var(--primary)"></div>
           <div style="flex:1;min-width:0">
-            <!-- CHANGED: judul selalu "Informasi Lahan" -->
+
             <div class="detail-hd-name" id="detailName">Informasi Lahan</div>
             <div class="detail-hd-id" id="detailId">Klik polygon di peta</div>
           </div>
@@ -696,12 +693,6 @@ function updateFilterInfo(count) {
 async function getText(url) { const r=await fetch(url); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); }
 async function getJSON(url)  { const r=await fetch(url); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
 
-// ── Parse Sheet ────────────────────────────────────────────
-// A=No, B=Grid, C=KTH, D=Luas(diabaikan), E=Tipe, F=Petani, G=Jenis Kelamin,
-// H=Desa, I=ID_Petak, J=Tgl_Partisipasi, K=Tgl_Realisasi,
-// L=Agro_Reg, M=Agro_BPO, N=Temb_Reg, O=Temb_MTL, P=Total_Tanaman_Karbon
-// PERUBAHAN #1: luas dihitung dari L+M+N+O, kolom D tidak dipakai
-
 function resolveProgram(aReg,aBPO,tReg,tMTL,tipeStr) {
   if (aReg>0) return 'Agro_Reg';
   if (aBPO>0) return 'Agro_BPO';
@@ -735,7 +726,6 @@ function parseSheet(csvText) {
     const prog = resolveProgram(aReg,aBPO,tReg,tMTL,tipe);
     if (!prog) return;
 
-    // PERUBAHAN #1: luas = jumlah L+M+N+O (bukan kolom D)
     const luas = aReg + aBPO + tReg + tMTL;
 
     sheetMap[id]={id,kth,grid,luas,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,tanamanKarbon,prog};
@@ -752,7 +742,6 @@ function parseTargetSheet(csvText) {
   });
 }
 
-// ── Render GeoJSON ─────────────────────────────────────────
 function renderCMI(gj) {
   L.geoJSON(gj,{style:()=>({color:'#475569',weight:2.5,dashArray:'8 5',fillOpacity:0,opacity:.9})}).addTo(lgCMI);
 }
@@ -780,7 +769,6 @@ function renderAgro(gj) {
 }
 
 // ── Stats ──────────────────────────────────────────────────
-// PERUBAHAN #1: stats kini selalu dari kolom L/M/N/O langsung (konsisten)
 function calcStats(filteredIds) {
   let aReg=0,aBPO=0,tReg=0,tMTL=0;
   const uniq=new Set(),laki=new Set(),pmp=new Set();
@@ -840,7 +828,6 @@ function renderKTHList(filteredIds) {
   filteredIds.forEach(id=>{
     const r=sheetMap[id]; if (!r) return;
     if (!kthFiltered[r.kth]) kthFiltered[r.kth]={agro:0,temb:0,count:0,desa:r.desa};
-    // PERUBAHAN #1: gunakan langsung dari L/M/N/O
     kthFiltered[r.kth].agro += r.aReg + r.aBPO;
     kthFiltered[r.kth].temb += r.tReg + r.tMTL;
     kthFiltered[r.kth].count++;
@@ -899,8 +886,6 @@ function zoomKTH(name) {
 }
 
 // ── Right Detail Sidebar ───────────────────────────────────
-// PERUBAHAN #2 & #3: judul selalu "Informasi Lahan", ID lahan di sub-header,
-// carbon block & gender block didesain ulang
 function showDetail(id) {
   const entry=featureMap[id]; if (!entry) return;
   const row=entry.row, st=PROG[row.prog];
@@ -912,7 +897,6 @@ function showDetail(id) {
   entry.layer.setStyle({weight:3.5,fillOpacity:.92});
   entry.layer.bringToFront();
 
-  // PERUBAHAN #3: judul tetap "Informasi Lahan", ID lahan di bawah
   document.getElementById('detailDot').style.background=st.dotColor;
   document.getElementById('detailName').textContent='Informasi Lahan';
   document.getElementById('detailId').textContent=row.id;
@@ -940,7 +924,6 @@ function showDetail(id) {
       </div>`
     : '';
 
-  // PERUBAHAN #2a: carbon block — kartu visual dengan ikon
   const carbonBlock = row.tanamanKarbon > 0
     ? `<div class="d-block">
         <div class="d-block-ttl">Tanaman Karbon</div>
@@ -956,7 +939,6 @@ function showDetail(id) {
       </div>`
     : '';
 
-  // PERUBAHAN #2b: gender — pill visual dengan icon, tampilkan nama petani sekalian
   const jkLower = row.jk.toLowerCase();
   const isPerempuan = jkLower.includes('perempuan');
   const genderPill = row.jk
@@ -1017,7 +999,7 @@ function clearDetail() {
   if (selectedLahanId && featureMap[selectedLahanId])
     featureMap[selectedLahanId].layer.setStyle({weight:2,fillOpacity:.75});
   selectedLahanId=null;
-  // PERUBAHAN #3: reset ke "Informasi Lahan" bukan nama petani
+
   document.getElementById('detailDot').style.background='var(--primary)';
   document.getElementById('detailName').textContent='Informasi Lahan';
   document.getElementById('detailId').textContent='Klik polygon di peta';
