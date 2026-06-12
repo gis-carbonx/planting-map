@@ -19,7 +19,7 @@
       --c-temb-mtl:#7b1fa2;--c-temb-mtl-lt:#ce6be8;
       --bg:#eef1f6;--surface:#fff;--border:#e2e8f0;--border-lt:#f1f5f9;
       --text:#1a2332;--text-2:#64748b;--text-3:#a0aec0;
-      --hdr-h:54px;--filter-h:48px;--stats-h:162px;--sb-w:300px;
+      --hdr-h:54px;--filter-h:48px;--stats-h:162px;--sb-w:300px;--detail-w:280px;
       --shadow-sm:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
       --shadow-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
       --shadow-lg:0 20px 60px rgba(0,0,0,.2);
@@ -76,7 +76,7 @@
     /* APP BODY */
     .app-body{height:calc(100vh - var(--hdr-h) - var(--filter-h) - var(--stats-h));display:flex;overflow:hidden;gap:8px;padding:0 12px 10px 12px}
 
-    /* SIDEBAR */
+    /* LEFT SIDEBAR */
     .sb{width:var(--sb-w);flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow:hidden}
     .sb-header-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow-sm);flex-shrink:0}
     .sb-hd-row{display:flex;align-items:center;justify-content:space-between}
@@ -140,27 +140,54 @@
     .bm-thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
     .bm-name{font-size:8px;font-weight:600;color:#374151;background:rgba(255,255,255,.88);padding:1px 4px;border-radius:4px;line-height:1.3;text-align:center;max-width:42px}
 
+    /* RIGHT DETAIL SIDEBAR */
+    .detail-sb{width:var(--detail-w);flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow:hidden;transition:opacity .2s}
+    .detail-sb.empty .detail-body-card{opacity:.45;pointer-events:none}
+    .detail-header-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow-sm);flex-shrink:0}
+    .detail-ttl-row{display:flex;align-items:center;gap:8px}
+    .detail-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex-shrink:0}
+    .detail-icon svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .detail-name{font-size:14px;font-weight:700;color:var(--text);line-height:1.3;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .detail-id{font-size:11px;color:var(--text-3);font-family:monospace;margin-top:3px}
+    .detail-prog-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;margin-top:6px}
+    .detail-body-card{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column;min-height:0}
+    .detail-scroll{flex:1;overflow-y:auto;padding:12px 14px}
+    .detail-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;padding:20px;text-align:center}
+    .detail-empty-icon{width:48px;height:48px;border-radius:14px;background:var(--bg);border:1px solid var(--border);display:grid;place-items:center}
+    .detail-empty-icon svg{width:22px;height:22px;stroke:var(--text-3);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .detail-empty-txt{font-size:13px;color:var(--text-3);font-weight:500;line-height:1.5}
+    .detail-sec{margin-bottom:16px}
+    .detail-sec:last-child{margin-bottom:0}
+    .detail-sec-ttl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .detail-sec-ttl::after{content:'';flex:1;height:1px;background:var(--border-lt)}
+    .detail-row{display:flex;flex-direction:column;gap:2px;padding:7px 0;border-bottom:1px solid var(--border-lt)}
+    .detail-row:last-child{border-bottom:none}
+    .detail-lbl{font-size:11px;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+    .detail-val{font-size:13px;font-weight:600;color:var(--text)}
+    .detail-val.mono{font-family:monospace;font-size:12px;color:var(--primary-md)}
+    .detail-luas-big{font-size:28px;font-weight:800;color:var(--primary);letter-spacing:-1px;line-height:1}
+    .detail-luas-unit{font-size:13px;font-weight:500;color:var(--text-2);margin-left:4px}
+    .detail-date-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .detail-date-box{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:8px 10px}
+    .detail-date-box-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);margin-bottom:3px}
+    .detail-date-box-val{font-size:12px;font-weight:700;color:var(--text);line-height:1.3}
+    .detail-date-box-val.empty{color:var(--text-3);font-weight:500}
+    .detail-jk-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600}
+    .detail-jk-badge.laki{background:#eff6ff;color:#2563eb}
+    .detail-jk-badge.perempuan{background:#fdf2f8;color:#9333ea}
+    .detail-close-btn{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:grid;place-items:center;color:var(--text-3);transition:all .15s;flex-shrink:0}
+    .detail-close-btn:hover{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+    .detail-close-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+
     /* LOADING */
     .loading-overlay{position:absolute;inset:0;z-index:998;background:rgba(255,255,255,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(3px);border-radius:14px}
     .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .load-txt{font-size:14px;color:var(--text-2);font-weight:500}
 
-    /* POPUP */
-    .leaflet-popup-content-wrapper{border-radius:11px!important;box-shadow:0 8px 30px rgba(0,0,0,.14)!important;padding:0!important;overflow:hidden;font-family:'DM Sans',sans-serif!important}
-    .leaflet-popup-content{margin:0!important;min-width:220px}
-    .leaflet-popup-tip-container{display:none}
-    .pop-hd{padding:11px 15px;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px}
-    .pop-hd-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);flex-shrink:0}
-    .pop-bd{padding:9px 14px 12px}
-    .pop-row{display:flex;justify-content:space-between;align-items:flex-start;padding:4px 0;border-bottom:1px solid #f1f5f9;gap:12px}
-    .pop-row:last-child{border-bottom:none}
-    .pop-lbl{font-size:12px;color:var(--text-2);flex-shrink:0}
-    .pop-val{font-size:13px;font-weight:600;color:var(--text);text-align:right;word-break:break-word}
-
     /* MODAL */
     .modal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
-    .kth-modal{background:#fff;border-radius:14px;width:min(860px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
+    .kth-modal{background:#fff;border-radius:14px;width:min(900px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
     .kth-modal-hd{padding:16px 20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
     .kth-modal-title{font-size:16px;font-weight:700}
     .kth-modal-sub{font-size:13px;opacity:.8;margin-top:1px}
@@ -226,7 +253,7 @@
         Patrol-CT Monitoring
       </a>
       <div class="menu-hd" style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0">Versi</div>
-      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v1.3</div>
+      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v1.4</div>
     </div>
   </div>
 </header>
@@ -235,11 +262,11 @@
 <div class="filter-bar">
   <span class="filter-lbl">Filter Tanggal</span>
   <div class="filter-presets">
-    <button class="fpreset active" id="fp-ytd"      onclick="setPreset('ytd')">Year to Date</button>
-    <button class="fpreset"        id="fp-thismonth" onclick="setPreset('thismonth')">Bulan Ini</button>
-    <button class="fpreset"        id="fp-last3"    onclick="setPreset('last3')">3 Bulan</button>
-    <button class="fpreset"        id="fp-lastyear" onclick="setPreset('lastyear')">Tahun Lalu</button>
-    <button class="fpreset"        id="fp-all"      onclick="setPreset('all')">Semua</button>
+    <button class="fpreset active" id="fp-ytd"       onclick="setPreset('ytd')">Year to Date</button>
+    <button class="fpreset"        id="fp-thismonth"  onclick="setPreset('thismonth')">Bulan Ini</button>
+    <button class="fpreset"        id="fp-last3"      onclick="setPreset('last3')">3 Bulan</button>
+    <button class="fpreset"        id="fp-lastyear"   onclick="setPreset('lastyear')">Tahun Lalu</button>
+    <button class="fpreset"        id="fp-all"        onclick="setPreset('all')">Semua</button>
   </div>
   <div class="filter-sep"></div>
   <div class="filter-custom">
@@ -302,7 +329,7 @@
     <div class="sc-lbl">Anggota Terdaftar</div>
     <div class="sc-val" id="sAnggota" style="color:#3b82f6">—</div>
     <div class="sc-meta">
-      <span class="sc-meta-item" style="color:#3b82f6">
+      <span class="sc-meta-item" style="color:#2563eb">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         <span id="sLaki">—</span>
       </span>
@@ -315,6 +342,7 @@
 </div>
 
 <div class="app-body">
+  <!-- LEFT SIDEBAR -->
   <aside class="sb">
     <div class="sb-header-card">
       <div class="sb-hd-row">
@@ -350,6 +378,7 @@
     </div>
   </aside>
 
+  <!-- MAP -->
   <div class="map-panel">
     <div class="map-wrap" id="mapWrap">
       <div id="map"></div>
@@ -388,6 +417,38 @@
       </div>
     </div>
   </div>
+
+  <!-- RIGHT DETAIL SIDEBAR -->
+  <aside class="detail-sb empty" id="detailSb">
+    <div class="detail-header-card" id="detailHeader">
+      <div class="detail-ttl-row">
+        <div class="detail-icon" id="detailIcon" style="background:var(--primary)">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div class="detail-name" id="detailName">Pilih Lahan</div>
+          <div class="detail-id" id="detailId">Klik polygon di peta</div>
+        </div>
+        <button class="detail-close-btn" id="detailCloseBtn" onclick="clearDetail()" title="Tutup">
+          <svg viewBox="0 0 14 14"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+        </button>
+      </div>
+      <div id="detailProgBadge" style="margin-top:8px;display:none">
+        <span class="detail-prog-badge" id="detailProgBadgeInner">—</span>
+      </div>
+    </div>
+    <div class="detail-body-card">
+      <div class="detail-scroll" id="detailScroll">
+        <div class="detail-empty" id="detailEmpty">
+          <div class="detail-empty-icon">
+            <svg viewBox="0 0 24 24"><polygon points="3,11 12,2 21,11 21,21 15,21 15,15 9,15 9,21 3,21"/></svg>
+          </div>
+          <div class="detail-empty-txt">Klik salah satu polygon di peta untuk melihat detail lahan</div>
+        </div>
+        <div id="detailContent" style="display:none"></div>
+      </div>
+    </div>
+  </aside>
 </div>
 
 <!-- KTH MODAL -->
@@ -418,7 +479,7 @@
       <table class="kth-tbl">
         <thead><tr>
           <th>No</th><th style="width:32px">Aksi</th><th>ID Lahan</th><th>Nama Petani</th>
-          <th>Desa</th><th>Program</th><th>Luas (ha)</th><th>Tgl Realisasi</th>
+          <th>Desa</th><th>Program</th><th>Luas (ha)</th><th>Tgl Partisipasi</th><th>Tgl Realisasi</th>
         </tr></thead>
         <tbody id="modalTbody"></tbody>
       </table>
@@ -441,10 +502,17 @@ const AGRO_URL    = `${REPO_RAW}/agro.json`;
 const CMI_URL     = `${REPO_RAW}/CMI.json`;
 
 const PROG = {
-  Agro_Reg: { fill:'#40c074', stroke:'#1a6b3a', hd:'#1a6b3a', label:'Agroforestri Reguler', group:'agro', tagCls:'ar' },
-  Agro_BPO: { fill:'#38a3e0', stroke:'#0d5c8a', hd:'#0d5c8a', label:'Bantuan Pupuk Organik', group:'agro', tagCls:'ab' },
-  Temb_Reg: { fill:'#ff8c38', stroke:'#b84c00', hd:'#b84c00', label:'Tembawang Reguler',      group:'temb', tagCls:'tr' },
-  Temb_MTL: { fill:'#ce6be8', stroke:'#7b1fa2', hd:'#7b1fa2', label:'Menjaga Tutupan Lahan', group:'temb', tagCls:'tm' },
+  Agro_Reg: { fill:'#40c074', stroke:'#1a6b3a', hd:'#1a6b3a', label:'Agroforestri Reguler', group:'agro', tagCls:'ar', iconBg:'#1a6b3a' },
+  Agro_BPO: { fill:'#38a3e0', stroke:'#0d5c8a', hd:'#0d5c8a', label:'Bantuan Pupuk Organik', group:'agro', tagCls:'ab', iconBg:'#0d5c8a' },
+  Temb_Reg: { fill:'#ff8c38', stroke:'#b84c00', hd:'#b84c00', label:'Tembawang Reguler',      group:'temb', tagCls:'tr', iconBg:'#b84c00' },
+  Temb_MTL: { fill:'#ce6be8', stroke:'#7b1fa2', hd:'#7b1fa2', label:'Menjaga Tutupan Lahan', group:'temb', tagCls:'tm', iconBg:'#7b1fa2' },
+};
+
+const PROG_BADGE_STYLE = {
+  ar: 'background:#dcfce7;color:#166534',
+  ab: 'background:#dbeafe;color:#1e40af',
+  tr: 'background:#ffedd5;color:#9a3412',
+  tm: 'background:#f3e8ff;color:#6b21a8',
 };
 
 // ── Basemap ────────────────────────────────────────────────
@@ -504,34 +572,42 @@ const layerState  = { agro:true, temb:true, cmi:true };
 const kthVisState = {};
 
 // ── State ──────────────────────────────────────────────────
-let sheetMap   = {};   // id → row (semua data mentah)
+let sheetMap   = {};   // id → row
 let featureMap = {};   // id → { feature, row, layer }
-let kthMaster  = {};   // kth name → semua rows (tidak terfilter)
+let kthMaster  = {};   // kth name → { name, desa, rows, layers }
 let kthBounds  = {};   // kth name → bounds
 let targetData = {};   // year → { agro, agro_minus, temb, temb_minus }
 let currentKTH = null;
 let currentPreset = 'ytd';
-let filterFrom = null; // Date
-let filterTo   = null; // Date
+let filterFrom = null;
+let filterTo   = null;
+let selectedLahanId = null; // currently selected parcel in detail sidebar
 
 // ── Date Helpers ───────────────────────────────────────────
-// Format di sheet: M/D/YYYY HH:MM:SS  (mis. 5/16/2025 14:00:00)
+// Kolom sheet menggunakan format M/D/YYYY (mis. 5/16/2026) — dipakai untuk Tgl_Partisipasi & Tgl_Realisasi
 function parseSheetDate(s) {
   if (!s) return null;
-  const c = str(s);
-  // M/D/YYYY ... atau M/D/YYYY
+  const c = str(s).trim();
+  // M/D/YYYY HH:MM:SS atau M/D/YYYY
   const m = c.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if (m) return new Date(+m[3], +m[1]-1, +m[2]);
-  // fallback ISO
+  // ISO fallback
   const d = new Date(c);
   return isNaN(d) ? null : d;
 }
 
-function toDateStr(d) { // Date → YYYY-MM-DD (untuk input[type=date])
+function formatDateDisplay(s) {
+  if (!s || !s.trim()) return '—';
+  const d = parseSheetDate(s);
+  if (!d) return s;
+  return d.toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'});
+}
+
+function toDateStr(d) {
   return d.toISOString().slice(0,10);
 }
 
-function fromDateStr(s) { // YYYY-MM-DD → Date (local midnight)
+function fromDateStr(s) {
   if (!s) return null;
   const [y,mo,d] = s.split('-').map(Number);
   return new Date(y, mo-1, d);
@@ -547,16 +623,15 @@ function setPreset(p) {
   currentPreset = p;
   const now = new Date();
   let from, to;
-  if      (p === 'ytd')       { from = new Date(now.getFullYear(),0,1);       to = now; }
+  if      (p === 'ytd')       { from = new Date(now.getFullYear(),0,1);             to = now; }
   else if (p === 'thismonth') { from = new Date(now.getFullYear(),now.getMonth(),1); to = now; }
-  else if (p === 'last3')     { from = new Date(now.getTime() - 90*864e5);    to = now; }
-  else if (p === 'lastyear')  { from = new Date(now.getFullYear()-1,0,1);     to = new Date(now.getFullYear()-1,11,31); }
-  else                        { from = null; to = null; } // all
+  else if (p === 'last3')     { from = new Date(now.getTime() - 90*864e5);          to = now; }
+  else if (p === 'lastyear')  { from = new Date(now.getFullYear()-1,0,1);           to = new Date(now.getFullYear()-1,11,31); }
+  else                        { from = null; to = null; }
 
   filterFrom = from;
   filterTo   = to;
 
-  // Sync date inputs
   document.getElementById('fDateFrom').value = from ? toDateStr(from) : '';
   document.getElementById('fDateTo').value   = to   ? toDateStr(to)   : '';
 
@@ -570,17 +645,17 @@ function setCustomRange() {
   const tv = document.getElementById('fDateTo').value;
   filterFrom = fv ? fromDateStr(fv) : null;
   filterTo   = tv ? fromDateStr(tv) : null;
-  // Deactivate all presets — mark as custom
   currentPreset = 'custom';
   document.querySelectorAll('.fpreset').forEach(b => b.classList.remove('active'));
   applyFilter();
 }
 
 // ── Filter Logic ───────────────────────────────────────────
+// Filter berdasarkan Tgl_Partisipasi (kolom J)
 function rowInRange(row) {
-  if (!filterFrom && !filterTo) return true; // semua
-  const d = parseSheetDate(row.tgl);
-  if (!d) return false; // baris tanpa tanggal tidak masuk filter bertanggal
+  if (!filterFrom && !filterTo) return true;
+  const d = parseSheetDate(row.tglPartisipasi);
+  if (!d) return false;
   if (filterFrom && d < filterFrom) return false;
   if (filterTo) {
     const toEnd = new Date(filterTo); toEnd.setHours(23,59,59,999);
@@ -590,20 +665,18 @@ function rowInRange(row) {
 }
 
 function applyFilter() {
-  if (!Object.keys(featureMap).length) return; // data belum siap
+  if (!Object.keys(featureMap).length) return;
 
-  // Hitung filtered IDs
   const filteredIds = new Set(
     Object.values(sheetMap).filter(r => rowInRange(r)).map(r => r.id)
   );
 
-  // Update peta: show/hide polygon
   Object.entries(featureMap).forEach(([id, entry]) => {
     const row   = entry.row;
     const group = PROG[row.prog].group;
     const lg    = group === 'agro' ? lgAgro : lgTemb;
-    const inFilter  = filteredIds.has(id);
-    const kthOn     = kthVisState[row.kth] !== false;
+    const inFilter = filteredIds.has(id);
+    const kthOn    = kthVisState[row.kth] !== false;
     if (inFilter && kthOn) {
       if (!lg.hasLayer(entry.layer)) lg.addLayer(entry.layer);
     } else {
@@ -611,18 +684,18 @@ function applyFilter() {
     }
   });
 
-  // Update stats
   calcStats(filteredIds);
-
-  // Update KTH list (sidebar)
   renderKTHList(filteredIds);
-
-  // Update filter info
   updateFilterInfo(filteredIds.size);
 
-  // Jika modal terbuka, refresh
+  // Refresh modal if open
   if (currentKTH && document.getElementById('kthModal').style.display !== 'none') {
     openKTH(currentKTH, filteredIds);
+  }
+
+  // If selected parcel no longer in filter, clear detail
+  if (selectedLahanId && !filteredIds.has(selectedLahanId)) {
+    clearDetail();
   }
 }
 
@@ -649,7 +722,6 @@ function updateFilterInfo(count) {
     setLoad('Merender peta...');
     renderCMI(cmiJSON);
     renderAgro(agroJSON);
-    // Set default filter YTD dan apply
     const { from, to } = ytdRange();
     filterFrom = from;
     filterTo   = to;
@@ -668,6 +740,11 @@ async function getText(url) { const r=await fetch(url); if(!r.ok) throw new Erro
 async function getJSON(url)  { const r=await fetch(url); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
 
 // ── Parse Sheet ────────────────────────────────────────────
+// Kolom baru (sesuai sheet diperbarui):
+// A=No, B=Grid, C=KTH, D=Luas, E=Tipe, F=Petani, G=Jenis Kelamin,
+// H=Desa, I=ID_Petak, J=Tgl_Partisipasi, K=Tgl_Realisasi,
+// L=Agro_Reg, M=Agro_BPO, N=Temb_Reg, O=Temb_MTL
+
 function resolveProgram(aReg,aBPO,tReg,tMTL,tipeStr) {
   if (aReg>0) return 'Agro_Reg';
   if (aBPO>0) return 'Agro_BPO';
@@ -682,23 +759,28 @@ function resolveProgram(aReg,aBPO,tReg,tMTL,tipeStr) {
 function parseSheet(csvText) {
   const {data} = Papa.parse(csvText, {header:true, skipEmptyLines:true, transformHeader:h=>h.trim()});
   data.forEach(raw => {
-    const id = str(raw['ID_Petak']||raw['id_petak']||raw['ID Petak']||raw['I']||'');
+    // Support both named headers and positional (col letters)
+    const id   = str(raw['ID_Petak']  ||raw['id_petak']  ||raw['ID Petak']  ||raw['I']||'');
     if (!id) return;
-    const kth    = str(raw['KTH']    ||raw['C']||'');
-    const luas   = num(raw['Luas']   ||raw['D']||0);
-    const tipe   = str(raw['Tipe']   ||raw['E']||'');
-    const petani = str(raw['Petani'] ||raw['F']||'');
-    const jk     = str(raw['Jenis Kelamin']||raw['Jenis_Kelamin']||raw['G']||'');
-    const desa   = str(raw['Desa']   ||raw['H']||'');
-    const tgl    = str(raw['Tgl_Realisasi']||raw['Tgl Realisasi']||raw['J']||'');
-    const aReg   = num(raw['Agro_Reg']||raw['Agro Reg']||raw['K']||0);
-    const aBPO   = num(raw['Agro_BPO']||raw['Agro BPO']||raw['L']||0);
-    const tReg   = num(raw['Temb_Reg']||raw['Temb Reg']||raw['M']||0);
-    const tMTL   = num(raw['Temb_MTL']||raw['Temb MTL']||raw['N']||0);
-    const prog   = resolveProgram(aReg,aBPO,tReg,tMTL,tipe);
+    const kth  = str(raw['KTH']       ||raw['C']||'');
+    const grid = str(raw['Grid']      ||raw['B']||'');
+    const luas = num(raw['Luas']       ||raw['D']||0);
+    const tipe = str(raw['Tipe']       ||raw['E']||'');
+    const petani = str(raw['Petani']   ||raw['F']||'');
+    const jk   = str(raw['Jenis Kelamin']||raw['Jenis_Kelamin']||raw['G']||'');
+    const desa = str(raw['Desa']       ||raw['H']||'');
+    // FILTER sekarang pakai Tgl_Partisipasi (kolom J)
+    const tglPartisipasi = str(raw['Tgl_Partisipasi']||raw['Tgl Partisipasi']||raw['J']||'');
+    // Tgl_Realisasi (kolom K) — untuk ditampilkan di detail
+    const tglRealisasi   = str(raw['Tgl_Realisasi']  ||raw['Tgl Realisasi']  ||raw['K']||'');
+    const aReg = num(raw['Agro_Reg']||raw['Agro Reg']||raw['L']||0);
+    const aBPO = num(raw['Agro_BPO']||raw['Agro BPO']||raw['M']||0);
+    const tReg = num(raw['Temb_Reg']||raw['Temb Reg']||raw['N']||0);
+    const tMTL = num(raw['Temb_MTL']||raw['Temb MTL']||raw['O']||0);
+    const prog = resolveProgram(aReg,aBPO,tReg,tMTL,tipe);
     if (!prog) return;
     const effectiveLuas = luas>0 ? luas : (aReg||aBPO||tReg||tMTL||0);
-    sheetMap[id] = {id,kth,luas:effectiveLuas,tipe,petani,jk,desa,tgl,aReg,aBPO,tReg,tMTL,prog};
+    sheetMap[id] = {id,kth,grid,luas:effectiveLuas,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,prog};
   });
 }
 
@@ -734,14 +816,15 @@ function renderAgro(gj) {
     const layer = L.geoJSON(feat, {
       style:()=>({color:st.stroke,weight:2,fillColor:st.fill,fillOpacity:0.75,opacity:1}),
     });
-    layer.bindPopup(()=>buildPopup(feat,row), {maxWidth:270,minWidth:220,autoPan:true});
-    layer.on('mouseover', e=>{e.target.setStyle({fillOpacity:.92,weight:3});e.target.bringToFront();});
-    layer.on('mouseout',  e=>{e.target.setStyle({fillOpacity:.75,weight:2});});
-    // Tambahkan ke layer group (akan dikontrol oleh applyFilter)
+    layer.on('click', () => showDetail(idLahan));
+    layer.on('mouseover', e => { e.target.setStyle({fillOpacity:.92,weight:3}); e.target.bringToFront(); });
+    layer.on('mouseout',  e => {
+      const isSelected = selectedLahanId === idLahan;
+      e.target.setStyle({fillOpacity: isSelected ? .92 : .75, weight: isSelected ? 3 : 2});
+    });
     (st.group==='agro'?lgAgro:lgTemb).addLayer(layer);
     featureMap[idLahan] = {feature:feat,row,layer};
 
-    // Daftarkan ke kthMaster (semua rows, tidak tergantung filter)
     if (!kthMaster[row.kth]) {
       kthMaster[row.kth] = {name:row.kth,desa:row.desa,rows:[],layers:[]};
       kthVisState[row.kth] = true;
@@ -749,22 +832,9 @@ function renderAgro(gj) {
     kthMaster[row.kth].rows.push(row);
     kthMaster[row.kth].layers.push(layer);
   });
-  // Hitung bounds per KTH (dari semua layers)
   Object.entries(kthMaster).forEach(([name,k])=>{
     if (k.layers.length) kthBounds[name] = L.featureGroup(k.layers).getBounds();
   });
-}
-
-function buildPopup(feat,row) {
-  const st = PROG[row.prog];
-  const fields = [
-    ['ID Lahan',   str(feat.properties?.id_lahan||row.id)],
-    ['Nama Petani',row.petani],['KTH',row.kth],['Desa',row.desa],
-    ['Tipe',       row.tipe||'—'],['Luas',fmt(row.luas)+' ha'],
-    ['Program',    st.label],['Tgl Realisasi',row.tgl||'—'],
-  ];
-  return `<div class="pop-hd" style="background:${st.hd}"><div class="pop-hd-dot"></div>${esc(st.label)}</div>
-    <div class="pop-bd">${fields.map(([l,v])=>`<div class="pop-row"><span class="pop-lbl">${l}</span><span class="pop-val">${esc(v)}</span></div>`).join('')}</div>`;
 }
 
 // ── Stats (filtered) ───────────────────────────────────────
@@ -776,7 +846,7 @@ function calcStats(filteredIds) {
     const r = sheetMap[id];
     if (!r) return;
     if (r.aReg>0||r.aBPO>0||r.tReg>0||r.tMTL>0) {
-      aReg+=r.aReg;aBPO+=r.aBPO;tReg+=r.tReg;tMTL+=r.tMTL;
+      aReg+=r.aReg; aBPO+=r.aBPO; tReg+=r.tReg; tMTL+=r.tMTL;
     } else {
       if      (r.prog==='Agro_Reg') aReg+=r.luas;
       else if (r.prog==='Agro_BPO') aBPO+=r.luas;
@@ -798,14 +868,13 @@ function calcStats(filteredIds) {
   const year      = new Date().getFullYear();
   const tgt       = targetData[year] || null;
 
-  // Fungsi set target info (hanya tampil saat YTD)
   function setTargetUI(pctId,barId,targetId, real, tgtVal, badgeBg, badgeColor) {
     const pctEl = document.getElementById(pctId);
     const barEl = document.getElementById(barId);
     const tgtEl = document.getElementById(targetId);
     if (isYTD && tgt && tgtVal>0) {
       const pct = Math.min(999,(real/tgtVal*100));
-      pctEl.textContent   = pct.toFixed(1)+'% dari target';
+      pctEl.textContent      = pct.toFixed(1)+'% dari target';
       pctEl.style.background = badgeBg;
       pctEl.style.color      = badgeColor;
       document.getElementById(pctId+'Wrap').style.display = '';
@@ -840,14 +909,13 @@ function calcStats(filteredIds) {
   setText('sPmp',     'Perempuan: '+pmp.size);
 }
 
-// ── KTH List (filtered) ────────────────────────────────────
+// ── KTH List ──────────────────────────────────────────────
 const SVG_EYE     = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const SVG_TABLE   = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`;
 const SVG_VIS_ON  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const SVG_VIS_OFF = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-5.07 5.93"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 
 function renderKTHList(filteredIds) {
-  // Hitung nilai agro/temb hanya dari filtered rows
   const kthFiltered = {};
   filteredIds.forEach(id => {
     const r = sheetMap[id];
@@ -894,7 +962,6 @@ function renderKTHList(filteredIds) {
 function toggleKTHVis(name) {
   kthVisState[name] = kthVisState[name] === false ? true : false;
   const isOn = kthVisState[name] !== false;
-  // Re-apply filter (ini akan handle show/hide berdasarkan filter + vis state)
   const filteredIds = new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
   Object.entries(featureMap).forEach(([id,entry]) => {
     if (entry.row.kth !== name) return;
@@ -916,18 +983,133 @@ function zoomKTH(name) {
   if (kthBounds[name]) map.fitBounds(kthBounds[name].pad(0.22));
 }
 
+// ── Right Detail Sidebar ────────────────────────────────────
+function showDetail(id) {
+  const entry = featureMap[id];
+  if (!entry) return;
+  const row = entry.row;
+  const st  = PROG[row.prog];
+
+  // Reset prev selection style
+  if (selectedLahanId && selectedLahanId !== id && featureMap[selectedLahanId]) {
+    featureMap[selectedLahanId].layer.setStyle({weight:2,fillOpacity:.75});
+  }
+
+  selectedLahanId = id;
+  entry.layer.setStyle({weight:3.5, fillOpacity:.92});
+  entry.layer.bringToFront();
+
+  // Header
+  document.getElementById('detailName').textContent = row.petani || '—';
+  document.getElementById('detailId').textContent   = row.id;
+  const iconEl = document.getElementById('detailIcon');
+  iconEl.style.background = st.iconBg;
+
+  // Program badge
+  const badgeEl = document.getElementById('detailProgBadge');
+  const badgeInner = document.getElementById('detailProgBadgeInner');
+  badgeEl.style.display = 'block';
+  badgeInner.textContent = st.label;
+  badgeInner.setAttribute('style', PROG_BADGE_STYLE[st.tagCls]);
+
+  // JK badge
+  const jkLower = row.jk.toLowerCase();
+  const jkHtml = row.jk
+    ? `<span class="detail-jk-badge ${jkLower.includes('perempuan')?'perempuan':'laki'}">${esc(row.jk)}</span>`
+    : '<span style="color:var(--text-3)">—</span>';
+
+  // Dates
+  const tglPart  = formatDateDisplay(row.tglPartisipasi);
+  const tglReal  = formatDateDisplay(row.tglRealisasi);
+
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-sec">
+      <div class="detail-sec-ttl">Luas Lahan</div>
+      <div style="padding:6px 0">
+        <span class="detail-luas-big">${fmt(row.luas)}</span><span class="detail-luas-unit">ha</span>
+      </div>
+    </div>
+    <div class="detail-sec">
+      <div class="detail-sec-ttl">Tanggal</div>
+      <div class="detail-date-grid">
+        <div class="detail-date-box">
+          <div class="detail-date-box-lbl">Partisipasi</div>
+          <div class="detail-date-box-val${tglPart==='—'?' empty':''}">${tglPart}</div>
+        </div>
+        <div class="detail-date-box">
+          <div class="detail-date-box-lbl">Realisasi / Tanam</div>
+          <div class="detail-date-box-val${tglReal==='—'?' empty':''}">${tglReal}</div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-sec">
+      <div class="detail-sec-ttl">Petani</div>
+      <div class="detail-row">
+        <div class="detail-lbl">Nama</div>
+        <div class="detail-val">${esc(row.petani)||'—'}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-lbl">Jenis Kelamin</div>
+        <div class="detail-val">${jkHtml}</div>
+      </div>
+    </div>
+    <div class="detail-sec">
+      <div class="detail-sec-ttl">Lokasi</div>
+      <div class="detail-row">
+        <div class="detail-lbl">KTH</div>
+        <div class="detail-val">${esc(row.kth)||'—'}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-lbl">Desa</div>
+        <div class="detail-val">${esc(row.desa)||'—'}</div>
+      </div>
+      ${row.grid ? `<div class="detail-row">
+        <div class="detail-lbl">Grid</div>
+        <div class="detail-val mono">${esc(row.grid)}</div>
+      </div>` : ''}
+    </div>
+    <div class="detail-sec">
+      <div class="detail-sec-ttl">Rincian Program</div>
+      <div class="detail-row">
+        <div class="detail-lbl">Tipe</div>
+        <div class="detail-val">${esc(row.tipe)||'—'}</div>
+      </div>
+      ${row.aReg>0?`<div class="detail-row"><div class="detail-lbl">Agro Reguler</div><div class="detail-val">${fmt(row.aReg)} ha</div></div>`:''}
+      ${row.aBPO>0?`<div class="detail-row"><div class="detail-lbl">Agro BPO</div><div class="detail-val">${fmt(row.aBPO)} ha</div></div>`:''}
+      ${row.tReg>0?`<div class="detail-row"><div class="detail-lbl">Temb. Reguler</div><div class="detail-val">${fmt(row.tReg)} ha</div></div>`:''}
+      ${row.tMTL>0?`<div class="detail-row"><div class="detail-lbl">Temb. MTL</div><div class="detail-val">${fmt(row.tMTL)} ha</div></div>`:''}
+    </div>
+  `;
+
+  document.getElementById('detailEmpty').style.display   = 'none';
+  document.getElementById('detailContent').style.display = 'block';
+  document.getElementById('detailSb').classList.remove('empty');
+}
+
+function clearDetail() {
+  if (selectedLahanId && featureMap[selectedLahanId]) {
+    featureMap[selectedLahanId].layer.setStyle({weight:2,fillOpacity:.75});
+  }
+  selectedLahanId = null;
+  document.getElementById('detailName').textContent = 'Pilih Lahan';
+  document.getElementById('detailId').textContent   = 'Klik polygon di peta';
+  document.getElementById('detailIcon').style.background = 'var(--primary)';
+  document.getElementById('detailProgBadge').style.display = 'none';
+  document.getElementById('detailEmpty').style.display   = 'flex';
+  document.getElementById('detailContent').style.display = 'none';
+  document.getElementById('detailSb').classList.add('empty');
+}
+
 // ── KTH Modal ──────────────────────────────────────────────
 function openKTH(name, filteredIds) {
   const master = kthMaster[name];
   if (!master) return;
   currentKTH = name;
 
-  // Jika filteredIds tidak dikirim, hitung ulang
   if (!filteredIds) {
     filteredIds = new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
   }
 
-  // Rows yang tampil = interseksi master rows & filteredIds
   const rows = master.rows.filter(r => filteredIds.has(r.id));
 
   document.querySelectorAll('.kth-card').forEach(el=>el.classList.remove('active'));
@@ -957,10 +1139,12 @@ function openKTH(name, filteredIds) {
       <td style="color:var(--text-3);font-size:12px">${i+1}</td>
       <td style="padding:6px 4px"><button class="row-eye-btn" onclick="zoomToLahan('${esc(r.id)}')">${SVG_EYE}</button></td>
       <td style="font-family:monospace;font-size:12px">${esc(r.id)}</td>
-      <td>${esc(r.petani)}</td><td>${esc(r.desa)}</td>
+      <td>${esc(r.petani)}</td>
+      <td>${esc(r.desa)}</td>
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
       <td style="font-weight:600">${fmt(r.luas)}</td>
-      <td style="color:var(--text-2)">${esc(r.tgl)||'—'}</td>
+      <td style="color:var(--text-2)">${esc(formatDateDisplay(r.tglPartisipasi))}</td>
+      <td style="color:var(--text-2)">${esc(formatDateDisplay(r.tglRealisasi))||'—'}</td>
     </tr>`;
   }).join('');
 
@@ -989,8 +1173,8 @@ function downloadCSV() {
   if (!currentKTH) return;
   const filteredIds = new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
   const rows = (kthMaster[currentKTH]?.rows||[]).filter(r=>filteredIds.has(r.id));
-  const hdr  = ['No','ID Lahan','Nama Petani','KTH','Desa','Tipe','Program','Luas (ha)','Tgl Realisasi'];
-  const body = rows.map((r,i)=>[i+1,r.id,r.petani,r.kth,r.desa,r.tipe,PROG[r.prog]?.label||r.prog,r.luas,r.tgl]);
+  const hdr  = ['No','ID Lahan','Grid','Nama Petani','KTH','Desa','Tipe','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi'];
+  const body = rows.map((r,i)=>[i+1,r.id,r.grid,r.petani,r.kth,r.desa,r.tipe,PROG[r.prog]?.label||r.prog,r.luas,r.tglPartisipasi,r.tglRealisasi]);
   const csv  = [hdr,...body].map(r=>r.map(v=>`"${str(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a = Object.assign(document.createElement('a'),{
     href: URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})),
@@ -1003,9 +1187,8 @@ function zoomToLahan(id) {
   const entry = featureMap[id];
   if (!entry) return;
   try { map.fitBounds(L.geoJSON(entry.feature).getBounds().pad(0.5)); } catch(e){}
-  entry.layer.setStyle({weight:4,fillOpacity:.95});
-  setTimeout(()=>entry.layer.setStyle({weight:2,fillOpacity:.75}),2000);
-  setTimeout(()=>{ try{entry.layer.openPopup();}catch(e){} },400);
+  showDetail(id);
+  closeModal();
 }
 
 // ── Layer Toggle ───────────────────────────────────────────
