@@ -802,7 +802,7 @@ function calcStats(filteredIds) {
   setTargetUI('sAgroPct','sAgroProgBar','sAgroTarget',totalAgro,tgt?(tgt.agro+tgt.agro_minus):0,'#f0fdf4','var(--c-agro-reg)');
   setText('sTembHa',fmt(totalTemb)+' ha');
   setText('sTembReg','Temb. Reguler: '+fmt(tReg)+' ha');
-  setText('sTembMTL','Temb. MTL: '+fmt(tMTL)+' ha');
+  setText('sTembMTL','Menjaga Tutupan Lahan: '+fmt(tMTL)+' ha');
   setTargetUI('sTembPct','sTembProgBar','sTembTarget',totalTemb,tgt?(tgt.temb+tgt.temb_minus):0,'#fff7ed','var(--c-temb-reg)');
   setText('sAnggota',uniq.size);
   setText('sLaki','Laki-laki: '+laki.size);
