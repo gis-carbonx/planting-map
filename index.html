@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planting Monitoring 1</title>
+  <title>Planting Monitoring</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -684,18 +684,17 @@ function parseSheet(csvText) {
   data.forEach(raw => {
     const id = str(raw['ID_Petak']||raw['id_petak']||raw['ID Petak']||raw['I']||'');
     if (!id) return;
-    const id     = str(raw['ID_Petak'] || '');
-    const kth    = str(raw['KTH'] || '');
-    const luas   = num(raw['Luas'] || 0);
-    const tipe   = str(raw['Tipe'] || '');
-    const petani = str(raw['Petani'] || '');
-    const jk     = str(raw['Jenis Kelamin'] || '');
-    const desa   = str(raw['Desa'] || '');
-    const tgl    = str(raw['Tgl_Realisasi'] || '');
-    const aReg   = num(raw['Agro_Reg'] || 0);
-    const aBPO   = num(raw['Agro_BPO'] || 0);
-    const tReg   = num(raw['Temb_Reg'] || 0);
-    const tMTL   = num(raw['Temb_MTL'] || 0);
+    const kth    = str(raw['KTH']    ||raw['C']||'');
+    const luas   = num(raw['Luas']   ||raw['D']||0);
+    const tipe   = str(raw['Tipe']   ||raw['E']||'');
+    const petani = str(raw['Petani'] ||raw['F']||'');
+    const jk     = str(raw['Jenis Kelamin']||raw['Jenis_Kelamin']||raw['G']||'');
+    const desa   = str(raw['Desa']   ||raw['H']||'');
+    const tgl    = str(raw['Tgl_Realisasi']||raw['Tgl Realisasi']||raw['J']||'');
+    const aReg   = num(raw['Agro_Reg']||raw['Agro Reg']||raw['K']||0);
+    const aBPO   = num(raw['Agro_BPO']||raw['Agro BPO']||raw['L']||0);
+    const tReg   = num(raw['Temb_Reg']||raw['Temb Reg']||raw['M']||0);
+    const tMTL   = num(raw['Temb_MTL']||raw['Temb MTL']||raw['N']||0);
     const prog   = resolveProgram(aReg,aBPO,tReg,tMTL,tipe);
     if (!prog) return;
     const effectiveLuas = luas>0 ? luas : (aReg||aBPO||tReg||tMTL||0);
