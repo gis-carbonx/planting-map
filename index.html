@@ -927,6 +927,15 @@ function renderCMI(gj) {
 }
 
 function renderAgro(gj) {
+  // ── Langkah 1: bangun kthMaster dari sheetMap (SEMUA baris, bukan hanya yang ada polygon)
+  // Ini memastikan angka KTH modal konsisten dengan panel home yang juga baca dari sheetMap.
+  Object.values(sheetMap).forEach(row=>{
+    if (!kthMaster[row.kth]) { kthMaster[row.kth]={name:row.kth,desa:row.desa,layers:[]}; kthVisState[row.kth]=true; }
+    // update desa jika masih kosong
+    if (!kthMaster[row.kth].desa && row.desa) kthMaster[row.kth].desa=row.desa;
+  });
+
+  // ── Langkah 2: render polygon dari GeoJSON
   const features=gj.type==='FeatureCollection'?gj.features:[gj];
   features.forEach(feat=>{
     const props=feat.properties||{};
@@ -941,9 +950,8 @@ function renderAgro(gj) {
     layer.on('mouseout', e=>{const sel=selectedLahanId===idLahan;e.target.setStyle({fillOpacity:sel?.92:.75,weight:sel?3:2});});
     (st.group==='agro'?lgAgro:lgTemb).addLayer(layer);
     featureMap[idLahan]={feature:feat,row,layer};
-    if (!kthMaster[row.kth]) { kthMaster[row.kth]={name:row.kth,desa:row.desa,rows:[],layers:[]}; kthVisState[row.kth]=true; }
-    kthMaster[row.kth].rows.push(row);
-    kthMaster[row.kth].layers.push(layer);
+    // kthMaster sudah ada, tinggal tambahkan layer untuk bounds
+    if (kthMaster[row.kth]) kthMaster[row.kth].layers.push(layer);
   });
   Object.entries(kthMaster).forEach(([name,k])=>{ if (k.layers.length) kthBounds[name]=L.featureGroup(k.layers).getBounds(); });
 }
@@ -1186,7 +1194,7 @@ function openKTH(name,filteredIds) {
   const master=kthMaster[name]; if (!master) return;
   currentKTH=name;
   if (!filteredIds) filteredIds=new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
-  const rows=master.rows.filter(r=>filteredIds.has(r.id));
+  const rows=Object.values(sheetMap).filter(r=>r.kth===name && filteredIds.has(r.id));
   document.querySelectorAll('.kth-card').forEach(el=>el.classList.remove('active'));
   const card=document.querySelector(`.kth-card[data-kth="${name}"]`);
   if (card) { card.classList.add('active'); card.scrollIntoView({behavior:'smooth',block:'nearest'}); }
