@@ -73,14 +73,6 @@
     .sc-target{font-size:11px;color:var(--text-3);margin-top:1px}
     .sc-pct-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:700;background:var(--primary-bg);color:var(--primary-md)}
 
-    /* ── Capaian Progres Button Card ── */
-    .sc-btn-card{flex:none;width:auto;min-width:130px;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-md) 100%);border:1px solid var(--primary-md);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;box-shadow:var(--shadow-sm);cursor:pointer;transition:box-shadow .15s,transform .12s;text-align:center}
-    .sc-btn-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
-    .sc-btn-card-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.18);display:grid;place-items:center;flex-shrink:0}
-    .sc-btn-card-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    .sc-btn-card-lbl{font-size:11px;font-weight:700;color:#fff;letter-spacing:.3px;line-height:1.4}
-    .sc-btn-card-sub{font-size:10px;color:rgba(255,255,255,.75);font-weight:500}
-
     /* APP BODY */
     .app-body{height:calc(100vh - var(--hdr-h) - var(--filter-h) - var(--stats-h));display:flex;overflow:hidden;gap:8px;padding:0 12px 10px 12px}
 
@@ -148,7 +140,7 @@
     .bm-thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
     .bm-name{font-size:8px;font-weight:600;color:#374151;background:rgba(255,255,255,.88);padding:1px 4px;border-radius:4px;line-height:1.3;text-align:center;max-width:42px}
 
-    /* RIGHT DETAIL SIDEBAR */
+    /* ── RIGHT DETAIL SIDEBAR ── */
     .detail-sb{width:var(--detail-w);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
     .detail-card{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column;min-height:0}
     .detail-card-hd{padding:12px 14px;border-bottom:1px solid var(--border-lt);flex-shrink:0;background:linear-gradient(135deg,#f8fffe 0%,#f0fdf4 100%)}
@@ -165,6 +157,7 @@
     .detail-empty-icon{width:44px;height:44px;border-radius:12px;background:var(--bg);border:1px solid var(--border);display:grid;place-items:center}
     .detail-empty-icon svg{width:20px;height:20px;stroke:var(--text-3);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
     .detail-empty-txt{font-size:12px;color:var(--text-3);font-weight:500;line-height:1.5}
+
     .d-block{margin-bottom:14px}
     .d-block:last-child{margin-bottom:0}
     .d-block-ttl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--text-3);margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--border-lt)}
@@ -175,23 +168,22 @@
     .d-val.mono{font-family:monospace;font-size:11px;color:var(--primary-md)}
     .d-luas{font-size:24px;font-weight:800;color:var(--primary);letter-spacing:-1px;line-height:1}
     .d-luas-unit{font-size:12px;font-weight:500;color:var(--text-2);margin-left:3px}
+
     .d-carbon-block{background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%);border:1px solid #6ee7b7;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px}
     .d-carbon-icon{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#059669,#047857);display:grid;place-items:center;flex-shrink:0}
     .d-carbon-icon svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     .d-carbon-body{}
     .d-carbon-val{font-size:20px;font-weight:800;color:#047857;letter-spacing:-0.5px;line-height:1}
     .d-carbon-lbl{font-size:10px;font-weight:600;color:#065f46;margin-top:2px;line-height:1.3}
-
+  
     /* LOADING */
     .loading-overlay{position:absolute;inset:0;z-index:998;background:rgba(255,255,255,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(3px);border-radius:14px}
     .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .load-txt{font-size:14px;color:var(--text-2);font-weight:500}
 
-    /* MODAL BASE */
+    /* MODAL */
     .modal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
-
-    /* KTH MODAL */
     .kth-modal{background:#fff;border-radius:14px;width:min(900px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
     .kth-modal-hd{padding:16px 20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
     .kth-modal-title{font-size:16px;font-weight:700}
@@ -228,68 +220,6 @@
     .row-eye-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     .no-results{text-align:center;padding:28px 16px;color:var(--text-3);font-size:14px}
     .empty-state{text-align:center;padding:28px 16px;color:var(--text-3);font-size:14px}
-
-    /* ── CAPAIAN PROGRES MODAL ── */
-    .cp-modal{background:#fff;border-radius:14px;width:min(1100px,96vw);max-height:92vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
-    .cp-modal-hd{padding:16px 20px;background:linear-gradient(135deg,var(--primary) 0%,#1e7a50 100%);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-    .cp-modal-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
-    .cp-modal-title svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    .cp-modal-sub{font-size:13px;opacity:.8;margin-top:2px}
-    .cp-modal-close{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:18px;cursor:pointer;display:grid;place-items:center;flex-shrink:0}
-    .cp-modal-close:hover{background:rgba(255,255,255,.25)}
-
-    /* Capaian summary strip */
-    .cp-summary{display:flex;gap:10px;padding:14px 20px;background:#f8fafc;border-bottom:1px solid var(--border);flex-wrap:wrap;flex-shrink:0}
-    .cp-sum-box{flex:1;min-width:130px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#fff}
-    .cp-sum-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);margin-bottom:5px}
-    .cp-sum-row{display:flex;align-items:baseline;gap:4px}
-    .cp-sum-val{font-size:18px;font-weight:800;line-height:1}
-    .cp-sum-unit{font-size:11px;font-weight:500;color:var(--text-3)}
-    .cp-sum-sub{font-size:10.5px;color:var(--text-2);margin-top:4px}
-
-    /* Capaian toolbar */
-    .cp-toolbar{display:flex;align-items:center;gap:10px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
-    .cp-filter-group{display:flex;align-items:center;gap:6px}
-    .cp-filter-group label{font-size:12px;color:var(--text-2);white-space:nowrap;font-weight:600}
-    .cp-select{padding:5px 10px;border-radius:8px;border:1px solid var(--border);font-size:12px;font-family:inherit;color:var(--text);background:#f8fafc;outline:none;cursor:pointer}
-    .cp-select:focus{border-color:var(--primary-lt);background:#fff}
-    .cp-count{font-size:13px;color:var(--text-2);font-weight:600;margin-left:auto;white-space:nowrap}
-
-    /* Capaian table */
-    .cp-modal-body{overflow-y:auto;flex:1}
-    .cp-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-    .cp-tbl thead tr{background:#f8fafc;position:sticky;top:0;z-index:1}
-    .cp-tbl th{padding:9px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap}
-    .cp-tbl th.th-group{text-align:center;border-left:2px solid var(--border)}
-    .cp-tbl td{padding:8px 10px;border-bottom:1px solid var(--border-lt);color:var(--text);vertical-align:middle}
-    .cp-tbl tr:hover td{background:#f8fafc}
-    .cp-tbl tr.cp-hidden{display:none}
-    .cp-tbl td.td-group{border-left:2px solid var(--border-lt)}
-    .cp-tbl td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
-    .cp-tbl td.num-agro{color:var(--c-agro-reg)}
-    .cp-tbl td.num-bpo{color:var(--c-agro-bpo)}
-    .cp-tbl td.num-temb{color:var(--c-temb-reg)}
-    .cp-tbl td.num-mtl{color:var(--c-temb-mtl)}
-    .cp-tbl td.num-pot-agro{color:#059669;font-style:italic}
-    .cp-tbl td.num-pot-bpo{color:#0284c7;font-style:italic}
-    .cp-tbl td.num-pot-temb{color:#d97706;font-style:italic}
-    .cp-tbl td.num-pot-mtl{color:#9333ea;font-style:italic}
-    .cp-no-results{text-align:center;padding:32px;color:var(--text-3);font-size:14px}
-
-    /* Status badge */
-    .status-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
-    .status-badge.sudah{background:#dcfce7;color:#166534}
-    .status-badge.belum{background:#fef9c3;color:#854d0e}
-    .status-badge.proses{background:#dbeafe;color:#1e40af}
-    .status-badge.other{background:#f1f5f9;color:#475569}
-
-    /* Th colspan header */
-    .cp-tbl-head-group th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#fff;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.3)}
-    .th-bg-est{background:#374151}
-    .th-bg-ukur{background:#1b5e40}
-    .th-bg-pot{background:#7c3aed}
-    .th-bg-info{background:#1e293b}
-
     ::-webkit-scrollbar{width:4px;height:4px}
     ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
   </style>
@@ -320,7 +250,7 @@
         Patrol-CT Monitoring
       </a>
       <div class="menu-hd" style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0">Versi</div>
-      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v1.6</div>
+      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v1.5</div>
     </div>
   </div>
 </header>
@@ -347,7 +277,6 @@
 
 <!-- STATS BAR -->
 <div class="stats-bar">
-  <!-- Total Lahan -->
   <div class="sc">
     <div class="sc-lbl">Total Lahan</div>
     <div class="sc-val" id="sTotalHa" style="color:var(--primary)">—</div>
@@ -359,17 +288,6 @@
       <span class="sc-meta-item sc-target" id="sTotalTarget"></span>
     </div>
   </div>
-
-  <!-- Tombol Capaian Progres -->
-  <div class="sc-btn-card" onclick="openCapaianModal()">
-    <div class="sc-btn-card-icon">
-      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-    </div>
-    <div class="sc-btn-card-lbl">Capaian<br>Progres</div>
-    <div class="sc-btn-card-sub" id="cpBtnSub">Follow Up Petani</div>
-  </div>
-
-  <!-- Agroforestri -->
   <div class="sc">
     <div class="sc-lbl">Agroforestri</div>
     <div class="sc-val" id="sAgroHa" style="color:var(--c-agro-reg)">—</div>
@@ -385,8 +303,6 @@
       <span class="sc-meta-item"><span class="dot" style="background:var(--c-agro-bpo-lt)"></span><span id="sAgroBPO">—</span></span>
     </div>
   </div>
-
-  <!-- Tembawang -->
   <div class="sc">
     <div class="sc-lbl">Tembawang</div>
     <div class="sc-val" id="sTembHa" style="color:var(--c-temb-reg)">—</div>
@@ -402,8 +318,6 @@
       <span class="sc-meta-item"><span class="dot" style="background:var(--c-temb-mtl-lt)"></span><span id="sTembMTL">—</span></span>
     </div>
   </div>
-
-  <!-- Anggota -->
   <div class="sc">
     <div class="sc-lbl">Anggota Terdaftar</div>
     <div class="sc-val" id="sAnggota" style="color:#3b82f6">—</div>
@@ -504,6 +418,7 @@
         <div class="detail-hd-top">
           <div class="detail-dot" id="detailDot" style="background:var(--primary)"></div>
           <div style="flex:1;min-width:0">
+
             <div class="detail-hd-name" id="detailName">Informasi Lahan</div>
             <div class="detail-hd-id" id="detailId">Klik polygon di peta</div>
           </div>
@@ -565,123 +480,18 @@
   </div>
 </div>
 
-<!-- CAPAIAN PROGRES MODAL -->
-<div class="modal-overlay" id="capaianModal" style="display:none" onclick="closeCapaianModal(event)">
-  <div class="cp-modal" onclick="event.stopPropagation()">
-    <div class="cp-modal-hd">
-      <div>
-        <div class="cp-modal-title">
-          Capaian Progres — Follow Up Petani
-        </div>
-        <div class="cp-modal-sub" id="cpModalSub">Memuat data...</div>
-      </div>
-      <button class="cp-modal-close" onclick="closeCapaianModal()">✕</button>
-    </div>
-
-    <!-- Summary strip -->
-    <div class="cp-summary" id="cpSummary">
-      <div class="cp-sum-box">
-        <div class="cp-sum-lbl">Agro Reguler — Estimasi</div>
-        <div class="cp-sum-row"><span class="cp-sum-val" id="cpSumEstAR" style="color:var(--c-agro-reg)">—</span><span class="cp-sum-unit">ha</span></div>
-        <div class="cp-sum-sub">Hasil Ukur: <strong id="cpSumUkurAR">—</strong> ha · Potensi: <strong id="cpSumPotAR">—</strong> ha</div>
-      </div>
-      <div class="cp-sum-box">
-        <div class="cp-sum-lbl">Agro BPO — Estimasi</div>
-        <div class="cp-sum-row"><span class="cp-sum-val" id="cpSumEstBPO" style="color:var(--c-agro-bpo)">—</span><span class="cp-sum-unit">ha</span></div>
-        <div class="cp-sum-sub">Hasil Ukur: <strong id="cpSumUkurBPO">—</strong> ha · Potensi: <strong id="cpSumPotBPO">—</strong> ha</div>
-      </div>
-      <div class="cp-sum-box">
-        <div class="cp-sum-lbl">Temb. Reguler — Estimasi</div>
-        <div class="cp-sum-row"><span class="cp-sum-val" id="cpSumEstTR" style="color:var(--c-temb-reg)">—</span><span class="cp-sum-unit">ha</span></div>
-        <div class="cp-sum-sub">Hasil Ukur: <strong id="cpSumUkurTR">—</strong> ha · Potensi: <strong id="cpSumPotTR">—</strong> ha</div>
-      </div>
-      <div class="cp-sum-box">
-        <div class="cp-sum-lbl">Temb. MTL — Estimasi</div>
-        <div class="cp-sum-row"><span class="cp-sum-val" id="cpSumEstMTL" style="color:var(--c-temb-mtl)">—</span><span class="cp-sum-unit">ha</span></div>
-        <div class="cp-sum-sub">Hasil Ukur: <strong id="cpSumUkurMTL">—</strong> ha · Potensi: <strong id="cpSumPotMTL">—</strong> ha</div>
-      </div>
-    </div>
-
-    <!-- Toolbar with filters -->
-    <div class="cp-toolbar">
-      <div class="cp-filter-group">
-        <label>Desa</label>
-        <select class="cp-select" id="cpFilterDesa" onchange="applyCapaianFilter()">
-          <option value="">Semua Desa</option>
-        </select>
-      </div>
-      <div class="cp-filter-group">
-        <label>Status</label>
-        <select class="cp-select" id="cpFilterStatus" onchange="applyCapaianFilter()">
-          <option value="">Semua Status</option>
-        </select>
-      </div>
-      <div class="cp-filter-group">
-        <label>Program</label>
-        <select class="cp-select" id="cpFilterProgram" onchange="applyCapaianFilter()">
-          <option value="">Semua Program</option>
-          <option value="agro">Agroforestri</option>
-          <option value="tembawang">Tembawang</option>
-        </select>
-      </div>
-      <span class="cp-count" id="cpCount">— petani</span>
-    </div>
-
-    <!-- Table -->
-    <div class="cp-modal-body">
-      <table class="cp-tbl" id="cpTable">
-        <thead>
-          <tr class="cp-tbl-head-group">
-            <th colspan="4" class="th-bg-info">Informasi Petani</th>
-            <th colspan="4" class="th-bg-est th-group">Estimasi Luas (ha)</th>
-            <th colspan="4" class="th-bg-ukur th-group">Hasil Ukur (ha)</th>
-            <th colspan="4" class="th-bg-pot th-group">Potensi Lahan (ha)</th>
-            <th colspan="2" class="th-bg-info">Update</th>
-          </tr>
-          <tr>
-            <th>No</th>
-            <th>Nama Petani</th>
-            <th>Desa</th>
-            <th>Dusun</th>
-            <th class="th-group" style="color:var(--c-agro-reg)">Agro Reg</th>
-            <th style="color:var(--c-agro-bpo)">Agro BPO</th>
-            <th style="color:var(--c-temb-reg)">Temb Reg</th>
-            <th style="color:var(--c-temb-mtl)">Temb MTL</th>
-            <th class="th-group" style="color:var(--c-agro-reg)">Agro Reg</th>
-            <th style="color:var(--c-agro-bpo)">Agro BPO</th>
-            <th style="color:var(--c-temb-reg)">Temb Reg</th>
-            <th style="color:var(--c-temb-mtl)">Temb MTL</th>
-            <th class="th-group" style="color:#059669">Agro Reg</th>
-            <th style="color:#0284c7">Agro BPO</th>
-            <th style="color:#d97706">Temb Reg</th>
-            <th style="color:#9333ea">Temb MTL</th>
-            <th>Tgl Update</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="cpTbody">
-          <tr><td colspan="18" class="cp-no-results">Memuat data...</td></tr>
-        </tbody>
-      </table>
-      <div class="cp-no-results" id="cpNoResults" style="display:none">Tidak ada data yang sesuai filter</div>
-    </div>
-  </div>
-</div>
-
 <script>
 'use strict';
 
 // ── Konstanta ──────────────────────────────────────────────
-const SHEET_ID       = '1ZWVhzR7k27Hb3hHorIfBvkglzRN8PH1YDsk4EUhCgx8';
-const SHEET_NAME     = 'ARR_SUMMARY';
-const TARGET_NAME    = 'target';
-const FOLLOWUP_NAME  = 'FOLLOW_UP_PETANI';
-const REPO_RAW       = 'https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data';
-const CSV_URL        = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
-const TARGET_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TARGET_NAME)}`;
-const FOLLOWUP_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(FOLLOWUP_NAME)}`;
-const AGRO_URL       = `${REPO_RAW}/agro.json`;
-const CMI_URL        = `${REPO_RAW}/CMI.json`;
+const SHEET_ID    = '1ZWVhzR7k27Hb3hHorIfBvkglzRN8PH1YDsk4EUhCgx8';
+const SHEET_NAME  = 'ARR_SUMMARY';
+const TARGET_NAME = 'target';
+const REPO_RAW    = 'https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data';
+const CSV_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+const TARGET_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TARGET_NAME)}`;
+const AGRO_URL    = `${REPO_RAW}/agro.json`;
+const CMI_URL     = `${REPO_RAW}/CMI.json`;
 
 const PROG = {
   Agro_Reg: { fill:'#40c074', stroke:'#1a6b3a', hd:'#1a6b3a', label:'Agroforestri Reguler', group:'agro', tagCls:'ar', dotColor:'#1a6b3a' },
@@ -754,13 +564,12 @@ const layerState  = { agro:true, temb:true, cmi:true };
 const kthVisState = {};
 
 // ── State ──────────────────────────────────────────────────
-let sheetMap     = {};
-let featureMap   = {};
-let kthMaster    = {};
-let kthBounds    = {};
-let targetData   = {};
-let followupRows = [];          // ← data FOLLOW_UP_PETANI
-let currentKTH   = null;
+let sheetMap   = {};
+let featureMap = {};
+let kthMaster  = {};
+let kthBounds  = {};
+let targetData = {};
+let currentKTH = null;
 let currentPreset = 'ytd';
 let filterFrom = null;
 let filterTo   = null;
@@ -852,14 +661,9 @@ function updateFilterInfo(count) {
 (async function boot() {
   try {
     setLoad('Memuat data spreadsheet...');
-    const [csvText, targetText, followupText] = await Promise.all([
-      getText(CSV_URL),
-      getText(TARGET_URL).catch(()=>''),
-      getText(FOLLOWUP_URL).catch(()=>''),
-    ]);
+    const [csvText, targetText] = await Promise.all([getText(CSV_URL), getText(TARGET_URL).catch(()=>'')]);
     parseSheet(csvText);
     if (targetText) parseTargetSheet(targetText);
-    if (followupText) parseFollowupSheet(followupText);
     setLoad('Memuat data GeoJSON...');
     const [agroJSON, cmiJSON] = await Promise.all([getJSON(AGRO_URL), getJSON(CMI_URL)]);
     setLoad('Merender peta...');
@@ -928,50 +732,6 @@ function parseTargetSheet(csvText) {
     if (isNaN(tahun)||tahun<2000) return;
     targetData[tahun]={agro:parseFloat(str(row[1]))||0,agro_minus:parseFloat(str(row[2]))||0,temb:parseFloat(str(row[3]))||0,temb_minus:parseFloat(str(row[4]))||0};
   });
-}
-
-// ── Parse FOLLOW_UP_PETANI ─────────────────────────────────
-// Kolom: A=No, B=Nama Petani, C=Desa, D=Dusun, E=Lokasi, F=Minat Program,
-//        G=est_tot, H=est_agr_reg, I=est_tbw, J=est_bpo, K=est_mtl,
-//        L=ukur_agr_reg, M=ukur_tbw, N=ukur_bpo, O=ukur_mtl,
-//        P=pot_agr_reg, Q=pot_tbw, R=pot_bpo, S=pot_mtl,
-//        T=tgl_update, U=status
-function parseFollowupSheet(csvText) {
-  const {data}=Papa.parse(csvText,{header:false,skipEmptyLines:true});
-  followupRows=[];
-  data.forEach((row,i)=>{
-    if (i===0) return; // skip header
-    const nama = str(row[1]);
-    if (!nama) return;
-    followupRows.push({
-      no:         str(row[0]),
-      nama:       nama,
-      desa:       str(row[2]),
-      dusun:      str(row[3]),
-      lokasi:     str(row[4]),
-      minat:      str(row[5]),
-      // estimasi
-      est_tot:    num(row[6]),
-      est_ar:     num(row[7]),
-      est_tbw:    num(row[8]),
-      est_bpo:    num(row[9]),
-      est_mtl:    num(row[10]),
-      // hasil ukur
-      ukur_ar:    num(row[11]),
-      ukur_tbw:   num(row[12]),
-      ukur_bpo:   num(row[13]),
-      ukur_mtl:   num(row[14]),
-      // potensi
-      pot_ar:     num(row[15]),
-      pot_tbw:    num(row[16]),
-      pot_bpo:    num(row[17]),
-      pot_mtl:    num(row[18]),
-      tgl_update: str(row[19]),
-      status:     str(row[20]),
-    });
-  });
-  // Update button subtitle
-  setText('cpBtnSub', followupRows.length + ' petani');
 }
 
 function renderCMI(gj) {
@@ -1060,7 +820,6 @@ function renderKTHList(filteredIds) {
   filteredIds.forEach(id=>{
     const r=sheetMap[id]; if (!r) return;
     if (!kthFiltered[r.kth]) kthFiltered[r.kth]={agro:0,temb:0,count:0,desa:r.desa};
-    // Gunakan nilai per-kategori yang sama dengan calcStats (aReg, aBPO, tReg, tMTL)
     kthFiltered[r.kth].agro += r.aReg + r.aBPO;
     kthFiltered[r.kth].temb += r.tReg + r.tMTL;
     kthFiltered[r.kth].count++;
@@ -1183,8 +942,11 @@ function showDetail(id) {
         <span class="d-luas">${fmt(row.luas)}</span><span class="d-luas-unit">ha</span>
       </div>
     </div>
+
     ${carbonBlock}
+
     ${dateSection}
+
     <div class="d-block">
       <div class="d-block-ttl">Petani</div>
       <div class="d-row">
@@ -1196,12 +958,14 @@ function showDetail(id) {
         <span class="d-val">${esc(jkHtml)}</span>
       </div>
     </div>
+
     <div class="d-block">
       <div class="d-block-ttl">Lokasi</div>
       <div class="d-row"><span class="d-lbl">KTH</span><span class="d-val">${esc(row.kth)||'—'}</span></div>
       <div class="d-row"><span class="d-lbl">Desa</span><span class="d-val">${esc(row.desa)||'—'}</span></div>
       ${row.grid?`<div class="d-row"><span class="d-lbl">Grid</span><span class="d-val mono">${esc(row.grid)}</span></div>`:''}
     </div>
+
     ${progDetails?`<div class="d-block"><div class="d-block-ttl">Rincian Program</div>${progDetails}</div>`:''}
   `;
 
@@ -1224,32 +988,24 @@ function clearDetail() {
 }
 
 // ── KTH Modal ──────────────────────────────────────────────
-function openKTH(name, filteredIds) {
+function openKTH(name,filteredIds) {
   const master=kthMaster[name]; if (!master) return;
   currentKTH=name;
-  // Gunakan filter tanggal yang sama dengan tampilan utama
   if (!filteredIds) filteredIds=new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
   const rows=master.rows.filter(r=>filteredIds.has(r.id));
   document.querySelectorAll('.kth-card').forEach(el=>el.classList.remove('active'));
   const card=document.querySelector(`.kth-card[data-kth="${name}"]`);
   if (card) { card.classList.add('active'); card.scrollIntoView({behavior:'smooth',block:'nearest'}); }
-
-  // Hitung dengan nilai per-field yang konsisten dengan home stats (aReg+aBPO = agro, tReg+tMTL = temb)
-  const agro    = rows.reduce((s,r)=>s+(r.aReg+r.aBPO), 0);
-  const temb    = rows.reduce((s,r)=>s+(r.tReg+r.tMTL), 0);
-  const agroReg = rows.reduce((s,r)=>s+r.aReg, 0);
-  const agroBPO = rows.reduce((s,r)=>s+r.aBPO, 0);
-  const tembReg = rows.reduce((s,r)=>s+r.tReg, 0);
-  const tembMTL = rows.reduce((s,r)=>s+r.tMTL, 0);
+  // PERUBAHAN #1: gunakan L+M dan N+O langsung
+  const agro=rows.reduce((s,r)=>s+(r.aReg+r.aBPO),0);
+  const temb=rows.reduce((s,r)=>s+(r.tReg+r.tMTL),0);
   const petaniSet=new Set(rows.map(r=>r.petani.toLowerCase()));
   setText('modalTitle',name);
   setText('modalSub',`${master.desa} · ${rows.length} lahan · ${petaniSet.size} petani`);
   document.getElementById('modalStats').innerHTML=`
     <div class="kth-stat-box"><div class="kth-stat-lbl">Total Lahan</div><div class="kth-stat-val" style="color:var(--primary)">${fmt(agro+temb)} ha</div></div>
-    <div class="kth-stat-box"><div class="kth-stat-lbl">Agro Reguler</div><div class="kth-stat-val" style="color:var(--c-agro-reg)">${fmt(agroReg)} ha</div></div>
-    <div class="kth-stat-box"><div class="kth-stat-lbl">Agro BPO</div><div class="kth-stat-val" style="color:var(--c-agro-bpo)">${fmt(agroBPO)} ha</div></div>
-    <div class="kth-stat-box"><div class="kth-stat-lbl">Tembawang Reg</div><div class="kth-stat-val" style="color:var(--c-temb-reg)">${fmt(tembReg)} ha</div></div>
-    <div class="kth-stat-box"><div class="kth-stat-lbl">Temb. MTL</div><div class="kth-stat-val" style="color:var(--c-temb-mtl)">${fmt(tembMTL)} ha</div></div>
+    <div class="kth-stat-box"><div class="kth-stat-lbl">Agroforestri</div><div class="kth-stat-val" style="color:var(--c-agro-reg)">${fmt(agro)} ha</div></div>
+    <div class="kth-stat-box"><div class="kth-stat-lbl">Tembawang</div><div class="kth-stat-val" style="color:var(--c-temb-reg)">${fmt(temb)} ha</div></div>
     <div class="kth-stat-box"><div class="kth-stat-lbl">Petani</div><div class="kth-stat-val" style="color:#3b82f6">${petaniSet.size}</div></div>
     <div class="kth-stat-box"><div class="kth-stat-lbl">Petak</div><div class="kth-stat-val">${rows.length}</div></div>`;
   document.getElementById('modalSearchInput').value='';
@@ -1306,117 +1062,6 @@ function zoomToLahan(id) {
   const entry=featureMap[id]; if (!entry) return;
   try { map.fitBounds(L.geoJSON(entry.feature).getBounds().pad(0.5)); } catch(e){}
   showDetail(id); closeModal();
-}
-
-// ── Capaian Progres Modal ──────────────────────────────────
-function openCapaianModal() {
-  if (!followupRows.length) {
-    setText('cpModalSub','Data belum tersedia');
-    document.getElementById('capaianModal').style.display='flex';
-    return;
-  }
-
-  // Populate filter dropdowns
-  const desaSet=new Set(followupRows.map(r=>r.desa).filter(Boolean));
-  const statusSet=new Set(followupRows.map(r=>r.status).filter(Boolean));
-  const desaSel=document.getElementById('cpFilterDesa');
-  const statusSel=document.getElementById('cpFilterStatus');
-  const curDesa=desaSel.value, curStatus=statusSel.value;
-  desaSel.innerHTML='<option value="">Semua Desa</option>'+[...desaSet].sort().map(d=>`<option value="${esc(d)}"${d===curDesa?'selected':''}>${esc(d)}</option>`).join('');
-  statusSel.innerHTML='<option value="">Semua Status</option>'+[...statusSet].sort().map(s=>`<option value="${esc(s)}"${s===curStatus?'selected':''}>${esc(s)}</option>`).join('');
-
-  setText('cpModalSub', followupRows.length+' petani terdaftar');
-  applyCapaianFilter();
-  document.getElementById('capaianModal').style.display='flex';
-}
-
-function closeCapaianModal(e) {
-  if (e && e.target!==document.getElementById('capaianModal')) return;
-  document.getElementById('capaianModal').style.display='none';
-}
-
-function applyCapaianFilter() {
-  const filterDesa   = document.getElementById('cpFilterDesa').value;
-  const filterStatus = document.getElementById('cpFilterStatus').value;
-  const filterProg   = document.getElementById('cpFilterProgram').value;
-
-  const visible = followupRows.filter(r=>{
-    if (filterDesa   && r.desa   !== filterDesa)   return false;
-    if (filterStatus && r.status !== filterStatus)  return false;
-    if (filterProg) {
-      const m = r.minat.toLowerCase();
-      if (filterProg==='agro'      && !m.includes('agro'))       return false;
-      if (filterProg==='tembawang' && !m.includes('tembawang'))  return false;
-    }
-    return true;
-  });
-
-  // Recalculate summary for visible rows only
-  let sumEstAR=0,sumEstBPO=0,sumEstTR=0,sumEstMTL=0;
-  let sumUkurAR=0,sumUkurBPO=0,sumUkurTR=0,sumUkurMTL=0;
-  let sumPotAR=0,sumPotBPO=0,sumPotTR=0,sumPotMTL=0;
-  visible.forEach(r=>{
-    sumEstAR  +=r.est_ar;  sumEstBPO +=r.est_bpo; sumEstTR  +=r.est_tbw; sumEstMTL +=r.est_mtl;
-    sumUkurAR +=r.ukur_ar; sumUkurBPO+=r.ukur_bpo;sumUkurTR +=r.ukur_tbw;sumUkurMTL+=r.ukur_mtl;
-    sumPotAR  +=r.pot_ar;  sumPotBPO +=r.pot_bpo; sumPotTR  +=r.pot_tbw; sumPotMTL +=r.pot_mtl;
-  });
-  setText('cpSumEstAR',  fmt(sumEstAR));   setText('cpSumUkurAR',  fmt(sumUkurAR));  setText('cpSumPotAR',  fmt(sumPotAR));
-  setText('cpSumEstBPO', fmt(sumEstBPO));  setText('cpSumUkurBPO', fmt(sumUkurBPO)); setText('cpSumPotBPO', fmt(sumPotBPO));
-  setText('cpSumEstTR',  fmt(sumEstTR));   setText('cpSumUkurTR',  fmt(sumUkurTR));  setText('cpSumPotTR',  fmt(sumPotTR));
-  setText('cpSumEstMTL', fmt(sumEstMTL));  setText('cpSumUkurMTL', fmt(sumUkurMTL)); setText('cpSumPotMTL', fmt(sumPotMTL));
-
-  setText('cpCount', visible.length+' petani');
-
-  // Render table rows
-  const tbody = document.getElementById('cpTbody');
-  if (!visible.length) {
-    tbody.innerHTML='<tr><td colspan="18" class="cp-no-results">Tidak ada data yang sesuai filter</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = visible.map((r,i)=>{
-    function numCell(val, cls) {
-      if (!val || val===0) return `<td class="num td-group" style="color:var(--text-3);font-size:11px">—</td>`;
-      return `<td class="num ${cls} td-group">${fmt(val)}</td>`;
-    }
-    function numCellInline(val, cls) {
-      if (!val || val===0) return `<td class="num" style="color:var(--text-3);font-size:11px">—</td>`;
-      return `<td class="num ${cls}">${fmt(val)}</td>`;
-    }
-
-    const statusCls = getStatusCls(r.status);
-    const tglDisp   = r.tgl_update ? formatDateDisplay(r.tgl_update)||r.tgl_update : '—';
-
-    return `<tr>
-      <td style="color:var(--text-3);font-size:12px;white-space:nowrap">${i+1}</td>
-      <td style="font-weight:600;white-space:nowrap">${esc(r.nama)}</td>
-      <td style="white-space:nowrap">${esc(r.desa)}</td>
-      <td style="color:var(--text-2);white-space:nowrap">${esc(r.dusun)||'—'}</td>
-      ${numCell(r.est_ar, 'num-agro')}
-      ${numCellInline(r.est_bpo, 'num-bpo')}
-      ${numCellInline(r.est_tbw, 'num-temb')}
-      ${numCellInline(r.est_mtl, 'num-mtl')}
-      ${numCell(r.ukur_ar, 'num-agro')}
-      ${numCellInline(r.ukur_bpo, 'num-bpo')}
-      ${numCellInline(r.ukur_tbw, 'num-temb')}
-      ${numCellInline(r.ukur_mtl, 'num-mtl')}
-      ${numCell(r.pot_ar, 'num-pot-agro')}
-      ${numCellInline(r.pot_bpo, 'num-pot-bpo')}
-      ${numCellInline(r.pot_tbw, 'num-pot-temb')}
-      ${numCellInline(r.pot_mtl, 'num-pot-mtl')}
-      <td style="color:var(--text-2);font-size:11.5px;white-space:nowrap">${esc(tglDisp)}</td>
-      <td><span class="status-badge ${statusCls}">${esc(r.status)||'—'}</span></td>
-    </tr>`;
-  }).join('');
-}
-
-function getStatusCls(status) {
-  if (!status) return 'other';
-  const s = status.toLowerCase();
-  if (s.includes('sudah')) return 'sudah';
-  if (s.includes('belum')) return 'belum';
-  if (s.includes('proses') || s.includes('dalam')) return 'proses';
-  return 'other';
 }
 
 // ── Layer Toggle ───────────────────────────────────────────
