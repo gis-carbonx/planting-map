@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- docx.js for Word export -->
+  <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -164,7 +166,7 @@
     .d-carbon-lbl{font-size:10px;font-weight:600;color:#065f46;margin-top:2px;line-height:1.3}
 
     .modal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;padding:20px}
-    .kth-modal{background:#fff;border-radius:14px;width:min(900px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
+    .kth-modal{background:#fff;border-radius:14px;width:min(960px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
     .kth-modal-hd{padding:16px 20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
     .kth-modal-title{font-size:16px;font-weight:700}
     .kth-modal-sub{font-size:13px;opacity:.8;margin-top:1px}
@@ -198,11 +200,16 @@
     .row-eye-btn{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--bg);cursor:pointer;display:grid;place-items:center;color:var(--text-2)}
     .row-eye-btn:hover{background:#eff6ff;border-color:#93c5fd;color:#2563eb}
     .row-eye-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    /* Print/link button */
+    .row-link-btn{width:24px;height:24px;border-radius:6px;border:1px solid #fed7aa;background:#fff7ed;cursor:pointer;display:grid;place-items:center;color:#c2410c;text-decoration:none}
+    .row-link-btn:hover{background:#ffedd5;border-color:#fb923c}
+    .row-link-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .row-link-btn.no-link{opacity:.3;cursor:not-allowed;pointer-events:none}
     .no-results{text-align:center;padding:28px 16px;color:var(--text-3);font-size:14px}
     .empty-state{text-align:center;padding:28px 16px;color:var(--text-3);font-size:14px}
 
-    /* ══ CAPAIAN MODAL ══ */
-    .cp-modal{background:#fff;border-radius:14px;width:min(820px,97vw);max-height:92vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
+    /* ══ CAPAIAN MODAL — diperlebar ══ */
+    .cp-modal{background:#fff;border-radius:14px;width:min(1100px,97vw);max-height:92vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
     .cp-modal-hd{padding:14px 20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 
     .cp-strip{display:flex;gap:8px;padding:10px 16px;background:#f8fafc;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
@@ -219,7 +226,12 @@
     .cp-search input:focus{border-color:var(--primary-lt);background:#fff}
     .cp-sel{padding:5px 8px;border-radius:7px;border:1px solid var(--border);font-size:12px;font-family:inherit;color:var(--text);background:#f8fafc;outline:none;cursor:pointer}
     .cp-sel:focus{border-color:var(--primary-lt)}
-    .cp-row-count{font-size:12px;color:var(--text-2);font-weight:600;margin-left:auto;white-space:nowrap}
+    .cp-row-count{font-size:12px;color:var(--text-2);font-weight:600;white-space:nowrap}
+
+    /* Download Word button di CP toolbar */
+    .btn-dl-word{padding:5px 12px;border-radius:7px;border:1px solid #bbf7d0;background:#f0fdf4;font-size:12px;font-weight:600;color:var(--c-agro);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;white-space:nowrap}
+    .btn-dl-word:hover{background:#dcfce7;border-color:var(--primary-lt)}
+    .btn-dl-word svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
     .cp-body{overflow-y:auto;flex:1}
     .cp-tbl{width:100%;border-collapse:collapse;font-size:12px}
@@ -235,11 +247,8 @@
     .num.est{color:#1d4ed8}.num.ukur{color:#166534}.num.pot{color:#c2410c}
     .nil{color:var(--text-3);text-align:right;font-size:11px}
 
-    /* ── Minat tag: bold hitam, tanpa warna background mencolok ── */
     .mtag{display:inline-block;font-size:11px;font-weight:700;color:#000;white-space:nowrap}
     .mtag+.mtag::before{content:' · ';font-weight:400;color:var(--text-3)}
-
-    /* Status tag tetap warna untuk keterbacaan */
     .stag{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:600;white-space:nowrap}
 
     ::-webkit-scrollbar{width:4px;height:4px}
@@ -272,7 +281,7 @@
         Patrol-CT Monitoring
       </a>
       <div class="menu-hd" style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0">Versi</div>
-      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v1.8</div>
+      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v1.9</div>
     </div>
   </div>
 </header>
@@ -485,7 +494,7 @@
     <div class="kth-modal-body">
       <table class="kth-tbl">
         <thead><tr>
-          <th>No</th><th style="width:32px">Aksi</th><th>ID Lahan</th><th>Nama Petani</th>
+          <th>No</th><th style="width:32px">Zoom</th><th style="width:32px">Dok</th><th>ID Lahan</th><th>Nama Petani</th>
           <th>Desa</th><th>Program</th><th>Luas (ha)</th><th>Tgl Partisipasi</th><th>Tgl Realisasi</th>
         </tr></thead>
         <tbody id="modalTbody"></tbody>
@@ -549,6 +558,11 @@
         <option value="mtl">Menjaga Tutupan Lahan</option>
       </select>
       <span class="cp-row-count" id="cpCount">—</span>
+      <!-- TOMBOL UNDUH WORD -->
+      <button class="btn-dl-word" onclick="downloadCPWord()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Unduh Word
+      </button>
     </div>
 
     <div class="cp-body">
@@ -579,7 +593,6 @@ const CMI_URL    = `${REPO_RAW}/CMI.json`;
 const MONTH_NAMES= ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
 // ── 4 kelas program CP ───────────────────────────────────
-// shortCode: label singkat di tabel
 const CP_CLASS = {
   agro_reg:{ label:'Agroforestri Reguler', short:'A-REG', color:'#1a6b3a',
              fEst:'est_agr_reg', fUkur:'ukur_agr_reg', fPot:'pot_agr_reg' },
@@ -591,31 +604,19 @@ const CP_CLASS = {
              fEst:'est_mtl',     fUkur:'ukur_mtl',      fPot:'pot_mtl'     },
 };
 
-// ── Klasifikasi minat → kelas ─────────────────────────────
-// Berdasarkan tabel mapping:
-//   Agroforestry                  → [agro_reg]
-//   Agroforestry dan Tembawang    → [agro_reg, temb_reg]
-//   Bantuan Pupuk Organik         → [bpo]
-//   Menjaga Tutupan Lahan         → [mtl]
-//   Menjaga Tutupan Lahan + Pupuk → [mtl, bpo]
-//   Tembawang                     → [temb_reg]
+// ── Klasifikasi minat ─────────────────────────────────────
 function classifyMinat(raw) {
   const v = (raw||'').toLowerCase().trim();
   if (!v) return [];
-
-  // Deteksi komponen
   const hasAgro  = /agrofore?st(r[yi])?|a-?reg/i.test(raw);
   const hasTemb  = /tembawang|t-?reg/i.test(raw);
   const hasPupuk = /pupuk|organik|bpo|a-?bpo/i.test(raw);
   const hasTutup = /tutupan|menjaga|t-?mtl/i.test(raw);
-
   const out = [];
   if (hasAgro)  out.push('agro_reg');
   if (hasTemb)  out.push('temb_reg');
   if (hasTutup) out.push('mtl');
-  // BPO: masuk jika ada kata pupuk/bpo, TERLEPAS dari agro/temb/tutup
   if (hasPupuk) out.push('bpo');
-
   return out.length ? out : [];
 }
 
@@ -684,14 +685,8 @@ const layerState={agro:true,temb:true,cmi:true},kthVisState={};
 // ── State ────────────────────────────────────────────────
 let sheetMap={},featureMap={},kthMaster={},kthBounds={},targetData={},followUpData=[];
 let currentKTH=null,currentPreset='ytd',filterYear=null,filterMonth=null,selectedLahanId=null;
-
-// ── PROG map ─────────────────────────────────────────────
-const PROG2={
-  Agro_Reg:{fill:'#40c074',stroke:'#1a6b3a',label:'Agroforestri Reguler',group:'agro',tagCls:'ar',dot:'#1a6b3a'},
-  Agro_BPO:{fill:'#38a3e0',stroke:'#0d5c8a',label:'Bantuan Pupuk Organik',group:'agro',tagCls:'ab',dot:'#0d5c8a'},
-  Temb_Reg:{fill:'#ff8c38',stroke:'#b84c00',label:'Tembawang Reguler',group:'temb',tagCls:'tr',dot:'#b84c00'},
-  Temb_MTL:{fill:'#ce6be8',stroke:'#7b1fa2',label:'Menjaga Tutupan Lahan',group:'temb',tagCls:'tm',dot:'#7b1fa2'},
-};
+// Simpan baris CP yang terakhir difilter (untuk download)
+let cpFilteredRows=[], cpActiveMinat='';
 
 // ── Year dropdowns ───────────────────────────────────────
 function populateYearDropdowns(){
@@ -840,8 +835,10 @@ function parseSheet(csv){
     const aReg=num(raw['Agro_Reg']||raw['Agro Reg']||raw['L']||0),aBPO=num(raw['Agro_BPO']||raw['Agro BPO']||raw['M']||0);
     const tReg=num(raw['Temb_Reg']||raw['Temb Reg']||raw['N']||0),tMTL=num(raw['Temb_MTL']||raw['Temb MTL']||raw['O']||0);
     const tanamanKarbon=num(raw['Total_Tanaman_Karbon']||raw['Total Tanaman Karbon']||raw['P']||0);
+    // ── Kolom Q: link dokumen (Dropbox / URL) ──
+    const link=str(raw['Link']||raw['link']||raw['Q']||'');
     const prog=resolveProgram(aReg,aBPO,tReg,tMTL,tipe);if(!prog)return;
-    sheetMap[id]={id,kth,grid,luas:aReg+aBPO+tReg+tMTL,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,tanamanKarbon,prog};
+    sheetMap[id]={id,kth,grid,luas:aReg+aBPO+tReg+tMTL,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,tanamanKarbon,link,prog};
   });
 }
 function parseTargetSheet(csv){
@@ -945,6 +942,8 @@ const SEYE=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const STBL=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`;
 const SVON=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const SVOF=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-5.07 5.93"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+// Print/link icon
+const SPRINT=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`;
 
 function renderKTHList(ids){
   const kf={};
@@ -1029,6 +1028,10 @@ function showDetail(id){
     row.tReg>0?`<div class="d-row"><span class="d-lbl">Temb. Reguler</span><span class="d-val">${fmt(row.tReg)} ha</span></div>`:'',
     row.tMTL>0?`<div class="d-row"><span class="d-lbl">Temb. MTL</span><span class="d-val">${fmt(row.tMTL)} ha</span></div>`:'',
   ].filter(Boolean).join('');
+  // Link dokumen
+  const linkHtml=row.link?`<div class="d-block"><div class="d-block-ttl">Dokumen</div>
+    <div class="d-row"><span class="d-lbl">Link</span>
+    <a href="${esc(row.link)}" target="_blank" style="font-size:12px;font-weight:600;color:var(--primary-md);text-decoration:none">Buka Dokumen ↗</a></div></div>`:'';
   document.getElementById('detailContent').innerHTML=`
     <div class="d-block"><div class="d-block-ttl">Luas Lahan</div>
       <div style="padding:5px 0"><span class="d-luas">${fmt(row.luas)}</span><span class="d-luas-unit">ha</span></div></div>
@@ -1040,7 +1043,8 @@ function showDetail(id){
       <div class="d-row"><span class="d-lbl">KTH</span><span class="d-val">${esc(row.kth)||'—'}</span></div>
       <div class="d-row"><span class="d-lbl">Desa</span><span class="d-val">${esc(row.desa)||'—'}</span></div>
       ${row.grid?`<div class="d-row"><span class="d-lbl">Grid</span><span class="d-val mono">${esc(row.grid)}</span></div>`:''}</div>
-    ${pd?`<div class="d-block"><div class="d-block-ttl">Rincian Program</div>${pd}</div>`:''}`;
+    ${pd?`<div class="d-block"><div class="d-block-ttl">Rincian Program</div>${pd}</div>`:''}
+    ${linkHtml}`;
   document.getElementById('detailEmpty').style.display='none';
   document.getElementById('detailContent').style.display='block';
 }
@@ -1079,9 +1083,15 @@ function openKTH(name,ids){
   setText('modalRowCount',rows.length+' lahan');
   document.getElementById('modalTbody').innerHTML=rows.map((r,i)=>{
     const st=PROG[r.prog];
+    // Tombol link/print dokumen dari kolom Q
+    const hasLink=r.link&&r.link.startsWith('http');
+    const linkBtn=hasLink
+      ? `<a class="row-link-btn" href="${esc(r.link)}" target="_blank" title="Buka Dokumen">${SPRINT}</a>`
+      : `<span class="row-link-btn no-link" title="Tidak ada dokumen">${SPRINT}</span>`;
     return `<tr data-petani="${esc(r.petani.toLowerCase())}">
       <td style="color:var(--text-3);font-size:12px">${i+1}</td>
       <td style="padding:6px 4px"><button class="row-eye-btn" onclick="zoomToLahan('${esc(r.id)}')">${SEYE}</button></td>
+      <td style="padding:6px 4px">${linkBtn}</td>
       <td style="font-family:monospace;font-size:12px">${esc(r.id)}</td>
       <td>${esc(r.petani)}</td><td>${esc(r.desa)}</td>
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
@@ -1109,8 +1119,8 @@ function downloadCSV(){
   if(!currentKTH)return;
   const ids=new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
   const rows=Object.values(sheetMap).filter(r=>r.kth===currentKTH&&ids.has(r.id));
-  const hdr=['No','ID Lahan','Grid','Nama Petani','KTH','Desa','Tipe','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi'];
-  const body=rows.map((r,i)=>[i+1,r.id,r.grid,r.petani,r.kth,r.desa,r.tipe,PROG[r.prog]?.label||r.prog,r.luas,r.tglPartisipasi,r.tglRealisasi]);
+  const hdr=['No','ID Lahan','Grid','Nama Petani','KTH','Desa','Tipe','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi','Link Dokumen'];
+  const body=rows.map((r,i)=>[i+1,r.id,r.grid,r.petani,r.kth,r.desa,r.tipe,PROG[r.prog]?.label||r.prog,r.luas,r.tglPartisipasi,r.tglRealisasi,r.link||'']);
   const csv=[hdr,...body].map(r=>r.map(v=>`"${str(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})),download:`KTH_${currentKTH.replace(/\s+/g,'_')}.csv`});
   a.click();URL.revokeObjectURL(a.href);
@@ -1134,13 +1144,10 @@ function openCapaianModal(){
     setText('cpSub','Data kosong');
     return;
   }
-  // Dropdown desa
   const desaSet=[...new Set(followUpData.map(r=>r.desa).filter(Boolean))].sort();
   document.getElementById('cpSelDesa').innerHTML='<option value="">Semua Desa</option>'+desaSet.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
-  // Dropdown tahun (dari tgl_update)
   const tahunSet=[...new Set(followUpData.map(r=>r.tahunUpdate).filter(Boolean))].sort((a,b)=>a-b);
   document.getElementById('cpSelTahun').innerHTML='<option value="">Semua Tahun</option>'+tahunSet.map(y=>`<option value="${y}">${y}</option>`).join('');
-  // Reset
   document.getElementById('cpSearch').value='';
   document.getElementById('cpSelMinat').value='';
   setText('cpSub',`${followUpData.length} petani terdaftar`);
@@ -1162,59 +1169,38 @@ function runCPFilter(){
     return true;
   });
 
+  // Simpan untuk download
+  cpFilteredRows = rows;
+  cpActiveMinat  = minat;
+
   renderCPStrip(rows, minat);
   renderCPTable(rows, minat);
 }
 
-// ── Strip: hitung per-field, bukan cross-sum ─────────────
-// Ini kunci fix bug: fBPO = jumlah pot_bpo dari filtRows saja,
-// bukan pot_agr_reg+pot_bpo+pot_tbw+pot_mtl semua digabung.
+// ── Strip ─────────────────────────────────────────────────
 function renderCPStrip(filtRows, minatFilter){
-  // Total SEMUA petani per field
   let totAR=0,totBPO=0,totTR=0,totMTL=0;
   followUpData.forEach(r=>{
-    totAR +=r.pot_agr_reg||0;
-    totBPO+=r.pot_bpo    ||0;
-    totTR +=r.pot_tbw    ||0;
-    totMTL+=r.pot_mtl    ||0;
+    totAR +=r.pot_agr_reg||0;totBPO+=r.pot_bpo||0;totTR +=r.pot_tbw||0;totMTL+=r.pot_mtl||0;
   });
   const totAll=totAR+totBPO+totTR+totMTL;
-
-  // Total dari filtRows per field (MASING-MASING, tidak cross)
   let fAR=0,fBPO=0,fTR=0,fMTL=0;
-  filtRows.forEach(r=>{
-    fAR +=r.pot_agr_reg||0;
-    fBPO+=r.pot_bpo    ||0;
-    fTR +=r.pot_tbw    ||0;
-    fMTL+=r.pot_mtl    ||0;
-  });
+  filtRows.forEach(r=>{fAR+=r.pot_agr_reg||0;fBPO+=r.pot_bpo||0;fTR+=r.pot_tbw||0;fMTL+=r.pot_mtl||0;});
   const fAll=fAR+fBPO+fTR+fMTL;
-
-  // Ada filter aktif jika minat dipilih ATAU rows difilter (desa/tahun/search)
-  const hasF = filtRows.length !== followUpData.length;
-
+  const hasF=filtRows.length!==followUpData.length;
   function setCard(elVal,elSub,fVal,tVal){
     document.getElementById(elVal).textContent=fmt(fVal)+' ha';
-    document.getElementById(elSub).textContent=hasF
-      ? `dari ${fmt(tVal)} ha total`
-      : 'ha potensi';
+    document.getElementById(elSub).textContent=hasF?`dari ${fmt(tVal)} ha total`:'ha potensi';
   }
-  setCard('csAR', 'csARsub', fAR,  totAR);
-  setCard('csBPO','csBPOsub',fBPO, totBPO);
-  setCard('csTR', 'csTRsub', fTR,  totTR);
-  setCard('csMTL','csMTLsub',fMTL, totMTL);
-
-  document.getElementById('csTotal').textContent   =fmt(fAll)+' ha';
-  document.getElementById('csTotalsub').textContent=hasF
-    ? `dari ${fmt(totAll)} ha keseluruhan`
-    : 'ha keseluruhan';
+  setCard('csAR','csARsub',fAR,totAR);setCard('csBPO','csBPOsub',fBPO,totBPO);
+  setCard('csTR','csTRsub',fTR,totTR);setCard('csMTL','csMTLsub',fMTL,totMTL);
+  document.getElementById('csTotal').textContent=fmt(fAll)+' ha';
+  document.getElementById('csTotalsub').textContent=hasF?`dari ${fmt(totAll)} ha keseluruhan`:'ha keseluruhan';
 }
 
 // ── Tabel CP ──────────────────────────────────────────────
 function renderCPTable(rows, minatFilter){
   const visKeys = minatFilter ? [minatFilter] : Object.keys(CP_CLASS);
-
-  // Header — gunakan shortCode di kolom data
   let thHtml=`<tr>
     <th style="width:26px">No</th>
     <th>Nama Petani</th>
@@ -1229,28 +1215,19 @@ function renderCPTable(rows, minatFilter){
   });
   thHtml+=`<th>Tgl Update</th><th>Status</th></tr>`;
   document.getElementById('cpThead').innerHTML=thHtml;
-
   setText('cpCount',rows.length+' petani');
-
   if(!rows.length){
     document.getElementById('cpTbody').innerHTML='';
     document.getElementById('cpNoResults').style.display='block';
     return;
   }
   document.getElementById('cpNoResults').style.display='none';
-
   document.getElementById('cpTbody').innerHTML=rows.map((r,i)=>{
-    // Kolom minat: tampilkan shortCode bold hitam, tanpa warna
     const minatHtml = r.minatKelas.length
       ? r.minatKelas.map(k=>`<span class="mtag">${CP_CLASS[k].short}</span>`).join('')
       : `<span class="mtag" style="color:var(--text-3)">${esc(r.minat)||'—'}</span>`;
-
     let cells='';
-    visKeys.forEach(k=>{
-      const d=CP_CLASS[k];
-      cells+=nc(r[d.fEst],'est')+nc(r[d.fUkur],'ukur')+nc(r[d.fPot],'pot');
-    });
-
+    visKeys.forEach(k=>{const d=CP_CLASS[k];cells+=nc(r[d.fEst],'est')+nc(r[d.fUkur],'ukur')+nc(r[d.fPot],'pot');});
     return `<tr>
       <td style="color:var(--text-3);font-size:11px">${i+1}</td>
       <td style="font-weight:600;white-space:nowrap">${esc(r.nama)}</td>
@@ -1281,6 +1258,200 @@ function fmtHa(v){return(+v).toLocaleString('id-ID',{minimumFractionDigits:2,max
 function closeCPModal(e){
   if(e&&e.target!==document.getElementById('cpModal'))return;
   document.getElementById('cpModal').style.display='none';
+}
+
+// ══════════════════════════════════════════════════════════
+// DOWNLOAD WORD — CAPAIAN PROGRES
+// ══════════════════════════════════════════════════════════
+async function downloadCPWord(){
+  if(!cpFilteredRows.length){alert('Tidak ada data untuk diunduh.');return;}
+
+  // Pastikan library docx tersedia
+  if(typeof docx === 'undefined'){
+    alert('Library docx belum dimuat. Coba muat ulang halaman.');return;
+  }
+
+  const {
+    Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+    AlignmentType, WidthType, BorderStyle, ShadingType, HeadingLevel, VerticalAlign
+  } = docx;
+
+  const visKeys = cpActiveMinat ? [cpActiveMinat] : Object.keys(CP_CLASS);
+  const now = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+
+  // Filter info untuk judul
+  const desaVal  = document.getElementById('cpSelDesa').value;
+  const tahunVal = document.getElementById('cpSelTahun').value;
+  const minatVal = document.getElementById('cpSelMinat').options[document.getElementById('cpSelMinat').selectedIndex].text;
+  const filterDesc = [
+    desaVal  ? `Desa: ${desaVal}`  : '',
+    tahunVal ? `Tahun: ${tahunVal}` : '',
+    cpActiveMinat ? `Program: ${minatVal}` : '',
+  ].filter(Boolean).join(' | ') || 'Semua Data';
+
+  // ── Helper warna hex → integer ────────────────────────
+  const hexToInt = h => parseInt(h.replace('#',''),16);
+
+  // ── Warna header utama ────────────────────────────────
+  const HDR_BG    = '1B5E40'; // hijau primary
+  const HDR_TEXT  = 'FFFFFF';
+  const SUB_BG    = 'EFF6FF';
+  const SUB_TEXT  = '1E3A5F';
+  const EST_BG    = 'DBEAFE';
+  const UKUR_BG   = 'DCFCE7';
+  const POT_BG    = 'FFEDD5';
+  const ODD_BG    = 'F8FAFC';
+  const EVEN_BG   = 'FFFFFF';
+
+  const brd = { style: BorderStyle.SINGLE, size: 1, color: 'D1D5DB' };
+  const brdAll = { top:brd, bottom:brd, left:brd, right:brd };
+
+  // ── Lebar kolom (DXA, total ~12500) ──────────────────
+  // Kolom tetap: No(400) + Nama(1800) + Desa(1200) + Dusun(900) + Minat(1100)
+  const fixedW = [400, 1800, 1200, 900, 1100];
+  // Tiap grup program: Est+Ukur+Pot (800+800+800 = 2400)
+  const perKey = 800;
+  const dataW  = visKeys.length * 3 * perKey;
+  // Akhir: TglUpdate(900) + Status(800)
+  const trailW = [900, 800];
+  const colWidths = [...fixedW, ...visKeys.flatMap(()=>[perKey,perKey,perKey]), ...trailW];
+  const totalW = colWidths.reduce((s,w)=>s+w,0);
+
+  function mkCell(text, opts={}){
+    const {
+      bg=null, bold=false, color='000000', align=AlignmentType.LEFT,
+      size=18, vAlign=VerticalAlign.CENTER, width=null, colspan=1
+    } = opts;
+    return new TableCell({
+      columnSpan: colspan,
+      verticalAlign: vAlign,
+      borders: brdAll,
+      width: width ? { size: width, type: WidthType.DXA } : undefined,
+      shading: bg ? { fill: bg, type: ShadingType.CLEAR, color: 'auto' } : undefined,
+      margins: { top:60, bottom:60, left:100, right:100 },
+      children: [new Paragraph({
+        alignment: align,
+        children: [new TextRun({ text: String(text??'—'), bold, color, size, font:'Arial' })]
+      })]
+    });
+  }
+
+  // ── Baris header 1: grup program ─────────────────────
+  const hdr1Cells = [
+    mkCell('No',       {bg:HDR_BG, bold:true, color:HDR_TEXT, align:AlignmentType.CENTER, size:16}),
+    mkCell('Nama Petani', {bg:HDR_BG, bold:true, color:HDR_TEXT, size:16}),
+    mkCell('Desa',     {bg:HDR_BG, bold:true, color:HDR_TEXT, size:16}),
+    mkCell('Dusun',    {bg:HDR_BG, bold:true, color:HDR_TEXT, size:16}),
+    mkCell('Minat',    {bg:HDR_BG, bold:true, color:HDR_TEXT, size:16}),
+  ];
+  visKeys.forEach(k=>{
+    hdr1Cells.push(mkCell(CP_CLASS[k].short, {bg:HDR_BG, bold:true, color:HDR_TEXT, align:AlignmentType.CENTER, size:16, colspan:3}));
+  });
+  hdr1Cells.push(mkCell('Tgl Update', {bg:HDR_BG, bold:true, color:HDR_TEXT, size:16}));
+  hdr1Cells.push(mkCell('Status',     {bg:HDR_BG, bold:true, color:HDR_TEXT, size:16}));
+
+  // ── Baris header 2: Est / Ukur / Pot ─────────────────
+  const hdr2Cells = [
+    mkCell('',{bg:'E2E8F0',size:14}),mkCell('',{bg:'E2E8F0',size:14}),
+    mkCell('',{bg:'E2E8F0',size:14}),mkCell('',{bg:'E2E8F0',size:14}),
+    mkCell('',{bg:'E2E8F0',size:14}),
+  ];
+  visKeys.forEach(()=>{
+    hdr2Cells.push(mkCell('Estimasi', {bg:EST_BG,  bold:true, color:'1E40AF', align:AlignmentType.CENTER, size:14}));
+    hdr2Cells.push(mkCell('Ukur',     {bg:UKUR_BG, bold:true, color:'166534', align:AlignmentType.CENTER, size:14}));
+    hdr2Cells.push(mkCell('Potensi',  {bg:POT_BG,  bold:true, color:'9A3412', align:AlignmentType.CENTER, size:14}));
+  });
+  hdr2Cells.push(mkCell('',{bg:'E2E8F0',size:14}));
+  hdr2Cells.push(mkCell('',{bg:'E2E8F0',size:14}));
+
+  // ── Baris data ────────────────────────────────────────
+  const dataRows = cpFilteredRows.map((r,i)=>{
+    const bg = i%2===0 ? ODD_BG : EVEN_BG;
+    const minatStr = r.minatKelas.length
+      ? r.minatKelas.map(k=>CP_CLASS[k].short).join(' · ')
+      : (r.minat||'—');
+    const cells = [
+      mkCell(i+1,        {bg, align:AlignmentType.CENTER, size:16}),
+      mkCell(r.nama,     {bg, bold:true, size:16}),
+      mkCell(r.desa||'—',{bg, size:16}),
+      mkCell(r.dusun||'—',{bg, size:16}),
+      mkCell(minatStr,   {bg, size:14}),
+    ];
+    visKeys.forEach(k=>{
+      const d=CP_CLASS[k];
+      const ev=r[d.fEst],uv=r[d.fUkur],pv=r[d.fPot];
+      cells.push(mkCell(ev!=null?fmtHa(ev):'—', {bg, align:AlignmentType.RIGHT, color:'1D4ED8', size:16}));
+      cells.push(mkCell(uv!=null?fmtHa(uv):'—', {bg, align:AlignmentType.RIGHT, color:'166534', size:16}));
+      cells.push(mkCell(pv!=null?fmtHa(pv):'—', {bg, align:AlignmentType.RIGHT, color:'C2410C', size:16}));
+    });
+    cells.push(mkCell(r.tgl_update||'—', {bg, size:14}));
+    cells.push(mkCell(r.status||'—',     {bg, size:14}));
+    return new TableRow({ children: cells, cantSplit: false });
+  });
+
+  // ── Baris total ───────────────────────────────────────
+  let totAR=0,totBPO=0,totTR=0,totMTL=0;
+  cpFilteredRows.forEach(r=>{totAR+=r.pot_agr_reg||0;totBPO+=r.pot_bpo||0;totTR+=r.pot_tbw||0;totMTL+=r.pot_mtl||0;});
+  const totCells=[
+    mkCell('TOTAL', {bg:'E2E8F0', bold:true, colspan:5, size:16}),
+  ];
+  visKeys.forEach(k=>{
+    const tot={ agro_reg:totAR, bpo:totBPO, temb_reg:totTR, mtl:totMTL }[k]??0;
+    totCells.push(mkCell('—',           {bg:'EFF6FF', size:16, align:AlignmentType.CENTER}));
+    totCells.push(mkCell('—',           {bg:'F0FDF4', size:16, align:AlignmentType.CENTER}));
+    totCells.push(mkCell(fmtHa(tot),    {bg:POT_BG, bold:true, color:'9A3412', align:AlignmentType.RIGHT, size:16}));
+  });
+  totCells.push(mkCell('',{bg:'E2E8F0',size:14}));
+  totCells.push(mkCell('',{bg:'E2E8F0',size:14}));
+
+  const tbl = new Table({
+    width:{ size: totalW, type: WidthType.DXA },
+    columnWidths: colWidths,
+    rows:[
+      new TableRow({ children: hdr1Cells, tableHeader: true }),
+      new TableRow({ children: hdr2Cells, tableHeader: true }),
+      ...dataRows,
+      new TableRow({ children: totCells }),
+    ]
+  });
+
+  const doc = new Document({
+    styles:{
+      default:{ document:{ run:{ font:'Arial', size:20 } } }
+    },
+    sections:[{
+      properties:{
+        page:{
+          size:{ width:20160, height:12240 }, // A4 landscape
+          margin:{ top:720, right:720, bottom:720, left:720 },
+          orientation:'landscape'
+        }
+      },
+      children:[
+        new Paragraph({
+          children:[new TextRun({ text:'CAPAIAN PROGRES PETANI', bold:true, size:32, color:HDR_BG.replace('#',''), font:'Arial' })]
+        }),
+        new Paragraph({
+          children:[new TextRun({ text:`PT Citra Mulia Inti  |  ${filterDesc}  |  Dicetak: ${now}`, size:18, color:'64748B', font:'Arial' })]
+        }),
+        new Paragraph({ children:[new TextRun({ text:`Jumlah Petani: ${cpFilteredRows.length}`, size:18, color:'374151', font:'Arial' })] }),
+        new Paragraph({ children:[new TextRun({ text:'' })] }),
+        tbl,
+      ]
+    }]
+  });
+
+  try{
+    const blob = await Packer.toBlob(doc);
+    const a = Object.assign(document.createElement('a'),{
+      href: URL.createObjectURL(blob),
+      download: `Capaian_Progres${desaVal?'_'+desaVal:''}${tahunVal?'_'+tahunVal:''}.docx`
+    });
+    a.click(); URL.revokeObjectURL(a.href);
+  }catch(err){
+    console.error('Gagal membuat file Word:',err);
+    alert('Gagal membuat file Word. Silakan coba lagi.');
+  }
 }
 
 // ── Layer / map utils ─────────────────────────────────────
