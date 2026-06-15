@@ -472,7 +472,7 @@
 
   <!-- Anggota Terdaftar -->
   <div class="sc-anggota">
-    <div class="sc-anggota-lbl">Anggota</div>
+    <div class="sc-anggota-lbl">Anggota Petani Terdaftar</div>
     <div class="sc-anggota-val" id="sAnggota">—</div>
     <div class="sc-anggota-gender">
       <div class="sc-anggota-row">
@@ -1271,7 +1271,7 @@ function calcStats(ids){
         const tm=getTargetMonthForWeek(wk);
         lbl=tm?`Target ${MONTH_NAMES[tm.month]} ${tm.year}: ${fmt(tgtVal)} ha`:`Target: ${fmt(tgtVal)} ha`;
       }
-      else lbl=`Target Keseluruhan: ${fmt(tgtVal)} ha`;
+      else lbl=`Target dari awa: ${fmt(tgtVal)} ha`;
       te.textContent=lbl;
       if(ri)ri.style.display='flex';
       be.style.width=Math.min(100,p).toFixed(1)+'%';
