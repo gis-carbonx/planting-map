@@ -1114,9 +1114,9 @@ function updatePotCard(){
   setText('potTotalHa',     fmt(totAll)+' ha');
   setText('potTotalPetani', petaniAll.size+' petani');
   setText('potAgroHa',      fmt(totAgro)+' ha');
-  setText('potAgroPetani',  petaniAgro.size+' petani berpotensi');
+  setText('potAgroPetani',  petaniAgro.size+' petani');
   setText('potTembHa',      fmt(totTemb)+' ha');
-  setText('potTembPetani',  petaniTemb.size+' petani berpotensi');
+  setText('potTembPetani',  petaniTemb.size+' petani');
 }
 
 function renderCMI(gj){L.geoJSON(gj,{style:()=>({color:'#475569',weight:2.5,dashArray:'8 5',fillOpacity:0,opacity:.9})}).addTo(lgCMI);}
