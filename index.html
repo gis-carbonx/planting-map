@@ -75,18 +75,26 @@
     .sc-pct-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:700;background:transparent !important;color:#1a2332 !important}
     .sc-week-acc{font-size:10.5px;color:var(--text-3);font-weight:500;margin-top:1px}
 
-    /* ── POTENTIAL FARMER CARD (ujung kanan) ── */
-    .sc-pot-card{flex:0 0 auto;min-width:200px;max-width:230px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:var(--shadow-sm)}
+    /* ── ANGGOTA CARD — diperkecil, compact ── */
+    .sc-anggota{flex:0 0 auto;min-width:150px;max-width:180px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:8px;box-shadow:var(--shadow-sm);overflow:hidden}
+    .sc-anggota-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3)}
+    .sc-anggota-val{font-size:26px;font-weight:800;line-height:1;color:#3b82f6;letter-spacing:-1px}
+    .sc-anggota-gender{display:flex;flex-direction:column;gap:4px;margin-top:2px}
+    .sc-anggota-row{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--text)}
+
+    /* ── POTENTIAL FARMER CARD — diperbesar ── */
+    .sc-pot-card{flex:1;min-width:260px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:7px;box-shadow:var(--shadow-sm)}
     .sc-pot-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3)}
-    .sc-pot-total{font-size:20px;font-weight:800;color:var(--primary);letter-spacing:-0.5px;line-height:1.1}
-    .sc-pot-total-sub{font-size:10px;color:var(--text-3);font-weight:500}
-    .sc-pot-rows{display:flex;flex-direction:column;gap:3px}
-    .sc-pot-row{display:flex;justify-content:space-between;align-items:center;gap:6px}
-    .sc-pot-row-lbl{font-size:11px;color:var(--text-2);display:flex;align-items:center;gap:4px}
-    .sc-pot-row-val{font-size:11px;font-weight:700;color:var(--text)}
+    .sc-pot-header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+    .sc-pot-total{font-size:22px;font-weight:800;color:var(--primary);letter-spacing:-0.5px;line-height:1.1}
+    .sc-pot-total-meta{font-size:11px;color:var(--text-3);font-weight:500}
     .sc-pot-sep{height:1px;background:var(--border-lt);margin:2px 0}
-    .sc-pot-petani{font-size:10.5px;color:var(--text-3)}
-    .sc-pot-petani span{font-weight:700;color:var(--text-2)}
+    .sc-pot-rows{display:flex;flex-direction:column;gap:5px}
+    .sc-pot-row-main{display:flex;align-items:center;gap:6px}
+    .sc-pot-row-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .sc-pot-row-label{font-size:12px;font-weight:700;color:var(--text);flex:1}
+    .sc-pot-row-val{font-size:12px;font-weight:700;color:var(--text)}
+    .sc-pot-row-petani{font-size:10.5px;color:var(--text-3);margin-left:14px;margin-top:1px}
     .btn-detail-pot{width:100%;padding:5px 0;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:11px;font-weight:700;color:var(--text-2);cursor:pointer;font-family:inherit;text-align:center;transition:background .15s;margin-top:2px}
     .btn-detail-pot:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
 
@@ -251,7 +259,6 @@
     .btn-dl-word{padding:5px 12px;border-radius:7px;border:1px solid #bbf7d0;background:#f0fdf4;font-size:12px;font-weight:600;color:var(--c-agro);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;white-space:nowrap}
     .btn-dl-word:hover{background:#dcfce7;border-color:var(--primary-lt)}
     .btn-dl-word svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    /* FIX: cp-body harus bisa scroll, flex:1 + overflow-y:auto */
     .cp-body{overflow-y:auto;flex:1;min-height:0}
 
     .cp-tbl{width:100%;border-collapse:collapse;font-size:12px;color:#1a2332}
@@ -321,7 +328,6 @@
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
-  <!-- Grafik button - paling kiri sebelum filter -->
   <button class="btn-grafik-filter" onclick="openGrafikModal()">
     Grafik
   </button>
@@ -408,58 +414,51 @@
     </div>
   </div>
 
-  <!-- Anggota -->
-  <div class="sc">
-    <div class="sc-lbl">Anggota Terdaftar</div>
-    <div class="sc-val" id="sAnggota" style="color:#3b82f6">—</div>
-    <div class="sc-meta">
-      <span class="sc-meta-item gender-item">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span id="sLaki">—</span>
-      </span>
-      <span class="sc-meta-item gender-item">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span id="sPmp">—</span>
-      </span>
+  <!-- Anggota Terdaftar — DIPERKECIL, compact -->
+  <div class="sc-anggota">
+    <div class="sc-anggota-lbl">Anggota</div>
+    <div class="sc-anggota-val" id="sAnggota">—</div>
+    <div class="sc-anggota-gender">
+      <div class="sc-anggota-row">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span id="sLaki" style="color:var(--text-2);font-size:11px;font-weight:600">—</span>
+      </div>
+      <div class="sc-anggota-row">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span id="sPmp" style="color:var(--text-2);font-size:11px;font-weight:600">—</span>
+      </div>
     </div>
   </div>
 
-  <!-- Potential Farmer Card — ujung kanan -->
+  <!-- Potential Farmer for ARR — DIPERBESAR, diringkas jadi 2 baris -->
   <div class="sc-pot-card">
     <div class="sc-pot-lbl">Potential Farmer for ARR</div>
-    <div>
+    <div class="sc-pot-header">
       <div class="sc-pot-total" id="potTotalHa">— ha</div>
-      <div class="sc-pot-total-sub">total luas potensi</div>
+      <div class="sc-pot-total-meta" id="potTotalPetani">— petani</div>
     </div>
     <div class="sc-pot-sep"></div>
     <div class="sc-pot-rows">
-      <div class="sc-pot-row">
-        <span class="sc-pot-row-lbl"><span class="dot" style="background:#40c074"></span>Agroforestri</span>
-        <span class="sc-pot-row-val" id="potAgroHa">—</span>
+      <!-- Agroforestri baris -->
+      <div>
+        <div class="sc-pot-row-main">
+          <span class="sc-pot-row-dot" style="background:#40c074"></span>
+          <span class="sc-pot-row-label">Agroforestri</span>
+          <span class="sc-pot-row-val" id="potAgroHa">—</span>
+        </div>
+        <div class="sc-pot-row-petani" id="potAgroPetani">— petani</div>
       </div>
-      <div class="sc-pot-row" style="margin-left:14px">
-        <span class="sc-pot-row-lbl" style="font-size:10px;color:var(--text-3)">· A-REG</span>
-        <span style="font-size:10px;color:var(--text-3)" id="potAgroReg">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-left:14px">
-        <span class="sc-pot-row-lbl" style="font-size:10px;color:var(--text-3)">· BPO</span>
-        <span style="font-size:10px;color:var(--text-3)" id="potAgroBPO">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-top:3px">
-        <span class="sc-pot-row-lbl"><span class="dot" style="background:#ff8c38"></span>Tembawang</span>
-        <span class="sc-pot-row-val" id="potTembHa">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-left:14px">
-        <span class="sc-pot-row-lbl" style="font-size:10px;color:var(--text-3)">· T-REG</span>
-        <span style="font-size:10px;color:var(--text-3)" id="potTembReg">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-left:14px">
-        <span class="sc-pot-row-lbl" style="font-size:10px;color:var(--text-3)">· MTL</span>
-        <span style="font-size:10px;color:var(--text-3)" id="potTembMTL">—</span>
+      <!-- Tembawang baris -->
+      <div>
+        <div class="sc-pot-row-main">
+          <span class="sc-pot-row-dot" style="background:#ff8c38"></span>
+          <span class="sc-pot-row-label">Tembawang</span>
+          <span class="sc-pot-row-val" id="potTembHa">—</span>
+        </div>
+        <div class="sc-pot-row-petani" id="potTembPetani">— petani</div>
       </div>
     </div>
     <div class="sc-pot-sep"></div>
-    <div class="sc-pot-petani">Jumlah petani: <span id="potPetaniUniq">—</span></div>
     <button class="btn-detail-pot" onclick="openCapaianModal()">Detail Tabel</button>
   </div>
 </div>
@@ -601,7 +600,7 @@
   </div>
 </div>
 
-<!-- CAPAIAN PROGRES MODAL (Potential Farmer for ARR) -->
+<!-- CAPAIAN PROGRES MODAL -->
 <div class="modal-overlay" id="cpModal" style="display:none" onclick="closeCPModal(event)">
   <div class="cp-modal" onclick="event.stopPropagation()">
     <div class="cp-modal-hd">
@@ -652,7 +651,6 @@
         <option value="temb_reg">Tembawang Reguler</option>
         <option value="mtl">Menjaga Tutupan Lahan</option>
       </select>
-      <!-- Filter Status -->
       <select class="cp-sel" id="cpSelStatus" onchange="runCPFilter()"><option value="">Semua Status</option></select>
       <span class="cp-row-count" id="cpCount">—</span>
       <button class="btn-dl-word" onclick="downloadCPWord()">
@@ -660,7 +658,6 @@
         Unduh Word
       </button>
     </div>
-    <!-- FIX: cp-body dibungkus div yang bisa flex dan scroll -->
     <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0">
       <div class="cp-body">
         <table class="cp-tbl">
@@ -674,7 +671,7 @@
   </div>
 </div>
 
-<!-- GRAFIK MODAL (standalone, data dari ARR_SUMMARY) -->
+<!-- GRAFIK MODAL -->
 <div class="modal-overlay" id="grafikModal" style="display:none" onclick="closeGrafikModal(event)">
   <div class="grafik-modal" onclick="event.stopPropagation()">
     <div class="grafik-modal-hd">
@@ -684,12 +681,10 @@
       </div>
       <button class="kth-modal-close" onclick="closeGrafikModal()">✕</button>
     </div>
-    <!-- Tab: Bulanan / Mingguan -->
     <div class="grafik-tab-bar">
       <button class="grafik-tab active" id="gTabBulanan" onclick="switchGrafikTab('bulanan')">Bulanan</button>
       <button class="grafik-tab"        id="gTabMingguan" onclick="switchGrafikTab('mingguan')">Mingguan</button>
     </div>
-    <!-- Toolbar Bulanan -->
     <div class="grafik-toolbar" id="gToolbarBulanan">
       <span style="font-size:12px;font-weight:700;color:var(--text-2)">Tahun:</span>
       <select class="grafik-sel" id="gBulananYear" onchange="renderGrafikBulanan()"></select>
@@ -698,7 +693,6 @@
         <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#b84c00"></div>Tembawang</div>
       </div>
     </div>
-    <!-- Toolbar Mingguan -->
     <div class="grafik-toolbar" id="gToolbarMingguan" style="display:none">
       <span style="font-size:12px;font-weight:700;color:var(--text-2)">Bulan:</span>
       <select class="grafik-sel" id="gMingguanYear" onchange="renderGrafikMingguan()"></select>
@@ -1093,26 +1087,36 @@ function parseFollowUp(csv){
 }
 function nn(v){const s=str(v);if(!s||s==='-'||s.toLowerCase()==='null')return null;const n=parseFloat(s);return isNaN(n)?null:n;}
 
-/* ── POTENTIAL FARMER CARD ── */
+/* ── POTENTIAL FARMER CARD — UPDATED ── */
 function updatePotCard(){
-  let totAR=0,totBPO=0,totTR=0,totMTL=0;
-  const petaniSet=new Set();
+  // Hitung total ha per kategori gabungan
+  let totAgro=0, totTemb=0;
+  // Hitung petani unik per kelompok (agro vs temb) berdasarkan pot > 0
+  const petaniAgro = new Set();
+  const petaniTemb = new Set();
+  const petaniAll  = new Set();
+
   followUpData.forEach(r=>{
-    totAR +=(r.pot_agr_reg||0);
-    totBPO+=(r.pot_bpo||0);
-    totTR +=(r.pot_tbw||0);
-    totMTL+=(r.pot_mtl||0);
-    if(r.nama)petaniSet.add(r.nama.trim().toLowerCase());
+    const hasAgro = (r.pot_agr_reg||0) + (r.pot_bpo||0) > 0;
+    const hasTemb = (r.pot_tbw||0) + (r.pot_mtl||0) > 0;
+    totAgro += (r.pot_agr_reg||0) + (r.pot_bpo||0);
+    totTemb += (r.pot_tbw||0) + (r.pot_mtl||0);
+    const namaKey = r.nama ? r.nama.trim().toLowerCase() : null;
+    if(namaKey){
+      if(hasAgro) petaniAgro.add(namaKey);
+      if(hasTemb) petaniTemb.add(namaKey);
+      petaniAll.add(namaKey);
+    }
   });
-  const totAgro=totAR+totBPO, totTemb=totTR+totMTL, totAll=totAgro+totTemb;
+
+  const totAll = totAgro + totTemb;
+
   setText('potTotalHa',     fmt(totAll)+' ha');
+  setText('potTotalPetani', petaniAll.size+' petani');
   setText('potAgroHa',      fmt(totAgro)+' ha');
-  setText('potAgroReg',     fmt(totAR)+' ha');
-  setText('potAgroBPO',     fmt(totBPO)+' ha');
+  setText('potAgroPetani',  petaniAgro.size+' petani berpotensi');
   setText('potTembHa',      fmt(totTemb)+' ha');
-  setText('potTembReg',     fmt(totTR)+' ha');
-  setText('potTembMTL',     fmt(totMTL)+' ha');
-  setText('potPetaniUniq',  petaniSet.size+' orang');
+  setText('potTembPetani',  petaniTemb.size+' petani berpotensi');
 }
 
 function renderCMI(gj){L.geoJSON(gj,{style:()=>({color:'#475569',weight:2.5,dashArray:'8 5',fillOpacity:0,opacity:.9})}).addTo(lgCMI);}
@@ -1219,8 +1223,8 @@ function calcStats(ids){
   setText('sTembHa',fmt(tT)+' ha');setText('sTembReg','Temb. Reguler: '+fmt(tReg)+' ha');setText('sTembMTL','Menjaga Tutupan Lahan: '+fmt(tMTL)+' ha');
   setTgtUI('sTembPct','sTembProgBar','sTembTarget',tT,tgt.temb);
   setText('sAnggota',uniq.size);
-  setText('sLaki','Laki-laki: '+laki.size);
-  setText('sPmp','Perempuan: '+pmp.size);
+  setText('sLaki','L: '+laki.size);
+  setText('sPmp','P: '+pmp.size);
 }
 
 function getTargetMonthTarget(yr, mo){
@@ -1434,7 +1438,6 @@ function openCapaianModal(){
   document.getElementById('cpSelDesa').innerHTML='<option value="">Semua Desa</option>'+desaSet.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
   const tahunSet=[...new Set(followUpData.map(r=>r.tahunUpdate).filter(Boolean))].sort((a,b)=>a-b);
   document.getElementById('cpSelTahun').innerHTML='<option value="">Semua Tahun</option>'+tahunSet.map(y=>`<option value="${y}">${y}</option>`).join('');
-  // Populate status filter
   const statusSet=[...new Set(followUpData.map(r=>r.status).filter(Boolean))].sort();
   document.getElementById('cpSelStatus').innerHTML='<option value="">Semua Status</option>'+statusSet.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
   document.getElementById('cpSearch').value='';
@@ -1537,7 +1540,7 @@ function closeCPModal(e){
   document.getElementById('cpModal').style.display='none';
 }
 
-/* ══ GRAFIK MODAL (standalone, data ARR_SUMMARY) ══ */
+/* ══ GRAFIK MODAL ══ */
 function openGrafikModal(){
   document.getElementById('grafikModal').style.display='flex';
   switchGrafikTab(grafikActiveTab);
@@ -1560,7 +1563,6 @@ function destroyGrafikChart(){
   if(grafikChartInstance){grafikChartInstance.destroy();grafikChartInstance=null;}
 }
 
-/* Bulanan: satu bar per bulan, tahun dipilih */
 function renderGrafikBulanan(){
   destroyGrafikChart();
   const yr=parseInt(document.getElementById('gBulananYear').value);
@@ -1573,7 +1575,6 @@ function renderGrafikBulanan(){
     dAgro[mo]+=r.aReg+r.aBPO;
     dTemb[mo]+=r.tReg+r.tMTL;
   });
-  // Round to 2 dp
   const rA=dAgro.map(v=>+v.toFixed(2)), rT=dTemb.map(v=>+v.toFixed(2));
   grafikChartInstance=new Chart(document.getElementById('grafikChart'),{
     type:'bar',
@@ -1600,17 +1601,11 @@ function renderGrafikBulanan(){
   });
 }
 
-/* Mingguan: satu bar per minggu dalam bulan tertentu */
 function renderGrafikMingguan(){
   destroyGrafikChart();
   const yr=parseInt(document.getElementById('gMingguanYear').value);
   const mo=parseInt(document.getElementById('gMingguanMonth').value);
   const weeks=getWeeksInMonth(yr,mo);
-  const labels=weeks.map((w,i)=>{
-    const s=w.sat.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-    const f=w.fri.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-    return `Mgg ${i+1}\n${s}–${f}`;
-  });
   const dAgro=weeks.map(()=>0), dTemb=weeks.map(()=>0);
   Object.values(sheetMap).forEach(r=>{
     const d=parseSheetDate(r.tglPartisipasi);
