@@ -18,7 +18,7 @@
       --c-agro:#1a6b3a;--c-bpo:#0d5c8a;--c-temb:#b84c00;--c-mtl:#7b1fa2;
       --bg:#eef1f6;--surface:#fff;--border:#e2e8f0;--border-lt:#f1f5f9;
       --text:#1a2332;--text-2:#64748b;--text-3:#a0aec0;
-      --hdr-h:54px;--filter-h:48px;--stats-h:162px;--sb-w:300px;--detail-w:268px;
+      --hdr-h:54px;--filter-h:48px;--stats-h:148px;--sb-w:300px;--detail-w:268px;
       --shadow-sm:0 1px 3px rgba(0,0,0,.07);
       --shadow-md:0 4px 12px rgba(0,0,0,.08);
       --shadow-lg:0 20px 60px rgba(0,0,0,.2);
@@ -54,15 +54,15 @@
     .filter-select:hover{background:var(--primary-bg);border-color:var(--primary-lt);color:var(--primary-md)}
     .filter-info{margin-left:auto;font-size:12px;color:var(--text-2);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 10px;white-space:nowrap;flex-shrink:0}
     .filter-info span{font-weight:700;color:var(--primary-md)}
-
-    /* Grafik button in filter bar */
     .btn-grafik-filter{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--bg);font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;white-space:nowrap;font-family:inherit;display:flex;align-items:center;gap:5px;flex-shrink:0}
     .btn-grafik-filter:hover{background:var(--primary-bg);border-color:var(--primary-lt);color:var(--primary-md)}
     .btn-grafik-filter svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
     /* ── STATS BAR ── */
     .stats-bar{height:var(--stats-h);background:var(--bg);display:flex;align-items:stretch;gap:8px;padding:8px 12px;overflow-x:auto;flex-shrink:0}
-    .sc{flex:1;min-width:195px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:6px;box-shadow:var(--shadow-sm);overflow:hidden}
+
+    /* Standard stat card */
+    .sc{flex:1;min-width:170px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;gap:5px;box-shadow:var(--shadow-sm);overflow:hidden}
     .sc-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3)}
     .sc-val{font-size:22px;font-weight:800;line-height:1.1;letter-spacing:-0.5px}
     .sc-meta{display:flex;flex-direction:column;gap:3px}
@@ -75,19 +75,29 @@
     .sc-pct-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:700;background:transparent !important;color:#1a2332 !important}
     .sc-week-acc{font-size:10.5px;color:var(--text-3);font-weight:500;margin-top:1px}
 
-    /* ── POTENTIAL FARMER CARD (ujung kanan) ── */
-    .sc-pot-card{flex:0 0 auto;min-width:200px;max-width:230px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:7px;box-shadow:var(--shadow-sm)}
+    /* ── ANGGOTA CARD (kecil) ── */
+    .sc-anggota{flex:0 0 auto;width:140px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:11px 12px;display:flex;flex-direction:column;justify-content:center;gap:6px;box-shadow:var(--shadow-sm)}
+    .sc-anggota .sc-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3)}
+    .sc-anggota .sc-val{font-size:20px;font-weight:800;color:#3b82f6;letter-spacing:-0.5px;line-height:1.1}
+    .sc-anggota .gender-row{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--text-2)}
+
+    /* ── POTENTIAL FARMER CARD (lebar, di kiri) ── */
+    .sc-pot-card{flex:0 0 auto;width:340px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:11px 14px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-sm)}
     .sc-pot-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3)}
-    .sc-pot-total{font-size:20px;font-weight:800;color:var(--primary);letter-spacing:-0.5px;line-height:1.1}
-    .sc-pot-total-sub{font-size:10px;color:var(--text-3);font-weight:500}
-    .sc-pot-rows{display:flex;flex-direction:column;gap:3px}
-    .sc-pot-row{display:flex;justify-content:space-between;align-items:center;gap:6px}
-    .sc-pot-row-lbl{font-size:11px;color:var(--text-2);display:flex;align-items:center;gap:4px}
-    .sc-pot-row-val{font-size:11px;font-weight:700;color:var(--text)}
-    .sc-pot-sep{height:1px;background:var(--border-lt);margin:2px 0}
-    .sc-pot-petani{font-size:10.5px;color:var(--text-3)}
-    .sc-pot-petani span{font-weight:700;color:var(--text-2)}
-    .btn-detail-pot{width:100%;padding:5px 0;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:11px;font-weight:700;color:var(--text-2);cursor:pointer;font-family:inherit;text-align:center;transition:background .15s;margin-top:2px}
+    /* Layout horizontal: total kiri, detail kanan */
+    .sc-pot-inner{display:flex;gap:12px;align-items:flex-start;flex:1}
+    .sc-pot-left{flex:0 0 auto}
+    .sc-pot-total{font-size:22px;font-weight:800;color:var(--primary);letter-spacing:-0.5px;line-height:1.1}
+    .sc-pot-total-sub{font-size:10px;color:var(--text-3);font-weight:500;margin-top:1px}
+    .sc-pot-total-petani{font-size:11px;font-weight:700;color:var(--text-2);margin-top:3px}
+    .sc-pot-divider{width:1px;background:var(--border);align-self:stretch;flex-shrink:0}
+    .sc-pot-right{flex:1;display:flex;flex-direction:column;gap:4px}
+    .sc-pot-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+    .sc-pot-row-lbl{font-size:11px;color:var(--text-2);display:flex;align-items:center;gap:4px;white-space:nowrap}
+    .sc-pot-row-val{font-size:11px;font-weight:700;color:var(--text);text-align:right;white-space:nowrap}
+    .sc-pot-row-petani{font-size:10px;color:var(--text-3);text-align:right;white-space:nowrap}
+    .sc-pot-sep{height:1px;background:var(--border-lt);margin:1px 0}
+    .btn-detail-pot{width:100%;padding:4px 0;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:11px;font-weight:700;color:var(--text-2);cursor:pointer;font-family:inherit;text-align:center;transition:background .15s;margin-top:2px;flex-shrink:0}
     .btn-detail-pot:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
 
     .app-body{height:calc(100vh - var(--hdr-h) - var(--filter-h) - var(--stats-h));display:flex;overflow:hidden;gap:8px;padding:0 12px 10px 12px}
@@ -251,9 +261,7 @@
     .btn-dl-word{padding:5px 12px;border-radius:7px;border:1px solid #bbf7d0;background:#f0fdf4;font-size:12px;font-weight:600;color:var(--c-agro);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;white-space:nowrap}
     .btn-dl-word:hover{background:#dcfce7;border-color:var(--primary-lt)}
     .btn-dl-word svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    /* FIX: cp-body harus bisa scroll, flex:1 + overflow-y:auto */
     .cp-body{overflow-y:auto;flex:1;min-height:0}
-
     .cp-tbl{width:100%;border-collapse:collapse;font-size:12px;color:#1a2332}
     .cp-tbl thead{position:sticky;top:0;z-index:2}
     .cp-tbl th{padding:7px 9px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#1a2332;border-bottom:2px solid var(--border);white-space:nowrap;background:#f8fafc}
@@ -314,17 +322,14 @@
         Patrol-CT Monitoring
       </a>
       <div class="menu-hd" style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0">Versi</div>
-      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v2.1</div>
+      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v2.2</div>
     </div>
   </div>
 </header>
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
-  <!-- Grafik button - paling kiri sebelum filter -->
-  <button class="btn-grafik-filter" onclick="openGrafikModal()">
-    Grafik
-  </button>
+  <button class="btn-grafik-filter" onclick="openGrafikModal()">Grafik</button>
   <div class="filter-sep"></div>
   <span class="filter-lbl">Filter</span>
   <div class="filter-presets">
@@ -366,6 +371,42 @@
 
 <!-- STATS BAR -->
 <div class="stats-bar">
+
+  <!-- POTENTIAL FARMER CARD — lebar, paling kiri -->
+  <div class="sc-pot-card">
+    <div class="sc-pot-lbl">Potential Farmer for ARR</div>
+    <div class="sc-pot-inner">
+      <!-- Total kiri -->
+      <div class="sc-pot-left">
+        <div class="sc-pot-total" id="potTotalHa">— ha</div>
+        <div class="sc-pot-total-sub">total luas potensi</div>
+        <div class="sc-pot-total-petani" id="potTotalPetani">— petani</div>
+      </div>
+      <div class="sc-pot-divider"></div>
+      <!-- Breakdown kanan -->
+      <div class="sc-pot-right">
+        <div class="sc-pot-row">
+          <span class="sc-pot-row-lbl"><span class="dot" style="background:#40c074"></span>Agroforestri</span>
+          <span class="sc-pot-row-val" id="potAgroHa">—</span>
+        </div>
+        <div class="sc-pot-row" style="margin-top:-2px">
+          <span class="sc-pot-row-lbl" style="margin-left:10px;font-size:10px;color:var(--text-3)">petani</span>
+          <span class="sc-pot-row-petani" id="potAgroPetani">—</span>
+        </div>
+        <div class="sc-pot-sep"></div>
+        <div class="sc-pot-row">
+          <span class="sc-pot-row-lbl"><span class="dot" style="background:#ff8c38"></span>Tembawang</span>
+          <span class="sc-pot-row-val" id="potTembHa">—</span>
+        </div>
+        <div class="sc-pot-row" style="margin-top:-2px">
+          <span class="sc-pot-row-lbl" style="margin-left:10px;font-size:10px;color:var(--text-3)">petani</span>
+          <span class="sc-pot-row-petani" id="potTembPetani">—</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn-detail-pot" onclick="openCapaianModal()">Detail Tabel</button>
+  </div>
+
   <!-- Total Lahan -->
   <div class="sc">
     <div class="sc-lbl">Total Lahan</div>
@@ -408,60 +449,20 @@
     </div>
   </div>
 
-  <!-- Anggota -->
-  <div class="sc">
-    <div class="sc-lbl">Anggota Terdaftar</div>
-    <div class="sc-val" id="sAnggota" style="color:#3b82f6">—</div>
-    <div class="sc-meta">
-      <span class="sc-meta-item gender-item">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span id="sLaki">—</span>
-      </span>
-      <span class="sc-meta-item gender-item">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span id="sPmp">—</span>
-      </span>
+  <!-- Anggota Terdaftar (kecil) -->
+  <div class="sc-anggota">
+    <div class="sc-lbl">Anggota</div>
+    <div class="sc-val" id="sAnggota" style="font-size:20px;color:#3b82f6">—</div>
+    <div class="gender-row">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span id="sLaki" style="font-size:11px;color:var(--text-2)">—</span>
+    </div>
+    <div class="gender-row">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span id="sPmp" style="font-size:11px;color:var(--text-2)">—</span>
     </div>
   </div>
 
-  <!-- Potential Farmer Card — ujung kanan -->
-  <div class="sc-pot-card">
-    <div class="sc-pot-lbl">Potential Farmer for ARR</div>
-    <div>
-      <div class="sc-pot-total" id="potTotalHa">— ha</div>
-      <div class="sc-pot-total-sub">total luas potensi</div>
-    </div>
-    <div class="sc-pot-sep"></div>
-    <div class="sc-pot-rows">
-      <div class="sc-pot-row">
-        <span class="sc-pot-row-lbl"><span class="dot" style="background:#40c074"></span>Agroforestri</span>
-        <span class="sc-pot-row-val" id="potAgroHa">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-left:14px">
-        <span class="sc-pot-row-lbl" style="font-size:10px;color:var(--text-3)">· A-REG</span>
-        <span style="font-size:10px;color:var(--text-3)" id="potAgroReg">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-left:14px">
-        <span class="sc-pot-row-lbl" style="font-size:10px;color:var(--text-3)">· BPO</span>
-        <span style="font-size:10px;color:var(--text-3)" id="potAgroBPO">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-top:3px">
-        <span class="sc-pot-row-lbl"><span class="dot" style="background:#ff8c38"></span>Tembawang</span>
-        <span class="sc-pot-row-val" id="potTembHa">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-left:14px">
-        <span class="sc-pot-row-lbl" style="font-size:10px;color:var(--text-3)">· T-REG</span>
-        <span style="font-size:10px;color:var(--text-3)" id="potTembReg">—</span>
-      </div>
-      <div class="sc-pot-row" style="margin-left:14px">
-        <span class="sc-pot-row-lbl" style="font-size:10px;color:var(--text-3)">· MTL</span>
-        <span style="font-size:10px;color:var(--text-3)" id="potTembMTL">—</span>
-      </div>
-    </div>
-    <div class="sc-pot-sep"></div>
-    <div class="sc-pot-petani">Jumlah petani: <span id="potPetaniUniq">—</span></div>
-    <button class="btn-detail-pot" onclick="openCapaianModal()">Detail Tabel</button>
-  </div>
 </div>
 
 <div class="app-body">
@@ -601,7 +602,7 @@
   </div>
 </div>
 
-<!-- CAPAIAN PROGRES MODAL (Potential Farmer for ARR) -->
+<!-- CAPAIAN PROGRES MODAL -->
 <div class="modal-overlay" id="cpModal" style="display:none" onclick="closeCPModal(event)">
   <div class="cp-modal" onclick="event.stopPropagation()">
     <div class="cp-modal-hd">
@@ -652,7 +653,6 @@
         <option value="temb_reg">Tembawang Reguler</option>
         <option value="mtl">Menjaga Tutupan Lahan</option>
       </select>
-      <!-- Filter Status -->
       <select class="cp-sel" id="cpSelStatus" onchange="runCPFilter()"><option value="">Semua Status</option></select>
       <span class="cp-row-count" id="cpCount">—</span>
       <button class="btn-dl-word" onclick="downloadCPWord()">
@@ -660,7 +660,6 @@
         Unduh Word
       </button>
     </div>
-    <!-- FIX: cp-body dibungkus div yang bisa flex dan scroll -->
     <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0">
       <div class="cp-body">
         <table class="cp-tbl">
@@ -674,7 +673,7 @@
   </div>
 </div>
 
-<!-- GRAFIK MODAL (standalone, data dari ARR_SUMMARY) -->
+<!-- GRAFIK MODAL -->
 <div class="modal-overlay" id="grafikModal" style="display:none" onclick="closeGrafikModal(event)">
   <div class="grafik-modal" onclick="event.stopPropagation()">
     <div class="grafik-modal-hd">
@@ -684,25 +683,31 @@
       </div>
       <button class="kth-modal-close" onclick="closeGrafikModal()">✕</button>
     </div>
-    <!-- Tab: Bulanan / Mingguan -->
+    <!-- Tab: Tahunan (stacked) / Bulanan (mingguan) -->
     <div class="grafik-tab-bar">
-      <button class="grafik-tab active" id="gTabBulanan" onclick="switchGrafikTab('bulanan')">Bulanan</button>
-      <button class="grafik-tab"        id="gTabMingguan" onclick="switchGrafikTab('mingguan')">Mingguan</button>
+      <button class="grafik-tab active" id="gTabTahunan"  onclick="switchGrafikTab('tahunan')">Tahunan (Stacked)</button>
+      <button class="grafik-tab"        id="gTabBulanan"  onclick="switchGrafikTab('bulanan')">Bulanan per Minggu</button>
     </div>
-    <!-- Toolbar Bulanan -->
-    <div class="grafik-toolbar" id="gToolbarBulanan">
-      <span style="font-size:12px;font-weight:700;color:var(--text-2)">Tahun:</span>
-      <select class="grafik-sel" id="gBulananYear" onchange="renderGrafikBulanan()"></select>
+    <!-- Toolbar Tahunan -->
+    <div class="grafik-toolbar" id="gToolbarTahunan">
+      <span style="font-size:12px;font-weight:700;color:var(--text-2)">Tampilkan:</span>
+      <select class="grafik-sel" id="gTahunanMode" onchange="renderGrafikTahunan()">
+        <option value="all">Semua Tahun</option>
+        <option value="single">Tahun Tertentu</option>
+      </select>
+      <select class="grafik-sel" id="gTahunanYear" onchange="renderGrafikTahunan()" style="display:none"></select>
       <div class="grafik-legend">
-        <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#2d7a55"></div>Agroforestri</div>
-        <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#b84c00"></div>Tembawang</div>
+        <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#40c074"></div>Agro Reguler</div>
+        <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#38a3e0"></div>Agro BPO</div>
+        <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#ff8c38"></div>Temb. Reguler</div>
+        <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#ce6be8"></div>Temb. MTL</div>
       </div>
     </div>
-    <!-- Toolbar Mingguan -->
-    <div class="grafik-toolbar" id="gToolbarMingguan" style="display:none">
+    <!-- Toolbar Bulanan (mingguan) -->
+    <div class="grafik-toolbar" id="gToolbarBulanan" style="display:none">
       <span style="font-size:12px;font-weight:700;color:var(--text-2)">Bulan:</span>
-      <select class="grafik-sel" id="gMingguanYear" onchange="renderGrafikMingguan()"></select>
-      <select class="grafik-sel" id="gMingguanMonth" onchange="renderGrafikMingguan()">
+      <select class="grafik-sel" id="gBulananYear" onchange="renderGrafikBulanan()"></select>
+      <select class="grafik-sel" id="gBulananMonth" onchange="renderGrafikBulanan()">
         <option value="0">Januari</option><option value="1">Februari</option>
         <option value="2">Maret</option><option value="3">April</option>
         <option value="4">Mei</option><option value="5">Juni</option>
@@ -828,7 +833,7 @@ let currentKTH=null,currentPreset='ytd',filterYear=null,filterMonth=null,selecte
 let filterWeekIdx=null;
 let cpFilteredRows=[], cpActiveMinat='';
 let grafikChartInstance=null;
-let grafikActiveTab='bulanan';
+let grafikActiveTab='tahunan';
 
 /* ── WEEK HELPERS ── */
 function getWeeksInMonth(yr, mo) {
@@ -885,13 +890,13 @@ function populateYearDropdowns(){
   Object.keys(targetData).forEach(y=>{if(!yrs.includes(+y))yrs.push(+y);});
   yrs.sort();
   const cur=new Date().getFullYear();
-  ['fYear','fMonthYear','fWeekYear','gBulananYear','gMingguanYear'].forEach(id=>{
+  ['fYear','fMonthYear','fWeekYear','gTahunanYear','gBulananYear'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
     el.innerHTML=yrs.map(y=>`<option value="${y}"${y===cur?' selected':''}>${y}</option>`).join('');
   });
   document.getElementById('fMonth').value=new Date().getMonth();
   document.getElementById('fWeekMonth').value=new Date().getMonth();
-  document.getElementById('gMingguanMonth').value=new Date().getMonth();
+  document.getElementById('gBulananMonth').value=new Date().getMonth();
   populateWeekDropdown();
 }
 
@@ -1093,26 +1098,31 @@ function parseFollowUp(csv){
 }
 function nn(v){const s=str(v);if(!s||s==='-'||s.toLowerCase()==='null')return null;const n=parseFloat(s);return isNaN(n)?null:n;}
 
-/* ── POTENTIAL FARMER CARD ── */
+/* ── POTENTIAL FARMER CARD — per kategori, petani unik ── */
 function updatePotCard(){
-  let totAR=0,totBPO=0,totTR=0,totMTL=0;
-  const petaniSet=new Set();
+  let totAgro=0, totTemb=0;
+  const petaniAgro = new Set(), petaniTemb = new Set(), petaniAll = new Set();
+
   followUpData.forEach(r=>{
-    totAR +=(r.pot_agr_reg||0);
-    totBPO+=(r.pot_bpo||0);
-    totTR +=(r.pot_tbw||0);
-    totMTL+=(r.pot_mtl||0);
-    if(r.nama)petaniSet.add(r.nama.trim().toLowerCase());
+    const hasAgro = (r.pot_agr_reg||0) + (r.pot_bpo||0) > 0;
+    const hasTemb = (r.pot_tbw||0)     + (r.pot_mtl||0) > 0;
+    totAgro += (r.pot_agr_reg||0) + (r.pot_bpo||0);
+    totTemb += (r.pot_tbw||0)     + (r.pot_mtl||0);
+    const key = r.nama ? r.nama.trim().toLowerCase() : null;
+    if(key){
+      petaniAll.add(key);
+      if(hasAgro) petaniAgro.add(key);
+      if(hasTemb) petaniTemb.add(key);
+    }
   });
-  const totAgro=totAR+totBPO, totTemb=totTR+totMTL, totAll=totAgro+totTemb;
-  setText('potTotalHa',     fmt(totAll)+' ha');
-  setText('potAgroHa',      fmt(totAgro)+' ha');
-  setText('potAgroReg',     fmt(totAR)+' ha');
-  setText('potAgroBPO',     fmt(totBPO)+' ha');
-  setText('potTembHa',      fmt(totTemb)+' ha');
-  setText('potTembReg',     fmt(totTR)+' ha');
-  setText('potTembMTL',     fmt(totMTL)+' ha');
-  setText('potPetaniUniq',  petaniSet.size+' orang');
+
+  const totAll = totAgro + totTemb;
+  setText('potTotalHa',      fmt(totAll)+' ha');
+  setText('potTotalPetani',  petaniAll.size+' petani');
+  setText('potAgroHa',       fmt(totAgro)+' ha ('+petaniAgro.size+' petani)');
+  setText('potTembHa',       fmt(totTemb)+' ha ('+petaniTemb.size+' petani)');
+  setText('potAgroPetani',   petaniAgro.size+' orang');
+  setText('potTembPetani',   petaniTemb.size+' orang');
 }
 
 function renderCMI(gj){L.geoJSON(gj,{style:()=>({color:'#475569',weight:2.5,dashArray:'8 5',fillOpacity:0,opacity:.9})}).addTo(lgCMI);}
@@ -1219,8 +1229,8 @@ function calcStats(ids){
   setText('sTembHa',fmt(tT)+' ha');setText('sTembReg','Temb. Reguler: '+fmt(tReg)+' ha');setText('sTembMTL','Menjaga Tutupan Lahan: '+fmt(tMTL)+' ha');
   setTgtUI('sTembPct','sTembProgBar','sTembTarget',tT,tgt.temb);
   setText('sAnggota',uniq.size);
-  setText('sLaki','Laki-laki: '+laki.size);
-  setText('sPmp','Perempuan: '+pmp.size);
+  setText('sLaki',laki.size+' L');
+  setText('sPmp',pmp.size+' P');
 }
 
 function getTargetMonthTarget(yr, mo){
@@ -1434,7 +1444,6 @@ function openCapaianModal(){
   document.getElementById('cpSelDesa').innerHTML='<option value="">Semua Desa</option>'+desaSet.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
   const tahunSet=[...new Set(followUpData.map(r=>r.tahunUpdate).filter(Boolean))].sort((a,b)=>a-b);
   document.getElementById('cpSelTahun').innerHTML='<option value="">Semua Tahun</option>'+tahunSet.map(y=>`<option value="${y}">${y}</option>`).join('');
-  // Populate status filter
   const statusSet=[...new Set(followUpData.map(r=>r.status).filter(Boolean))].sort();
   document.getElementById('cpSelStatus').innerHTML='<option value="">Semua Status</option>'+statusSet.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
   document.getElementById('cpSearch').value='';
@@ -1537,7 +1546,7 @@ function closeCPModal(e){
   document.getElementById('cpModal').style.display='none';
 }
 
-/* ══ GRAFIK MODAL (standalone, data ARR_SUMMARY) ══ */
+/* ══ GRAFIK MODAL ══ */
 function openGrafikModal(){
   document.getElementById('grafikModal').style.display='flex';
   switchGrafikTab(grafikActiveTab);
@@ -1548,106 +1557,152 @@ function closeGrafikModal(e){
 }
 function switchGrafikTab(tab){
   grafikActiveTab=tab;
+  document.getElementById('gTabTahunan').classList.toggle('active',tab==='tahunan');
   document.getElementById('gTabBulanan').classList.toggle('active',tab==='bulanan');
-  document.getElementById('gTabMingguan').classList.toggle('active',tab==='mingguan');
-  document.getElementById('gToolbarBulanan').style.display  = tab==='bulanan' ?'flex':'none';
-  document.getElementById('gToolbarMingguan').style.display = tab==='mingguan'?'flex':'none';
-  if(tab==='bulanan')  setTimeout(()=>renderGrafikBulanan(),30);
-  if(tab==='mingguan') setTimeout(()=>renderGrafikMingguan(),30);
+  document.getElementById('gToolbarTahunan').style.display = tab==='tahunan'?'flex':'none';
+  document.getElementById('gToolbarBulanan').style.display = tab==='bulanan'?'flex':'none';
+  if(tab==='tahunan') setTimeout(()=>renderGrafikTahunan(),30);
+  if(tab==='bulanan') setTimeout(()=>renderGrafikBulanan(),30);
 }
 
 function destroyGrafikChart(){
   if(grafikChartInstance){grafikChartInstance.destroy();grafikChartInstance=null;}
 }
 
-/* Bulanan: satu bar per bulan, tahun dipilih */
-function renderGrafikBulanan(){
+/* ── TAB 1: Tahunan — stacked bar per bulan dalam 1 tahun, 4 program ── */
+function renderGrafikTahunan(){
   destroyGrafikChart();
-  const yr=parseInt(document.getElementById('gBulananYear').value);
-  const labels=MONTH_NAMES;
-  const dAgro=Array(12).fill(0), dTemb=Array(12).fill(0);
+  const mode = document.getElementById('gTahunanMode').value;
+  const yrSel = document.getElementById('gTahunanYear');
+  yrSel.style.display = mode==='single' ? '' : 'none';
+
+  const labels = MONTH_NAMES;
+
+  // Collect data
+  const dAgroReg = Array(12).fill(0);
+  const dAgroBPO = Array(12).fill(0);
+  const dTembReg = Array(12).fill(0);
+  const dTembMTL = Array(12).fill(0);
+
+  // For "all years" mode: use month labels as Jan–Dec aggregated across all years
+  // For "single year": filter by selected year
+  const filterYr = mode==='single' ? parseInt(yrSel.value) : null;
+
   Object.values(sheetMap).forEach(r=>{
-    const d=parseSheetDate(r.tglPartisipasi);
-    if(!d||d.getFullYear()!==yr)return;
-    const mo=d.getMonth();
-    dAgro[mo]+=r.aReg+r.aBPO;
-    dTemb[mo]+=r.tReg+r.tMTL;
+    const d = parseSheetDate(r.tglPartisipasi);
+    if(!d) return;
+    if(filterYr !== null && d.getFullYear() !== filterYr) return;
+    const mo = d.getMonth();
+    dAgroReg[mo] += r.aReg;
+    dAgroBPO[mo] += r.aBPO;
+    dTembReg[mo] += r.tReg;
+    dTembMTL[mo] += r.tMTL;
   });
-  // Round to 2 dp
-  const rA=dAgro.map(v=>+v.toFixed(2)), rT=dTemb.map(v=>+v.toFixed(2));
-  grafikChartInstance=new Chart(document.getElementById('grafikChart'),{
-    type:'bar',
-    data:{labels,datasets:[
-      {label:'Agroforestri',data:rA,backgroundColor:'#2d7a55',borderRadius:4,barPercentage:.7},
-      {label:'Tembawang',   data:rT,backgroundColor:'#b84c00',borderRadius:4,barPercentage:.7},
-    ]},
+
+  const titleText = filterYr
+    ? `Realisasi Partisipasi Bulanan (Stacked) — Tahun ${filterYr}`
+    : `Realisasi Partisipasi Bulanan (Stacked) — Semua Tahun`;
+
+  grafikChartInstance = new Chart(document.getElementById('grafikChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label:'Agro Reguler',   data:dAgroReg.map(v=>+v.toFixed(2)), backgroundColor:'#40c074', stack:'s' },
+        { label:'Agro BPO',       data:dAgroBPO.map(v=>+v.toFixed(2)), backgroundColor:'#38a3e0', stack:'s' },
+        { label:'Temb. Reguler',  data:dTembReg.map(v=>+v.toFixed(2)), backgroundColor:'#ff8c38', stack:'s' },
+        { label:'Temb. MTL',      data:dTembMTL.map(v=>+v.toFixed(2)), backgroundColor:'#ce6be8', stack:'s' },
+      ]
+    },
     options:{
-      responsive:true,maintainAspectRatio:false,
+      responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{display:false},
-        title:{display:true,text:`Realisasi Partisipasi Bulanan — Tahun ${yr}`,font:{size:13,weight:'bold'},color:'#1a2332',padding:{bottom:12}},
+        title:{display:true, text:titleText, font:{size:13,weight:'bold'}, color:'#1a2332', padding:{bottom:12}},
         tooltip:{callbacks:{
-          label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:2})} ha`,
-          footer:items=>{const tot=items.reduce((s,i)=>s+i.parsed.y,0);return tot>0?`Total: ${tot.toLocaleString('id-ID',{minimumFractionDigits:2})} ha`:'';}
+          label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:2})} ha`,
+          footer: items => {
+            const tot = items.reduce((s,i)=>s+i.parsed.y,0);
+            return tot>0 ? `Total: ${tot.toLocaleString('id-ID',{minimumFractionDigits:2})} ha` : '';
+          }
         }}
       },
       scales:{
-        x:{stacked:false,ticks:{font:{size:11},color:'#64748b'},grid:{display:false}},
-        y:{beginAtZero:true,ticks:{font:{size:11},color:'#64748b',callback:v=>v+' ha'},grid:{color:'#f1f5f9'}}
+        x:{ stacked:true, ticks:{font:{size:11},color:'#64748b'}, grid:{display:false} },
+        y:{ stacked:true, beginAtZero:true,
+            ticks:{font:{size:11},color:'#64748b',callback:v=>v+' ha'},
+            grid:{color:'#f1f5f9'} }
       }
     }
   });
 }
 
-/* Mingguan: satu bar per minggu dalam bulan tertentu */
-function renderGrafikMingguan(){
-  destroyGrafikChart();
-  const yr=parseInt(document.getElementById('gMingguanYear').value);
-  const mo=parseInt(document.getElementById('gMingguanMonth').value);
-  const weeks=getWeeksInMonth(yr,mo);
-  const labels=weeks.map((w,i)=>{
-    const s=w.sat.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-    const f=w.fri.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-    return `Mgg ${i+1}\n${s}–${f}`;
+// Show/hide year selector in tahunan toolbar
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('gTahunanMode').addEventListener('change', function(){
+    document.getElementById('gTahunanYear').style.display = this.value==='single' ? '' : 'none';
+    renderGrafikTahunan();
   });
-  const dAgro=weeks.map(()=>0), dTemb=weeks.map(()=>0);
+});
+
+/* ── TAB 2: Bulanan per Minggu — bar per minggu dalam 1 bulan ── */
+function renderGrafikBulanan(){
+  destroyGrafikChart();
+  const yr  = parseInt(document.getElementById('gBulananYear').value);
+  const mo  = parseInt(document.getElementById('gBulananMonth').value);
+  const weeks = getWeeksInMonth(yr, mo);
+
+  const labels = weeks.map((w,i)=>{
+    const s = w.sat.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
+    const f = w.fri.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
+    return `Mgg ke-${i+1}\n(${s}–${f})`;
+  });
+  const labelsFlat = weeks.map((w,i)=>{
+    const s = w.sat.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
+    const f = w.fri.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
+    return `Mgg ke-${i+1} (${s}–${f})`;
+  });
+
+  const dAgro = weeks.map(()=>0);
+  const dTemb = weeks.map(()=>0);
   Object.values(sheetMap).forEach(r=>{
-    const d=parseSheetDate(r.tglPartisipasi);
-    if(!d)return;
+    const d = parseSheetDate(r.tglPartisipasi);
+    if(!d) return;
     weeks.forEach((wk,i)=>{
-      if(d>=wk.sat&&d<=wk.fri){
-        dAgro[i]+=r.aReg+r.aBPO;
-        dTemb[i]+=r.tReg+r.tMTL;
+      if(d>=wk.sat && d<=wk.fri){
+        dAgro[i] += r.aReg + r.aBPO;
+        dTemb[i] += r.tReg + r.tMTL;
       }
     });
   });
-  const rA=dAgro.map(v=>+v.toFixed(2)), rT=dTemb.map(v=>+v.toFixed(2));
-  const labelsFlat=weeks.map((w,i)=>{
-    const s=w.sat.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-    const f=w.fri.toLocaleDateString('id-ID',{day:'numeric',month:'short'});
-    return `Mgg ke-${i+1} (${s}–${f})`;
-  });
-  grafikChartInstance=new Chart(document.getElementById('grafikChart'),{
-    type:'bar',
-    data:{labels:labelsFlat,datasets:[
-      {label:'Agroforestri',data:rA,backgroundColor:'#2d7a55',borderRadius:4,barPercentage:.65},
-      {label:'Tembawang',   data:rT,backgroundColor:'#b84c00',borderRadius:4,barPercentage:.65},
-    ]},
+
+  grafikChartInstance = new Chart(document.getElementById('grafikChart'), {
+    type: 'bar',
+    data: {
+      labels: labelsFlat,
+      datasets:[
+        { label:'Agroforestri', data:dAgro.map(v=>+v.toFixed(2)), backgroundColor:'#2d7a55', borderRadius:4, barPercentage:.65 },
+        { label:'Tembawang',   data:dTemb.map(v=>+v.toFixed(2)), backgroundColor:'#b84c00', borderRadius:4, barPercentage:.65 },
+      ]
+    },
     options:{
-      responsive:true,maintainAspectRatio:false,
+      responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{display:false},
-        title:{display:true,text:`Realisasi Partisipasi Mingguan — ${MONTH_NAMES[mo]} ${yr}`,font:{size:13,weight:'bold'},color:'#1a2332',padding:{bottom:12}},
+        title:{display:true, text:`Realisasi Mingguan — ${MONTH_NAMES[mo]} ${yr}`, font:{size:13,weight:'bold'}, color:'#1a2332', padding:{bottom:12}},
         tooltip:{callbacks:{
-          label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:2})} ha`,
-          footer:items=>{const tot=items.reduce((s,i)=>s+i.parsed.y,0);return tot>0?`Total: ${tot.toLocaleString('id-ID',{minimumFractionDigits:2})} ha`:'';}
+          label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:2})} ha`,
+          footer: items => {
+            const tot = items.reduce((s,i)=>s+i.parsed.y,0);
+            return tot>0 ? `Total: ${tot.toLocaleString('id-ID',{minimumFractionDigits:2})} ha` : '';
+          }
         }}
       },
       scales:{
-        x:{stacked:false,ticks:{font:{size:10},color:'#64748b',maxRotation:30},grid:{display:false}},
-        y:{beginAtZero:true,ticks:{font:{size:11},color:'#64748b',callback:v=>v+' ha'},grid:{color:'#f1f5f9'}}
+        x:{ stacked:false, ticks:{font:{size:10},color:'#64748b',maxRotation:30}, grid:{display:false} },
+        y:{ beginAtZero:true, ticks:{font:{size:11},color:'#64748b',callback:v=>v+' ha'}, grid:{color:'#f1f5f9'} }
       }
     }
   });
