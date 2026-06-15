@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planting Monitoring</title>
+  <title>Planting Monitoring 1</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -62,40 +62,55 @@
 
     /* ── STATS BAR ── */
     .stats-bar{height:var(--stats-h);background:var(--bg);display:flex;align-items:stretch;gap:8px;padding:8px 12px;overflow-x:auto;flex-shrink:0}
-    .sc{flex:1;min-width:195px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:6px;box-shadow:var(--shadow-sm);overflow:hidden}
+
+    /* ── UNIFIED STATS CARD (semua card pakai ini) ── */
+    .sc{flex:1;min-width:195px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;gap:5px;box-shadow:var(--shadow-sm);overflow:hidden}
     .sc-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3)}
+
+    /* Baris atas: angka besar + info target di kanan */
+    .sc-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
     .sc-val{font-size:22px;font-weight:800;line-height:1.1;letter-spacing:-0.5px}
-    .sc-meta{display:flex;flex-direction:column;gap:3px}
-    .sc-meta-item{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;color:var(--text-2);white-space:nowrap}
-    .sc-meta-item.gender-item{color:#1a2332}
-    .dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .sc-right-info{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;margin-top:2px}
+    .sc-pct-badge{font-size:11px;font-weight:700;color:var(--primary-md);white-space:nowrap}
+    .sc-target-inline{font-size:10.5px;color:var(--text-3);white-space:nowrap;text-align:right}
+
     .prog-bar-wrap{width:100%;height:4px;background:#e2e8f0;border-radius:3px;overflow:hidden}
     .prog-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--primary-lt),var(--primary));transition:width .5s}
-    .sc-target{font-size:11px;color:var(--text-3)}
-    .sc-pct-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:700;background:transparent !important;color:#1a2332 !important}
-    .sc-week-acc{font-size:10.5px;color:var(--text-3);font-weight:500;margin-top:1px}
+    .sc-week-acc{font-size:10.5px;color:var(--text-3);font-weight:500}
 
-    /* ── ANGGOTA CARD — diperkecil, compact ── */
-    .sc-anggota{flex:0 0 auto;min-width:150px;max-width:180px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:8px;box-shadow:var(--shadow-sm);overflow:hidden}
+    /* Sub-baris: sub-program rows */
+    .sc-subs{display:flex;flex-direction:column;gap:3px}
+    .sc-sub-row{display:flex;align-items:center;justify-content:space-between;gap:4px}
+    .sc-sub-left{display:flex;align-items:center;gap:5px;min-width:0}
+    .dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .sc-sub-label{font-size:11px;font-weight:500;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sc-sub-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+    .sc-sub-ha{font-size:11.5px;font-weight:700;color:var(--text);white-space:nowrap}
+    .sc-sub-petani{font-size:10.5px;color:var(--text-3);white-space:nowrap}
+
+    /* ── ANGGOTA CARD — compact ── */
+    .sc-anggota{flex:0 0 auto;min-width:130px;max-width:155px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;box-shadow:var(--shadow-sm);overflow:hidden}
     .sc-anggota-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3)}
     .sc-anggota-val{font-size:26px;font-weight:800;line-height:1;color:#3b82f6;letter-spacing:-1px}
     .sc-anggota-gender{display:flex;flex-direction:column;gap:4px;margin-top:2px}
     .sc-anggota-row{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--text)}
 
-    /* ── POTENTIAL FARMER CARD — diperbesar ── */
-    .sc-pot-card{flex:1;min-width:260px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:7px;box-shadow:var(--shadow-sm)}
+    /* ── POTENTIAL FARMER CARD ── */
+    .sc-pot-card{flex:1;min-width:240px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-sm)}
     .sc-pot-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3)}
-    .sc-pot-header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+    .sc-pot-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .sc-pot-header-left{display:flex;align-items:baseline;gap:8px}
     .sc-pot-total{font-size:22px;font-weight:800;color:var(--primary);letter-spacing:-0.5px;line-height:1.1}
     .sc-pot-total-meta{font-size:11px;color:var(--text-3);font-weight:500}
-    .sc-pot-sep{height:1px;background:var(--border-lt);margin:2px 0}
-    .sc-pot-rows{display:flex;flex-direction:column;gap:5px}
+    .sc-pot-sep{height:1px;background:var(--border-lt)}
+    .sc-pot-rows{display:flex;flex-direction:column;gap:4px}
     .sc-pot-row-main{display:flex;align-items:center;gap:6px}
     .sc-pot-row-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
     .sc-pot-row-label{font-size:12px;font-weight:700;color:var(--text);flex:1}
-    .sc-pot-row-val{font-size:12px;font-weight:700;color:var(--text)}
-    .sc-pot-row-petani{font-size:10.5px;color:var(--text-3);margin-left:14px;margin-top:1px}
-    .btn-detail-pot{width:100%;padding:5px 0;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:11px;font-weight:700;color:var(--text-2);cursor:pointer;font-family:inherit;text-align:center;transition:background .15s;margin-top:2px}
+    .sc-pot-row-vals{display:flex;align-items:center;gap:6px}
+    .sc-pot-row-ha{font-size:12px;font-weight:700;color:var(--text)}
+    .sc-pot-row-petani{font-size:10.5px;color:var(--text-3)}
+    .btn-detail-pot{padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:11px;font-weight:700;color:var(--text-2);cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
     .btn-detail-pot:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
 
     .app-body{height:calc(100vh - var(--hdr-h) - var(--filter-h) - var(--stats-h));display:flex;overflow:hidden;gap:8px;padding:0 12px 10px 12px}
@@ -372,49 +387,90 @@
 
 <!-- STATS BAR -->
 <div class="stats-bar">
+
   <!-- Total Lahan -->
   <div class="sc">
     <div class="sc-lbl">Total Lahan</div>
-    <div class="sc-val" id="sTotalHa" style="color:var(--primary)">—</div>
-    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sProgBar" style="width:0%"></div></div>
-    <div class="sc-meta">
-      <span class="sc-meta-item" id="sTotalPctWrap"><span class="sc-pct-badge" id="sTotalPct">—</span></span>
-      <span class="sc-meta-item sc-target" id="sTotalTarget"></span>
+    <div class="sc-top-row">
+      <div class="sc-val" id="sTotalHa" style="color:var(--primary)">—</div>
+      <div class="sc-right-info" id="sTotalRightInfo" style="display:none">
+        <span class="sc-pct-badge" id="sTotalPct">—</span>
+        <span class="sc-target-inline" id="sTotalTarget">—</span>
+      </div>
     </div>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sProgBar" style="width:0%"></div></div>
     <div class="sc-week-acc" id="sWeekAcc" style="display:none"></div>
+    <div class="sc-subs">
+      <div class="sc-sub-row">
+        <div class="sc-sub-left"><span class="dot" style="background:#40c074"></span><span class="sc-sub-label">Agroforestri</span></div>
+        <div class="sc-sub-right"><span class="sc-sub-ha" id="sTotalAgroSub">—</span></div>
+      </div>
+      <div class="sc-sub-row">
+        <div class="sc-sub-left"><span class="dot" style="background:#ff8c38"></span><span class="sc-sub-label">Tembawang</span></div>
+        <div class="sc-sub-right"><span class="sc-sub-ha" id="sTotalTembSub">—</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- Agroforestri -->
   <div class="sc">
     <div class="sc-lbl">Agroforestri</div>
-    <div class="sc-val" id="sAgroHa" style="color:var(--c-agro)">—</div>
-    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sAgroProgBar" style="width:0%;background:linear-gradient(90deg,#40c074,var(--c-agro))"></div></div>
-    <div class="sc-meta">
-      <span class="sc-meta-item" id="sAgroPctWrap"><span class="sc-pct-badge" id="sAgroPct">—</span></span>
-      <span class="sc-meta-item sc-target" id="sAgroTarget"></span>
+    <div class="sc-top-row">
+      <div class="sc-val" id="sAgroHa" style="color:var(--c-agro)">—</div>
+      <div class="sc-right-info" id="sAgroRightInfo" style="display:none">
+        <span class="sc-pct-badge" id="sAgroPct" style="color:var(--c-agro)">—</span>
+        <span class="sc-target-inline" id="sAgroTarget">—</span>
+      </div>
     </div>
-    <div class="sc-meta" style="margin-top:2px">
-      <span class="sc-meta-item"><span class="dot" style="background:#40c074"></span><span id="sAgroReg">—</span></span>
-      <span class="sc-meta-item"><span class="dot" style="background:#38a3e0"></span><span id="sAgroBPO">—</span></span>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sAgroProgBar" style="width:0%;background:linear-gradient(90deg,#40c074,var(--c-agro))"></div></div>
+    <div class="sc-subs">
+      <div class="sc-sub-row">
+        <div class="sc-sub-left"><span class="dot" style="background:#40c074"></span><span class="sc-sub-label">Agro Reguler</span></div>
+        <div class="sc-sub-right">
+          <span class="sc-sub-ha" id="sAgroRegHa">—</span>
+          <span class="sc-sub-petani" id="sAgroRegPetani"></span>
+        </div>
+      </div>
+      <div class="sc-sub-row">
+        <div class="sc-sub-left"><span class="dot" style="background:#38a3e0"></span><span class="sc-sub-label">Bantuan Pupuk Organik</span></div>
+        <div class="sc-sub-right">
+          <span class="sc-sub-ha" id="sAgroBPOHa">—</span>
+          <span class="sc-sub-petani" id="sAgroBPOPetani"></span>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Tembawang -->
   <div class="sc">
     <div class="sc-lbl">Tembawang</div>
-    <div class="sc-val" id="sTembHa" style="color:var(--c-temb)">—</div>
-    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sTembProgBar" style="width:0%;background:linear-gradient(90deg,#ff8c38,var(--c-temb))"></div></div>
-    <div class="sc-meta">
-      <span class="sc-meta-item" id="sTembPctWrap"><span class="sc-pct-badge" id="sTembPct">—</span></span>
-      <span class="sc-meta-item sc-target" id="sTembTarget"></span>
+    <div class="sc-top-row">
+      <div class="sc-val" id="sTembHa" style="color:var(--c-temb)">—</div>
+      <div class="sc-right-info" id="sTembRightInfo" style="display:none">
+        <span class="sc-pct-badge" id="sTembPct" style="color:var(--c-temb)">—</span>
+        <span class="sc-target-inline" id="sTembTarget">—</span>
+      </div>
     </div>
-    <div class="sc-meta" style="margin-top:2px">
-      <span class="sc-meta-item"><span class="dot" style="background:#ff8c38"></span><span id="sTembReg">—</span></span>
-      <span class="sc-meta-item"><span class="dot" style="background:#ce6be8"></span><span id="sTembMTL">—</span></span>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sTembProgBar" style="width:0%;background:linear-gradient(90deg,#ff8c38,var(--c-temb))"></div></div>
+    <div class="sc-subs">
+      <div class="sc-sub-row">
+        <div class="sc-sub-left"><span class="dot" style="background:#ff8c38"></span><span class="sc-sub-label">Temb. Reguler</span></div>
+        <div class="sc-sub-right">
+          <span class="sc-sub-ha" id="sTembRegHa">—</span>
+          <span class="sc-sub-petani" id="sTembRegPetani"></span>
+        </div>
+      </div>
+      <div class="sc-sub-row">
+        <div class="sc-sub-left"><span class="dot" style="background:#ce6be8"></span><span class="sc-sub-label">Menjaga Tutupan Lahan</span></div>
+        <div class="sc-sub-right">
+          <span class="sc-sub-ha" id="sTembMTLHa">—</span>
+          <span class="sc-sub-petani" id="sTembMTLPetani"></span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Anggota Terdaftar — DIPERKECIL, compact -->
+  <!-- Anggota Terdaftar -->
   <div class="sc-anggota">
     <div class="sc-anggota-lbl">Anggota</div>
     <div class="sc-anggota-val" id="sAnggota">—</div>
@@ -430,36 +486,35 @@
     </div>
   </div>
 
-  <!-- Potential Farmer for ARR — DIPERBESAR, diringkas jadi 2 baris -->
+  <!-- Potential Farmer for ARR -->
   <div class="sc-pot-card">
     <div class="sc-pot-lbl">Potential Farmer for ARR</div>
     <div class="sc-pot-header">
-      <div class="sc-pot-total" id="potTotalHa">— ha</div>
-      <div class="sc-pot-total-meta" id="potTotalPetani">— petani</div>
+      <div class="sc-pot-header-left">
+        <div class="sc-pot-total" id="potTotalHa">— ha</div>
+        <div class="sc-pot-total-meta" id="potTotalPetani">— petani</div>
+      </div>
+      <button class="btn-detail-pot" onclick="openCapaianModal()">Detail Tabel</button>
     </div>
     <div class="sc-pot-sep"></div>
     <div class="sc-pot-rows">
-      <!-- Agroforestri baris -->
-      <div>
-        <div class="sc-pot-row-main">
-          <span class="sc-pot-row-dot" style="background:#40c074"></span>
-          <span class="sc-pot-row-label">Agroforestri</span>
-          <span class="sc-pot-row-val" id="potAgroHa">—</span>
+      <div class="sc-pot-row-main">
+        <span class="sc-pot-row-dot" style="background:#40c074"></span>
+        <span class="sc-pot-row-label">Agroforestri</span>
+        <div class="sc-pot-row-vals">
+          <span class="sc-pot-row-ha" id="potAgroHa">—</span>
+          <span class="sc-pot-row-petani" id="potAgroPetani">— petani</span>
         </div>
-        <div class="sc-pot-row-petani" id="potAgroPetani">— petani</div>
       </div>
-      <!-- Tembawang baris -->
-      <div>
-        <div class="sc-pot-row-main">
-          <span class="sc-pot-row-dot" style="background:#ff8c38"></span>
-          <span class="sc-pot-row-label">Tembawang</span>
-          <span class="sc-pot-row-val" id="potTembHa">—</span>
+      <div class="sc-pot-row-main">
+        <span class="sc-pot-row-dot" style="background:#ff8c38"></span>
+        <span class="sc-pot-row-label">Tembawang</span>
+        <div class="sc-pot-row-vals">
+          <span class="sc-pot-row-ha" id="potTembHa">—</span>
+          <span class="sc-pot-row-petani" id="potTembPetani">— petani</span>
         </div>
-        <div class="sc-pot-row-petani" id="potTembPetani">— petani</div>
       </div>
     </div>
-    <div class="sc-pot-sep"></div>
-    <button class="btn-detail-pot" onclick="openCapaianModal()">Detail Tabel</button>
   </div>
 </div>
 
@@ -1087,11 +1142,9 @@ function parseFollowUp(csv){
 }
 function nn(v){const s=str(v);if(!s||s==='-'||s.toLowerCase()==='null')return null;const n=parseFloat(s);return isNaN(n)?null:n;}
 
-/* ── POTENTIAL FARMER CARD — UPDATED ── */
+/* ── POTENTIAL FARMER CARD ── */
 function updatePotCard(){
-  // Hitung total ha per kategori gabungan
   let totAgro=0, totTemb=0;
-  // Hitung petani unik per kelompok (agro vs temb) berdasarkan pot > 0
   const petaniAgro = new Set();
   const petaniTemb = new Set();
   const petaniAll  = new Set();
@@ -1110,7 +1163,6 @@ function updatePotCard(){
   });
 
   const totAll = totAgro + totTemb;
-
   setText('potTotalHa',     fmt(totAll)+' ha');
   setText('potTotalPetani', petaniAll.size+' petani');
   setText('potAgroHa',      fmt(totAgro)+' ha');
@@ -1145,15 +1197,28 @@ function renderAgro(gj){
 function calcStats(ids){
   let aReg=0,aBPO=0,tReg=0,tMTL=0;
   const uniq=new Set(),laki=new Set(),pmp=new Set();
+  // sets per sub-program untuk hitung petani unik
+  const petaniAgroReg=new Set(),petaniAgroBPO=new Set(),petaniTembReg=new Set(),petaniTembMTL=new Set();
   ids.forEach(id=>{
     const r=sheetMap[id];if(!r)return;
     aReg+=r.aReg;aBPO+=r.aBPO;tReg+=r.tReg;tMTL+=r.tMTL;
-    if(r.petani){const pk=r.petani.toLowerCase();uniq.add(pk);
+    if(r.petani){
+      const pk=r.petani.toLowerCase();
+      uniq.add(pk);
       if(r.jk.toLowerCase().includes('laki'))laki.add(pk);
-      else if(r.jk.toLowerCase().includes('perempuan'))pmp.add(pk);}
+      else if(r.jk.toLowerCase().includes('perempuan'))pmp.add(pk);
+      if(r.aReg>0) petaniAgroReg.add(pk);
+      if(r.aBPO>0) petaniAgroBPO.add(pk);
+      if(r.tReg>0) petaniTembReg.add(pk);
+      if(r.tMTL>0) petaniTembMTL.add(pk);
+    }
   });
   const tA=aReg+aBPO,tT=tReg+tMTL,tR=tA+tT;
   const tgt=getActiveTarget();
+
+  /* petani total per kelompok (union) */
+  const petaniAgro=new Set([...petaniAgroReg,...petaniAgroBPO]);
+  const petaniTemb=new Set([...petaniTembReg,...petaniTembMTL]);
 
   let weekAccHtml='';
   if(currentPreset==='week'){
@@ -1176,8 +1241,9 @@ function calcStats(ids){
   const weekAccEl=document.getElementById('sWeekAcc');
   if(weekAccEl){weekAccEl.textContent=weekAccHtml;weekAccEl.style.display=weekAccHtml?'block':'none';}
 
-  function setTgtUI(pctId,barId,tgtId,real,tgtVal){
+  function setTgtUI(pctId,barId,tgtId,rightInfoId,real,tgtVal){
     const pe=document.getElementById(pctId),be=document.getElementById(barId),te=document.getElementById(tgtId);
+    const ri=document.getElementById(rightInfoId);
     let displayReal=real;
     if(currentPreset==='week'){
       const wk=getSelectedWeek();
@@ -1196,9 +1262,6 @@ function calcStats(ids){
     if(tgtVal!==null&&tgtVal>0){
       const p=Math.min(999,displayReal/tgtVal*100);
       pe.textContent=p.toFixed(1)+'% dari target';
-      pe.removeAttribute('style');
-      document.getElementById(pctId+'Wrap').style.display='';
-      be.style.width=Math.min(100,p).toFixed(1)+'%';
       let lbl='';
       if(currentPreset==='month')      lbl=`Target ${MONTH_NAMES[filterMonth]} ${filterYear}: ${fmt(tgtVal)} ha`;
       else if(currentPreset==='year')  lbl=`Target ${filterYear}: ${fmt(tgtVal)} ha`;
@@ -1209,19 +1272,37 @@ function calcStats(ids){
         lbl=tm?`Target ${MONTH_NAMES[tm.month]} ${tm.year}: ${fmt(tgtVal)} ha`:`Target: ${fmt(tgtVal)} ha`;
       }
       else lbl=`Target Keseluruhan: ${fmt(tgtVal)} ha`;
-      te.textContent=lbl;te.style.display='';
+      te.textContent=lbl;
+      if(ri)ri.style.display='flex';
+      be.style.width=Math.min(100,p).toFixed(1)+'%';
     }else{
-      document.getElementById(pctId+'Wrap').style.display='none';
-      be.style.width='0%';te.style.display='none';
+      if(ri)ri.style.display='none';
+      be.style.width='0%';
     }
   }
 
+  /* Total Lahan card */
   setText('sTotalHa',fmt(tR)+' ha');
-  setTgtUI('sTotalPct','sProgBar','sTotalTarget',tR,(tgt.agro!==null&&tgt.temb!==null)?tgt.agro+tgt.temb:null);
-  setText('sAgroHa',fmt(tA)+' ha');setText('sAgroReg','Agro Reguler: '+fmt(aReg)+' ha');setText('sAgroBPO','Bantuan Pupuk Organik: '+fmt(aBPO)+' ha');
-  setTgtUI('sAgroPct','sAgroProgBar','sAgroTarget',tA,tgt.agro);
-  setText('sTembHa',fmt(tT)+' ha');setText('sTembReg','Temb. Reguler: '+fmt(tReg)+' ha');setText('sTembMTL','Menjaga Tutupan Lahan: '+fmt(tMTL)+' ha');
-  setTgtUI('sTembPct','sTembProgBar','sTembTarget',tT,tgt.temb);
+  setText('sTotalAgroSub',fmt(tA)+' ha');
+  setText('sTotalTembSub',fmt(tT)+' ha');
+  setTgtUI('sTotalPct','sProgBar','sTotalTarget','sTotalRightInfo',tR,(tgt.agro!==null&&tgt.temb!==null)?tgt.agro+tgt.temb:null);
+
+  /* Agroforestri card */
+  setText('sAgroHa',fmt(tA)+' ha');
+  setText('sAgroRegHa',fmt(aReg)+' ha');
+  setText('sAgroRegPetani', petaniAgroReg.size ? petaniAgroReg.size+' petani' : '');
+  setText('sAgroBPOHa',fmt(aBPO)+' ha');
+  setText('sAgroBPOPetani', petaniAgroBPO.size ? petaniAgroBPO.size+' petani' : '');
+  setTgtUI('sAgroPct','sAgroProgBar','sAgroTarget','sAgroRightInfo',tA,tgt.agro);
+
+  /* Tembawang card */
+  setText('sTembHa',fmt(tT)+' ha');
+  setText('sTembRegHa',fmt(tReg)+' ha');
+  setText('sTembRegPetani', petaniTembReg.size ? petaniTembReg.size+' petani' : '');
+  setText('sTembMTLHa',fmt(tMTL)+' ha');
+  setText('sTembMTLPetani', petaniTembMTL.size ? petaniTembMTL.size+' petani' : '');
+  setTgtUI('sTembPct','sTembProgBar','sTembTarget','sTembRightInfo',tT,tgt.temb);
+
   setText('sAnggota',uniq.size);
   setText('sLaki','L: '+laki.size);
   setText('sPmp','P: '+pmp.size);
