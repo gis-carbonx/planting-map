@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planting Monitoring</title>
+  <title>Planting Monitoring 1</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -99,7 +101,7 @@
     .sc-anggota-row{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--text)}
 
     /* ── POTENTIAL FARMER CARD ── */
-    .sc-pot-card{flex:1;min-width:240px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-sm)}
+    .sc-pot-card{flex:1;min-width:240px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:6px;box-shadow:var(--shadow-sm)}
     .sc-pot-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3)}
     .sc-pot-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
     .sc-pot-header-left{display:flex;align-items:baseline;gap:8px}
@@ -290,6 +292,14 @@
     .btn-dl-word{padding:5px 12px;border-radius:7px;border:1px solid #f0fdf4;background:#f0fdf4;font-size:12px;font-weight:600;color:var(--c-agro);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;white-space:nowrap}
     .btn-dl-word:hover{background:#dcfce7;border-color:#dcfce7}
     .btn-dl-word svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+    /* ── DOWNLOAD DROPDOWN ── */
+    .dl-dropdown-wrap{position:relative;display:inline-block}
+    .dl-dropdown-menu{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);min-width:150px;z-index:2000;display:none;overflow:hidden}
+    .dl-dropdown-menu.open{display:block}
+    .dl-dropdown-item{display:flex;align-items:center;gap:8px;padding:9px 13px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+    .dl-dropdown-item:hover{background:var(--primary-bg);color:var(--primary-md)}
+    .dl-dropdown-item svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
     .cp-body{overflow-y:auto;flex:1;min-height:0}
 
     .cp-tbl{width:100%;border-collapse:collapse;font-size:12px;color:#1a2332}
@@ -310,6 +320,8 @@
     /* ── GRAFIK MODAL ── */
     .grafik-modal{background:#fff;border-radius:14px;width:min(860px,96vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
     .grafik-modal-hd{padding:14px 20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .btn-grafik-dl-png{padding:6px 12px;border-radius:7px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);font-size:12px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit}
+    .btn-grafik-dl-png:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.22)}
     .grafik-tab-bar{display:flex;gap:0;padding:0 16px;background:#f8fafc;border-bottom:1px solid var(--border);flex-shrink:0}
     .grafik-tab{padding:10px 18px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;border:none;background:none;font-family:inherit}
     .grafik-tab.active{color:var(--primary-md);border-bottom:2px solid var(--primary-md)}
@@ -439,6 +451,7 @@
       </div>
     </div>
     <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sAgroProgBar" style="width:0%;background:linear-gradient(90deg,#40c074,var(--c-agro))"></div></div>
+    <div class="sc-week-acc" id="sAgroWeekAcc" style="display:none"></div>
     <div class="sc-subs">
       <div class="sc-sub-row">
         <div class="sc-sub-left"><span class="dot" style="background:#40c074"></span><span class="sc-sub-label">Agro Reguler</span></div>
@@ -468,6 +481,7 @@
       </div>
     </div>
     <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sTembProgBar" style="width:0%;background:linear-gradient(90deg,#ff8c38,var(--c-temb))"></div></div>
+    <div class="sc-week-acc" id="sTembWeekAcc" style="display:none"></div>
     <div class="sc-subs">
       <div class="sc-sub-row">
         <div class="sc-sub-left"><span class="dot" style="background:#ff8c38"></span><span class="sc-sub-label">Temb. Reguler</span></div>
@@ -659,10 +673,23 @@
       </select>
       <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
         <span class="modal-count" id="modalRowCount">0 lahan</span>
-        <button class="btn-dl" onclick="downloadCSV()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Unduh CSV
-        </button>
+        <div class="dl-dropdown-wrap" id="kthDlWrap">
+          <button class="btn-dl" onclick="toggleDlMenu('kthDlWrap')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Unduh
+          </button>
+          <div class="dl-dropdown-menu" id="kthDlMenu">
+            <button class="dl-dropdown-item" onclick="downloadCSV();closeAllDlMenus()">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="13" x2="16" y2="13"/></svg>CSV
+            </button>
+            <button class="dl-dropdown-item" onclick="downloadKTHWord();closeAllDlMenus()">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Word
+            </button>
+            <button class="dl-dropdown-item" onclick="downloadKTHPDF();closeAllDlMenus()">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>PDF
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="kth-modal-body">
@@ -732,10 +759,23 @@
       <select class="cp-sel" id="cpSelStatus" onchange="runCPFilter()"><option value="">Semua Status</option></select>
       <div class="cp-toolbar-right">
         <span class="cp-row-count" id="cpCount">—</span>
-        <button class="btn-dl-word" onclick="downloadCPWord()">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Unduh Word
-        </button>
+        <div class="dl-dropdown-wrap" id="cpDlWrap">
+          <button class="btn-dl-word" onclick="toggleDlMenu('cpDlWrap')">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Unduh
+          </button>
+          <div class="dl-dropdown-menu" id="cpDlMenu">
+            <button class="dl-dropdown-item" onclick="downloadCPCSV();closeAllDlMenus()">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="13" x2="16" y2="13"/></svg>CSV
+            </button>
+            <button class="dl-dropdown-item" onclick="downloadCPWord();closeAllDlMenus()">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Word
+            </button>
+            <button class="dl-dropdown-item" onclick="downloadCPPDF();closeAllDlMenus()">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>PDF
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0">
@@ -759,7 +799,13 @@
         <div class="kth-modal-title">Grafik Partisipasi Lahan</div>
         <div class="kth-modal-sub">Progres luasan lahan partisipasi program</div>
       </div>
-      <button class="kth-modal-close" onclick="closeGrafikModal()">✕</button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="btn-grafik-dl-png" onclick="downloadGrafikPNG()" title="Unduh PNG">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PNG
+        </button>
+        <button class="kth-modal-close" onclick="closeGrafikModal()">✕</button>
+      </div>
     </div>
     <div class="grafik-tab-bar">
       <button class="grafik-tab active" id="gTabBulanan" onclick="switchGrafikTab('bulanan')">Bulanan</button>
@@ -1245,7 +1291,7 @@ function calcStats(ids){
   const petaniAgro=new Set([...petaniAgroReg,...petaniAgroBPO]);
   const petaniTemb=new Set([...petaniTembReg,...petaniTembMTL]);
 
-  let weekAccHtml='';
+  let weekAccHtml='', agroWeekAccHtml='', tembWeekAccHtml='';
   if(currentPreset==='week'){
     const wk=getSelectedWeek();
     if(wk){
@@ -1257,14 +1303,27 @@ function calcStats(ids){
           return d&&d<=wk.fri;
         });
         const accHA=accRows.reduce((s,r)=>s+r.luas,0);
+        const accAgroHA=accRows.reduce((s,r)=>s+r.aReg+r.aBPO,0);
+        const accTembHA=accRows.reduce((s,r)=>s+r.tReg+r.tMTL,0);
         const tgtMonth=getTargetMonthTarget(tm.year,tm.month);
+        const tgtMonthData=targetData[tm.year]&&targetData[tm.year].monthly?targetData[tm.year].monthly[tm.month]:null;
+        const tgtAgroMonth=tgtMonthData?tgtMonthData.agro:null;
+        const tgtTembMonth=tgtMonthData?tgtMonthData.temb:null;
         const pctStr=tgtMonth&&tgtMonth>0?`, ${(accHA/tgtMonth*100).toFixed(1)}% target ${MONTH_NAMES[tm.month]}`:'';
+        const pctAgroStr=tgtAgroMonth&&tgtAgroMonth>0?`, ${(accAgroHA/tgtAgroMonth*100).toFixed(1)}% target ${MONTH_NAMES[tm.month]}`:'';
+        const pctTembStr=tgtTembMonth&&tgtTembMonth>0?`, ${(accTembHA/tgtTembMonth*100).toFixed(1)}% target ${MONTH_NAMES[tm.month]}`:'';
         weekAccHtml=`${fmt(tR)} ha minggu ini · akumulasi ${fmt(accHA)} ha ${MONTH_NAMES[tm.month]}${pctStr}`;
+        agroWeekAccHtml=`${fmt(tA)} ha minggu ini · akumulasi ${fmt(accAgroHA)} ha ${MONTH_NAMES[tm.month]}${pctAgroStr}`;
+        tembWeekAccHtml=`${fmt(tT)} ha minggu ini · akumulasi ${fmt(accTembHA)} ha ${MONTH_NAMES[tm.month]}${pctTembStr}`;
       }
     }
   }
   const weekAccEl=document.getElementById('sWeekAcc');
   if(weekAccEl){weekAccEl.textContent=weekAccHtml;weekAccEl.style.display=weekAccHtml?'block':'none';}
+  const agroWeekAccEl=document.getElementById('sAgroWeekAcc');
+  if(agroWeekAccEl){agroWeekAccEl.textContent=agroWeekAccHtml;agroWeekAccEl.style.display=agroWeekAccHtml?'block':'none';}
+  const tembWeekAccEl=document.getElementById('sTembWeekAcc');
+  if(tembWeekAccEl){tembWeekAccEl.textContent=tembWeekAccHtml;tembWeekAccEl.style.display=tembWeekAccHtml?'block':'none';}
 
   function setTgtUI(pctId,barId,tgtId,rightInfoId,real,tgtVal){
     const pe=document.getElementById(pctId),be=document.getElementById(barId),te=document.getElementById(tgtId);
@@ -1536,10 +1595,93 @@ function downloadCSV(){
   const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})),download:`KTH_${currentKTH.replace(/\s+/g,'_')}.csv`});
   a.click();URL.revokeObjectURL(a.href);
 }
+function getCurrentKTHRows(){
+  if(!currentKTH)return[];
+  const ids=new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
+  return Object.values(sheetMap).filter(r=>r.kth===currentKTH&&ids.has(r.id));
+}
+async function downloadKTHWord(){
+  if(!currentKTH)return;
+  const rows=getCurrentKTHRows();
+  if(!rows.length){alert('Tidak ada data untuk diunduh.');return;}
+  if(typeof docx === 'undefined'){alert('Library docx belum dimuat. Coba muat ulang halaman.');return;}
+  const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,AlignmentType,WidthType,BorderStyle,ShadingType,VerticalAlign}=docx;
+  const HDR_BG='1B5E40',HDR_TEXT='FFFFFF',ODD_BG='F8FAFC',EVEN_BG='FFFFFF';
+  const brd={style:BorderStyle.SINGLE,size:1,color:'D1D5DB'},brdAll={top:brd,bottom:brd,left:brd,right:brd};
+  function mkCell(text,opts={}){
+    const{bg=null,bold=false,color='000000',align=AlignmentType.LEFT,size=18}=opts;
+    return new TableCell({verticalAlign:VerticalAlign.CENTER,borders:brdAll,
+      shading:bg?{fill:bg,type:ShadingType.CLEAR,color:'auto'}:undefined,
+      margins:{top:60,bottom:60,left:100,right:100},
+      children:[new Paragraph({alignment:align,children:[new TextRun({text:String(text??'—'),bold,color,size,font:'Arial'})]})]});
+  }
+  const hdrRow=new TableRow({tableHeader:true,children:['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi'].map(h=>mkCell(h,{bg:HDR_BG,bold:true,color:HDR_TEXT,size:16}))});
+  const dataRows=rows.map((r,i)=>{
+    const bg=i%2===0?ODD_BG:EVEN_BG,st=PROG[r.prog];
+    return new TableRow({children:[
+      mkCell(i+1,{bg,align:AlignmentType.CENTER,size:16}),
+      mkCell(r.id,{bg,size:16}),
+      mkCell(r.petani,{bg,bold:true,size:16}),
+      mkCell(r.desa,{bg,size:16}),
+      mkCell(st?.label||r.prog,{bg,size:16}),
+      mkCell(fmt(r.luas),{bg,align:AlignmentType.RIGHT,size:16}),
+      mkCell(formatDateDisplay(r.tglPartisipasi)||'—',{bg,size:14}),
+      mkCell(formatDateDisplay(r.tglRealisasi)||'—',{bg,size:14}),
+    ]});
+  });
+  const tbl=new Table({width:{size:9500,type:WidthType.DXA},rows:[hdrRow,...dataRows]});
+  const now=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  const doc=new Document({
+    styles:{default:{document:{run:{font:'Arial',size:20}}}},
+    sections:[{properties:{page:{margin:{top:720,right:720,bottom:720,left:720}}},
+      children:[
+        new Paragraph({children:[new TextRun({text:currentKTH,bold:true,size:32,color:'1B5E40',font:'Arial'})]}),
+        new Paragraph({children:[new TextRun({text:`PT Citra Mulia Inti  |  ${rows.length} lahan  |  Dicetak: ${now}`,size:18,color:'64748B',font:'Arial'})]}),
+        new Paragraph({children:[new TextRun({text:''})]}),tbl
+      ]}]
+  });
+  try{
+    const blob=await Packer.toBlob(doc);
+    const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:`KTH_${currentKTH.replace(/\s+/g,'_')}.docx`});
+    a.click();URL.revokeObjectURL(a.href);
+  }catch(err){console.error(err);alert('Gagal membuat file Word.');}
+}
+function downloadKTHPDF(){
+  if(!currentKTH)return;
+  const rows=getCurrentKTHRows();
+  if(!rows.length){alert('Tidak ada data untuk diunduh.');return;}
+  if(typeof window.jspdf==='undefined'){alert('Library PDF belum dimuat. Coba muat ulang halaman.');return;}
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'landscape',unit:'pt',format:'a4'});
+  doc.setFontSize(14);doc.setTextColor(27,94,64);doc.text(currentKTH,40,32);
+  doc.setFontSize(9);doc.setTextColor(100,116,139);
+  doc.text(`PT Citra Mulia Inti  |  ${rows.length} lahan  |  Dicetak: ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`,40,48);
+  const head=[['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi']];
+  const body=rows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),formatDateDisplay(r.tglPartisipasi)||'—',formatDateDisplay(r.tglRealisasi)||'—']);
+  doc.autoTable({head,body,startY:60,styles:{fontSize:8,cellPadding:4},headStyles:{fillColor:[27,94,64],textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[248,250,252]}});
+  doc.save(`KTH_${currentKTH.replace(/\s+/g,'_')}.pdf`);
+}
 function zoomToLahan(id){
   const e=featureMap[id];if(!e)return;
   try{map.fitBounds(L.geoJSON(e.feature).getBounds().pad(0.5));}catch(ex){}
   showDetail(id);closeModal();
+}
+function toggleDlMenu(wrapId){
+  const wrap=document.getElementById(wrapId);
+  const menu=wrap.querySelector('.dl-dropdown-menu');
+  const isOpen=menu.classList.contains('open');
+  closeAllDlMenus();
+  if(!isOpen){
+    menu.classList.add('open');
+    setTimeout(()=>document.addEventListener('click',closeDlMenuOutside),10);
+  }
+}
+function closeDlMenuOutside(e){
+  if(!e.target.closest('.dl-dropdown-wrap')){closeAllDlMenus();}
+}
+function closeAllDlMenus(){
+  document.querySelectorAll('.dl-dropdown-menu').forEach(m=>m.classList.remove('open'));
+  document.removeEventListener('click',closeDlMenuOutside);
 }
 
 /* ══ CAPAIAN MODAL ══ */
@@ -1681,6 +1823,20 @@ function switchGrafikTab(tab){
 function destroyGrafikChart(){
   if(grafikChartInstance){grafikChartInstance.destroy();grafikChartInstance=null;}
 }
+function downloadGrafikPNG(){
+  if(!grafikChartInstance){alert('Grafik belum siap.');return;}
+  const canvas=document.getElementById('grafikChart');
+  const bg=document.createElement('canvas');
+  bg.width=canvas.width;bg.height=canvas.height;
+  const ctx=bg.getContext('2d');
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,bg.width,bg.height);
+  ctx.drawImage(canvas,0,0);
+  const fname=grafikActiveTab==='bulanan'
+    ?`Grafik_Bulanan_${document.getElementById('gBulananYear').value}.png`
+    :`Grafik_Mingguan_${MONTH_NAMES[document.getElementById('gMingguanMonth').value]}_${document.getElementById('gMingguanYear').value}.png`;
+  const a=Object.assign(document.createElement('a'),{href:bg.toDataURL('image/png'),download:fname});
+  a.click();
+}
 
 function renderGrafikBulanan(){
   destroyGrafikChart();
@@ -1767,6 +1923,43 @@ function renderGrafikMingguan(){
   });
 }
 
+function downloadCPCSV(){
+  if(!cpFilteredRows.length){alert('Tidak ada data untuk diunduh.');return;}
+  const visKeys=cpActiveMinat?[cpActiveMinat]:Object.keys(CP_CLASS);
+  const hdr=['No','Nama Petani','Desa','Dusun','Minat Program'];
+  visKeys.forEach(k=>{const d=CP_CLASS[k];hdr.push(`Est. ${d.short}`,`Ukur ${d.short}`,`Pot. ${d.short}`);});
+  hdr.push('Tgl Update','Status');
+  const body=cpFilteredRows.map((r,i)=>{
+    const row=[i+1,r.nama,r.desa,r.dusun||'',r.minatKelas.length?r.minatKelas.map(k=>CP_CLASS[k].short).join(' · '):(r.minat||'')];
+    visKeys.forEach(k=>{const d=CP_CLASS[k];row.push(r[d.fEst]!=null?fmtHa(r[d.fEst]):'',r[d.fUkur]!=null?fmtHa(r[d.fUkur]):'',r[d.fPot]!=null?fmtHa(r[d.fPot]):'');});
+    row.push(r.tgl_update||'',r.status||'');
+    return row;
+  });
+  const csv=[hdr,...body].map(r=>r.map(v=>`"${str(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})),download:'Capaian_Progres.csv'});
+  a.click();URL.revokeObjectURL(a.href);
+}
+function downloadCPPDF(){
+  if(!cpFilteredRows.length){alert('Tidak ada data untuk diunduh.');return;}
+  if(typeof window.jspdf==='undefined'){alert('Library PDF belum dimuat. Coba muat ulang halaman.');return;}
+  const {jsPDF}=window.jspdf;
+  const visKeys=cpActiveMinat?[cpActiveMinat]:Object.keys(CP_CLASS);
+  const doc=new jsPDF({orientation:'landscape',unit:'pt',format:'a4'});
+  doc.setFontSize(14);doc.setTextColor(27,94,64);doc.text('Capaian Progres Petani',40,32);
+  doc.setFontSize(9);doc.setTextColor(100,116,139);
+  doc.text(`PT Citra Mulia Inti  |  ${cpFilteredRows.length} petani  |  Dicetak: ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`,40,48);
+  const head=[['No','Nama Petani','Desa','Dusun','Minat']];
+  visKeys.forEach(k=>{const d=CP_CLASS[k];head[0].push(`Est. ${d.short}`,`Ukur ${d.short}`,`Pot. ${d.short}`);});
+  head[0].push('Tgl Update','Status');
+  const body=cpFilteredRows.map((r,i)=>{
+    const row=[i+1,r.nama,r.desa,r.dusun||'—',r.minatKelas.length?r.minatKelas.map(k=>CP_CLASS[k].short).join(' · '):(r.minat||'—')];
+    visKeys.forEach(k=>{const d=CP_CLASS[k];row.push(r[d.fEst]!=null?fmtHa(r[d.fEst]):'—',r[d.fUkur]!=null?fmtHa(r[d.fUkur]):'—',r[d.fPot]!=null?fmtHa(r[d.fPot]):'—');});
+    row.push(r.tgl_update||'—',r.status||'—');
+    return row;
+  });
+  doc.autoTable({head,body,startY:60,styles:{fontSize:7,cellPadding:3},headStyles:{fillColor:[27,94,64],textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[248,250,252]}});
+  doc.save('Capaian_Progres.pdf');
+}
 async function downloadCPWord(){
   if(!cpFilteredRows.length){alert('Tidak ada data untuk diunduh.');return;}
   if(typeof docx === 'undefined'){alert('Library docx belum dimuat. Coba muat ulang halaman.');return;}
