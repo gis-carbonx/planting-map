@@ -1305,16 +1305,9 @@ function calcStats(ids){
         const accHA=accRows.reduce((s,r)=>s+r.luas,0);
         const accAgroHA=accRows.reduce((s,r)=>s+r.aReg+r.aBPO,0);
         const accTembHA=accRows.reduce((s,r)=>s+r.tReg+r.tMTL,0);
-        const tgtMonth=getTargetMonthTarget(tm.year,tm.month);
-        const tgtMonthData=targetData[tm.year]&&targetData[tm.year].monthly?targetData[tm.year].monthly[tm.month]:null;
-        const tgtAgroMonth=tgtMonthData?tgtMonthData.agro:null;
-        const tgtTembMonth=tgtMonthData?tgtMonthData.temb:null;
-        const pctStr=tgtMonth&&tgtMonth>0?`, ${(accHA/tgtMonth*100).toFixed(1)}% target ${MONTH_NAMES[tm.month]}`:'';
-        const pctAgroStr=tgtAgroMonth&&tgtAgroMonth>0?`, ${(accAgroHA/tgtAgroMonth*100).toFixed(1)}% target ${MONTH_NAMES[tm.month]}`:'';
-        const pctTembStr=tgtTembMonth&&tgtTembMonth>0?`, ${(accTembHA/tgtTembMonth*100).toFixed(1)}% target ${MONTH_NAMES[tm.month]}`:'';
-        weekAccHtml=`${fmt(tR)} ha minggu ini · akumulasi ${fmt(accHA)} ha ${MONTH_NAMES[tm.month]}${pctStr}`;
-        agroWeekAccHtml=`${fmt(tA)} ha minggu ini · akumulasi ${fmt(accAgroHA)} ha ${MONTH_NAMES[tm.month]}${pctAgroStr}`;
-        tembWeekAccHtml=`${fmt(tT)} ha minggu ini · akumulasi ${fmt(accTembHA)} ha ${MONTH_NAMES[tm.month]}${pctTembStr}`;
+        weekAccHtml=`akumulasi bulan ${MONTH_NAMES[tm.month]} ${fmt(accHA)} ha`;
+        agroWeekAccHtml=`akumulasi bulan ${MONTH_NAMES[tm.month]} ${fmt(accAgroHA)} ha`;
+        tembWeekAccHtml=`akumulasi bulan ${MONTH_NAMES[tm.month]} ${fmt(accTembHA)} ha`;
       }
     }
   }
