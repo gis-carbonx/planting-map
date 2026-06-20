@@ -158,7 +158,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 #map{width:100%;height:100%;z-index:1}
 .leaflet-control{z-index:900!important}
 
-/* BASEMAP — collapsible */
+/* BASEMAP */
 .basemap-panel{position:absolute;bottom:10px;left:12px;z-index:900;background:rgba(255,255,255,.97);padding:8px 10px;border-radius:11px;box-shadow:var(--shadow-md);border:1px solid var(--border);min-width:90px}
 .basemap-toggle-btn{display:flex;align-items:center;gap:5px;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;width:100%}
 .bm-toggle-label{font-size:8px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.6px;flex:1;text-align:left}
@@ -233,7 +233,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .no-results,.empty-state{text-align:center;padding:28px 16px;color:var(--text-3);font-size:13px}
 .modal-body-scroll{overflow-y:auto;flex:1;min-height:0}
 
-/* STRIP CARDS (KTH modal stats + Capaian strip + Insentif KPI) */
+/* STRIP CARDS */
 .strip-bar{display:flex;gap:8px;padding:10px 16px;background:#f8fafc;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
 .strip-card{flex:1;min-width:110px;background:#fff;border:1px solid var(--border);border-radius:9px;padding:9px 12px}
 .strip-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);margin-bottom:3px}
@@ -243,7 +243,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .pct-badge.mid{background:#fef9c3;color:#854d0e}
 .pct-badge.low{background:#fef2f2;color:#991b1b}
 
-/* TAB BAR (grafik + insentif) */
+/* TAB BAR */
 .tab-bar{display:flex;gap:0;padding:0 16px;background:#f8fafc;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
 .tab-btn{padding:10px 18px;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;border-top:none;border-left:none;border-right:none;background:none;font-family:inherit;white-space:nowrap}
 .tab-btn.active{color:var(--primary-md);border-bottom:2px solid var(--primary-md)}
@@ -294,14 +294,34 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .btn-png{padding:6px 12px;border-radius:7px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);font-size:11px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit}
 .btn-png:hover{background:rgba(255,255,255,.22)}
 
-/* INSENTIF MODAL */
+/* ================================================================
+   INSENTIF MODAL — Updated header colors (gray scheme)
+   ================================================================ */
 .ins-modal{background:#fff;border-radius:14px;width:min(1200px,97vw);max-height:93vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
 .ins-tbl{width:100%;border-collapse:collapse;font-size:11px}
 .ins-tbl thead{position:sticky;top:0;z-index:2}
 .ins-tbl th{padding:6px 9px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap;background:#f8fafc;text-align:left}
 .ins-tbl th.center,.ins-tbl td.cell-center{text-align:center}
-.ins-tbl .th-group{background:#1b5e40;color:#fff;text-align:center;font-size:9px;font-weight:700}
-.ins-tbl .th-pct{background:#e8f5e9;color:#2e7d32;font-size:8.5px;font-weight:600;text-align:center}
+
+/* Header atas (nama tahap) → abu gelap */
+.ins-tbl .th-group{
+  background:#374151;
+  color:#fff;
+  text-align:center;
+  font-size:9px;
+  font-weight:700;
+  border-bottom:1px solid #4b5563;
+}
+/* Header bawah (persentase dinamis) → abu light */
+.ins-tbl .th-pct{
+  background:#e5e7eb;
+  color:#4b5563;
+  font-size:8.5px;
+  font-weight:600;
+  text-align:center;
+  border-bottom:1px solid #d1d5db;
+}
+
 .ins-tbl td{padding:5px 9px;border-bottom:1px solid var(--border-lt);vertical-align:middle;color:var(--text)}
 .ins-paid{display:inline-block;width:16px;height:16px;border-radius:3px;background:#16a34a;vertical-align:middle;flex-shrink:0}
 .ins-unpaid{display:inline-block;width:16px;height:16px;border-radius:3px;background:#e2e8f0;vertical-align:middle;flex-shrink:0}
@@ -337,7 +357,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         Patrol-CT Monitoring
       </a>
       <div class="menu-hd" style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0">Versi</div>
-      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v2.2</div>
+      <div class="menu-item" style="cursor:default;opacity:.7;padding:8px 14px">v2.3</div>
     </div>
   </div>
 </header>
@@ -699,7 +719,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 
     <div class="tab-bar" id="insentifTabBar"></div>
     <div class="modal-toolbar" style="padding:8px 16px">
-      <div class="search-wrap" style="max-width:220px">
+      <div class="search-wrap" style="max-width:200px">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" id="insSearch" placeholder="Cari nama petani..." oninput="filterInsentifTable()"/>
       </div>
@@ -710,10 +730,9 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         <option value="Temb_Reg">Tembawang Reguler</option>
         <option value="Temb_MTL">Menjaga Tutupan Lahan</option>
       </select>
-      <select class="modal-sel" id="insSelStatus" onchange="filterInsentifTable()">
-        <option value="">Semua Status</option>
-        <option value="paid">Sudah Bayar</option>
-        <option value="unpaid">Belum Bayar</option>
+      <!-- Filter Desa (menggantikan filter Status) -->
+      <select class="modal-sel" id="insSelDesa" onchange="filterInsentifTable()">
+        <option value="">Semua Desa</option>
       </select>
       <div class="ins-legend">
         <div class="ins-leg-item"><span class="ins-paid"></span> Sudah Bayar</div>
@@ -749,18 +768,17 @@ const PROG={
   Temb_Reg:{fill:'#ff8c38',stroke:'#b84c00',label:'Tembawang Reguler',    group:'temb',tagCls:'tr',dot:'#b84c00'},
   Temb_MTL:{fill:'#ce6be8',stroke:'#7b1fa2',label:'Menjaga Tutupan Lahan',group:'temb',tagCls:'tm',dot:'#7b1fa2'},
 };
-// Insentif stages (kolom R=17 ... AB=26)
 const INS_STAGES=[
-  {key:'persiapan',label:'Persiapan Lahan',pct:'80%', idx:17},
-  {key:'tanam',    label:'Penanaman',       pct:'75%', idx:18},
-  {key:'thn2',     label:'Tahun 2',         pct:'60%', idx:19},
-  {key:'thn3',     label:'Tahun 3',         pct:'50%', idx:20},
-  {key:'thn4',     label:'Tahun 4',         pct:'40%', idx:21},
-  {key:'thn6',     label:'Tahun 6',         pct:'40%', idx:22},
-  {key:'thn7',     label:'Tahun 7',         pct:'10%', idx:23},
-  {key:'thn8',     label:'Tahun 8',         pct:'10%', idx:24},
-  {key:'thn9',     label:'Tahun 9',         pct:'—',   idx:25},
-  {key:'thn10',    label:'Tahun 10',        pct:'—',   idx:26},
+  {key:'persiapan',label:'Persiapan Lahan',idx:17},
+  {key:'tanam',    label:'Penanaman',       idx:18},
+  {key:'thn2',     label:'Tahun 2',         idx:19},
+  {key:'thn3',     label:'Tahun 3',         idx:20},
+  {key:'thn4',     label:'Tahun 4',         idx:21},
+  {key:'thn6',     label:'Tahun 6',         idx:22},
+  {key:'thn7',     label:'Tahun 7',         idx:23},
+  {key:'thn8',     label:'Tahun 8',         idx:24},
+  {key:'thn9',     label:'Tahun 9',         idx:25},
+  {key:'thn10',    label:'Tahun 10',        idx:26},
 ];
 
 // State
@@ -901,7 +919,7 @@ function getActiveTarget(){
 
 // ── FETCH HELPERS ──
 async function getText(u){const r=await fetch(u);if(!r.ok)throw Error(r.status+" "+u);return r.text();}
-async function getJSON(u) {const r=await fetch(u);if(!r.ok)throw Error(r.status+" "+u);return r.json();}
+async function getJSON(u){const r=await fetch(u);if(!r.ok)throw Error(r.status+" "+u);return r.json();}
 
 // ── BOOT ──
 (async function boot(){
@@ -919,8 +937,6 @@ async function getJSON(u) {const r=await fetch(u);if(!r.ok)throw Error(r.status+
     setPreset('ytd');fitAll();hideLoad();updatePotCard();
   }catch(err){console.error('BOOT ERROR:',err);setLoad('⚠ '+String(err?.message||err),true);}
 })();
-
-
 
 function resolveProgram(aReg,aBPO,tReg,tMTL,tipe){
   if(aReg>0)return'Agro_Reg';if(aBPO>0)return'Agro_BPO';
@@ -1069,7 +1085,6 @@ function calcStats(ids){
   });
   const tA=aReg+aBPO,tT=tReg+tMTL,tR=tA+tT,tgt=getActiveTarget();
 
-  // Week accumulation
   ['sWeekAcc','sAgroWeekAcc','sTembWeekAcc'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='';el.style.display='none';}});
   if(currentPreset==='week'){
     const wk=getSelectedWeek();
@@ -1477,9 +1492,19 @@ function buildInsData(){
 }
 
 function openInsentifModal(){
-  buildInsData();insActiveYear='all';
-  document.getElementById('insSearch').value='';document.getElementById('insSelProg').value='';document.getElementById('insSelStatus').value='';
-  buildInsTabs();renderInsTable();
+  buildInsData();
+  insActiveYear='all';
+  document.getElementById('insSearch').value='';
+  document.getElementById('insSelProg').value='';
+
+  // Populate desa filter
+  const desaList=[...new Set(insRawData.map(r=>r.desa).filter(Boolean))].sort();
+  const desaSel=document.getElementById('insSelDesa');
+  desaSel.innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  desaSel.value='';
+
+  buildInsTabs();
+  renderInsTable();
   document.getElementById('insentifModal').style.display='flex';
 }
 function closeInsentifModal(){document.getElementById('insentifModal').style.display='none';}
@@ -1493,26 +1518,68 @@ function buildInsTabs(){
 }
 function switchInsTab(year){
   insActiveYear=year;
-  document.querySelectorAll('#insentifTabBar .tab-btn').forEach((b,_,arr)=>{
+  document.querySelectorAll('#insentifTabBar .tab-btn').forEach(b=>{
     b.classList.toggle('active',b.textContent.startsWith(year==='all'?'Semua':year));
   });
-  document.getElementById('insSearch').value='';document.getElementById('insSelProg').value='';document.getElementById('insSelStatus').value='';
+  document.getElementById('insSearch').value='';
+  document.getElementById('insSelProg').value='';
+  document.getElementById('insSelDesa').value='';
   renderInsTable();
+}
+
+// ── INSENTIF: hitung persentase dinamis dari baris visible ──
+function calcInsPct(){
+  // Hitung per kolom: berapa % baris visible yang sudah bayar
+  const visRows=insFilteredRows.filter(r=>{
+    // cek apakah tr-nya tidak hidden — gunakan data langsung dari insFilteredRows
+    // karena filterInsentifTable sudah set insFilteredRows
+    return true; // insFilteredRows sudah filtered
+  });
+  const total=visRows.length;
+  return INS_STAGES.map(s=>{
+    if(!total)return'—';
+    const paidCount=visRows.filter(r=>isPaid(r.stages[s.key])).length;
+    return Math.round(paidCount/total*100)+'%';
+  });
 }
 
 function renderInsTable(){
   const rows=insActiveYear==='all'?insRawData:insRawData.filter(r=>yearOf(r)===+insActiveYear);
   insFilteredRows=rows;
   setText('insentifSub',`Tahun Bergabung: ${insActiveYear==='all'?'Semua':insActiveYear} · ${rows.length} lahan · ${new Set(rows.map(r=>r.petani.toLowerCase())).size} petani`);
+  buildInsThead(rows);
+  buildInsTbody(rows);
+  filterInsentifTable();
+}
 
-  // Thead
+function buildInsThead(rows){
+  // Hitung pct dari rows yang diberikan
+  const total=rows.length;
+  const pcts=INS_STAGES.map(s=>{
+    if(!total)return'—';
+    const paidCount=rows.filter(r=>isPaid(r.stages[s.key])).length;
+    return Math.round(paidCount/total*100)+'%';
+  });
   document.getElementById('insThead').innerHTML=
-    `<tr><th rowspan="2">No</th><th rowspan="2">ID Lahan</th><th rowspan="2">Nama Petani</th><th rowspan="2">Desa</th><th rowspan="2">Program</th><th rowspan="2">Luas (ha)</th><th rowspan="2">Thn Bergabung</th>${INS_STAGES.map(s=>`<th class="th-group">${s.label}</th>`).join('')}</tr>
-     <tr>${INS_STAGES.map(s=>`<th class="th-pct center">${s.pct}</th>`).join('')}</tr>`;
-  // Tbody
+    `<tr>
+      <th rowspan="2">No</th>
+      <th rowspan="2">ID Lahan</th>
+      <th rowspan="2">Nama Petani</th>
+      <th rowspan="2">Desa</th>
+      <th rowspan="2">Program</th>
+      <th rowspan="2">Luas (ha)</th>
+      <th rowspan="2">Thn Bergabung</th>
+      ${INS_STAGES.map(s=>`<th class="th-group">${s.label}</th>`).join('')}
+    </tr>
+    <tr id="insPctRow">
+      ${INS_STAGES.map((s,i)=>`<th class="th-pct center" data-stage="${s.key}">${pcts[i]}</th>`).join('')}
+    </tr>`;
+}
+
+function buildInsTbody(rows){
   document.getElementById('insTbody').innerHTML=rows.map((r,i)=>{
     const st=PROG[r.prog];
-    return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}">
+    return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}" data-desa="${esc(r.desa)}">
       <td style="color:var(--text-3);font-size:10px">${i+1}</td>
       <td style="font-family:monospace;font-size:10px">${esc(r.id)}</td>
       <td style="font-weight:600">${esc(r.petani)}</td>
@@ -1523,24 +1590,52 @@ function renderInsTable(){
       ${INS_STAGES.map(s=>isPaid(r.stages[s.key])?`<td class="cell-center"><span class="ins-paid" title="Sudah Bayar"></span></td>`:`<td class="cell-center"><span class="ins-unpaid" title="Belum Bayar"></span></td>`).join('')}
     </tr>`;
   }).join('');
-  filterInsentifTable();
 }
+
+// ── Filter & update persentase dinamis ──
 function filterInsentifTable(){
   const q=document.getElementById('insSearch').value.toLowerCase().trim();
-  const prog=$v('insSelProg'),status=$v('insSelStatus');
-  let v=0;
-  document.querySelectorAll('#insTbody tr').forEach(tr=>{
+  const prog=$v('insSelProg');
+  const desa=$v('insSelDesa');
+
+  const allRows=document.querySelectorAll('#insTbody tr');
+  const visibleIds=[];
+
+  allRows.forEach(tr=>{
     const nm=!q||(tr.dataset.petani||'').includes(q);
     const pr=!prog||tr.dataset.prog===prog;
-    let st=true;
-    if(status){const row=insRawData.find(r=>r.id===tr.dataset.id);if(row){const hp=INS_STAGES.some(s=>isPaid(row.stages[s.key]));st=status==='paid'?hp:!hp;}}
-    const show=nm&&pr&&st;tr.classList.toggle('ins-hidden',!show);if(show)v++;
+    const ds=!desa||(tr.dataset.desa||'')===desa;
+    const show=nm&&pr&&ds;
+    tr.classList.toggle('ins-hidden',!show);
+    if(show)visibleIds.push(tr.dataset.id);
   });
-  setText('insRowCount',v+' lahan');document.getElementById('insNoResults').style.display=v===0?'block':'none';
+
+  setText('insRowCount',visibleIds.length+' lahan');
+  document.getElementById('insNoResults').style.display=visibleIds.length===0?'block':'none';
+
+  // Update persentase di header baris ke-2 sesuai baris visible
+  updateInsPct(visibleIds);
 }
+
+function updateInsPct(visibleIds){
+  const idSet=new Set(visibleIds);
+  const visRows=insFilteredRows.filter(r=>idSet.has(r.id));
+  const total=visRows.length;
+
+  // Update setiap sel th-pct
+  const pctCells=document.querySelectorAll('#insPctRow th[data-stage]');
+  pctCells.forEach(cell=>{
+    const stageKey=cell.dataset.stage;
+    if(!total){cell.textContent='—';return;}
+    const paidCount=visRows.filter(r=>isPaid(r.stages[stageKey])).length;
+    const pct=Math.round(paidCount/total*100);
+    cell.textContent=pct+'%';
+  });
+}
+
 function downloadInsentifCSV(){
   if(!insFilteredRows.length){alert('Tidak ada data.');return;}
-  const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tahun Bergabung',...INS_STAGES.map(s=>`${s.label} (${s.pct})`)];
+  const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tahun Bergabung',...INS_STAGES.map(s=>s.label)];
   const body=insFilteredRows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),yearOf(r)||'—',...INS_STAGES.map(s=>isPaid(r.stages[s.key])?'Sudah Bayar':'Belum Bayar')]);
   dlCSV([hdr,...body],`Insentif_Program_${insActiveYear==='all'?'SemuaTahun':insActiveYear}.csv`);
 }
