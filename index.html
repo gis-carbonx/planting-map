@@ -303,8 +303,8 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .ins-tbl .th-group{background:#1b5e40;color:#fff;text-align:center;font-size:9px;font-weight:700}
 .ins-tbl .th-pct{background:#e8f5e9;color:#2e7d32;font-size:8.5px;font-weight:600;text-align:center}
 .ins-tbl td{padding:5px 9px;border-bottom:1px solid var(--border-lt);vertical-align:middle;color:var(--text)}
-.ins-paid{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#dcfce7;color:#16a34a;font-size:13px;font-weight:700}
-.ins-unpaid{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#f1f5f9;color:#94a3b8;font-size:13px}
+.ins-paid{display:inline-block;width:16px;height:16px;border-radius:3px;background:#16a34a;vertical-align:middle;flex-shrink:0}
+.ins-unpaid{display:inline-block;width:16px;height:16px;border-radius:3px;background:#e2e8f0;vertical-align:middle;flex-shrink:0}
 .ins-legend{display:flex;align-items:center;gap:14px;margin-left:auto;flex-wrap:wrap}
 .ins-leg-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-2)}
 
@@ -696,7 +696,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         <button class="modal-close-btn" onclick="closeInsentifModal()">✕</button>
       </div>
     </div>
-    <div class="strip-bar" id="insentifStrip"></div>
+
     <div class="tab-bar" id="insentifTabBar"></div>
     <div class="modal-toolbar" style="padding:8px 16px">
       <div class="search-wrap" style="max-width:220px">
@@ -712,12 +712,12 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
       </select>
       <select class="modal-sel" id="insSelStatus" onchange="filterInsentifTable()">
         <option value="">Semua Status</option>
-        <option value="paid">✅ Sudah Bayar</option>
-        <option value="unpaid">⏳ Belum Bayar</option>
+        <option value="paid">Sudah Bayar</option>
+        <option value="unpaid">Belum Bayar</option>
       </select>
       <div class="ins-legend">
-        <div class="ins-leg-item"><span class="ins-paid">✓</span> Sudah Bayar</div>
-        <div class="ins-leg-item"><span class="ins-unpaid">–</span> Belum Bayar</div>
+        <div class="ins-leg-item"><span class="ins-paid"></span> Sudah Bayar</div>
+        <div class="ins-leg-item"><span class="ins-unpaid"></span> Belum Bayar</div>
       </div>
       <span class="row-count" style="margin-left:auto" id="insRowCount">—</span>
     </div>
@@ -1504,16 +1504,7 @@ function renderInsTable(){
   const rows=insActiveYear==='all'?insRawData:insRawData.filter(r=>yearOf(r)===+insActiveYear);
   insFilteredRows=rows;
   setText('insentifSub',`Tahun Bergabung: ${insActiveYear==='all'?'Semua':insActiveYear} · ${rows.length} lahan · ${new Set(rows.map(r=>r.petani.toLowerCase())).size} petani`);
-  // KPI strip
-  const anyPaid=rows.filter(r=>INS_STAGES.some(s=>isPaid(r.stages[s.key]))).length;
-  document.getElementById('insentifStrip').innerHTML=`
-    <div class="strip-card"><div class="strip-lbl">Total Lahan</div><div class="strip-val">${rows.length}</div><div class="strip-sub">${new Set(rows.map(r=>r.petani.toLowerCase())).size} petani</div></div>
-    <div class="strip-card"><div class="strip-lbl">Pernah Terima Insentif</div><div class="strip-val">${anyPaid}</div><div class="strip-sub">dari ${rows.length} lahan</div></div>
-    ${INS_STAGES.map(s=>{
-      const paid=rows.filter(r=>isPaid(r.stages[s.key])).length,pct=rows.length?paid/rows.length*100:0;
-      const cls=pct>=75?'':pct>=40?' mid':' low';
-      return `<div class="strip-card"><div class="strip-lbl">${s.label} <span style="font-weight:400;color:var(--text-3)">(${s.pct})</span></div><div class="strip-val"><span class="pct-badge${cls}">${pct.toFixed(1)}%</span></div><div class="strip-sub">${paid}/${rows.length} lahan</div></div>`;
-    }).join('')}`;
+
   // Thead
   document.getElementById('insThead').innerHTML=
     `<tr><th rowspan="2">No</th><th rowspan="2">ID Lahan</th><th rowspan="2">Nama Petani</th><th rowspan="2">Desa</th><th rowspan="2">Program</th><th rowspan="2">Luas (ha)</th><th rowspan="2">Thn Bergabung</th>${INS_STAGES.map(s=>`<th class="th-group">${s.label}</th>`).join('')}</tr>
@@ -1529,7 +1520,7 @@ function renderInsTable(){
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
       <td style="font-weight:600">${fmt(r.luas)}</td>
       <td style="text-align:center;font-weight:700;color:var(--primary-md)">${yearOf(r)||'—'}</td>
-      ${INS_STAGES.map(s=>isPaid(r.stages[s.key])?`<td class="cell-center"><span class="ins-paid" title="Sudah Bayar">✓</span></td>`:`<td class="cell-center"><span class="ins-unpaid" title="Belum Bayar">–</span></td>`).join('')}
+      ${INS_STAGES.map(s=>isPaid(r.stages[s.key])?`<td class="cell-center"><span class="ins-paid" title="Sudah Bayar"></span></td>`:`<td class="cell-center"><span class="ins-unpaid" title="Belum Bayar"></span></td>`).join('')}
     </tr>`;
   }).join('');
   filterInsentifTable();
