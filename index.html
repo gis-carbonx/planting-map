@@ -835,7 +835,7 @@ function populateWeekDropdown(){
   sel.innerHTML=weeks.map((w,i)=>`<option value="${i}">${w.label} (${fmtD(w.sat,'s')}–${fmtD(w.fri,'s')})</option>`).join('');
   const now=new Date();let best=0;weeks.forEach((w,i)=>{if(w.sat<=now&&now<=w.fri)best=i;});sel.value=best;
 }
-function fmtD(d,t){return d.toLocaleDateString('id-ID',t==='s'?{day:'numeric',month:'short'}:{day:'numeric',month:'short',year:'numeric'});}
+function fmtD(d,t){return d.toLocaleDateString('id-ID',t==='s'?{day:'numeric',month:'short'}:t==='l'?{day:'numeric',month:'long',year:'numeric'}:{day:'numeric',month:'short',year:'numeric'});}
 function onWeekYearChange(){populateWeekDropdown();applyFilter();}
 function onWeekMonthChange(){populateWeekDropdown();applyFilter();}
 function getSelectedWeek(){
@@ -899,6 +899,10 @@ function getActiveTarget(){
   return{agro:null,temb:null};
 }
 
+// ── FETCH HELPERS ──
+async function getText(u){const r=await fetch(u);if(!r.ok)throw Error(r.status+" "+u);return r.text();}
+async function getJSON(u) {const r=await fetch(u);if(!r.ok)throw Error(r.status+" "+u);return r.json();}
+
 // ── BOOT ──
 (async function boot(){
   try{
@@ -913,10 +917,10 @@ function getActiveTarget(){
     setLoad('Merender peta...');
     renderCMI(cmiJ);renderAgro(agroJ);
     setPreset('ytd');fitAll();hideLoad();updatePotCard();
-  }catch(err){console.error(err);setLoad('⚠ Gagal memuat data.',true);}
+  }catch(err){console.error('BOOT ERROR:',err);setLoad('⚠ '+String(err?.message||err),true);}
 })();
-const getText=async u=>{const r=await fetch(u);if(!r.ok)throw Error(r.status);return r.text();};
-const getJSON =async u=>{const r=await fetch(u);if(!r.ok)throw Error(r.status);return r.json();};
+
+
 
 function resolveProgram(aReg,aBPO,tReg,tMTL,tipe){
   if(aReg>0)return'Agro_Reg';if(aBPO>0)return'Agro_BPO';
@@ -1463,7 +1467,11 @@ function buildInsData(){
     if(!id||!sheetMap[id])return;
     const keys=Object.keys(raw),row=sheetMap[id];
     const stages={};
-    INS_STAGES.forEach(s=>{stages[s.key]=str(raw[s.key]||raw[s.label]||keys[s.idx]?str(raw[keys[s.idx]]):'');});
+    INS_STAGES.forEach(s=>{
+      const byName=str(raw[s.key]||raw[s.label]||'');
+      const byIdx=keys[s.idx]?str(raw[keys[s.idx]]):'';
+      stages[s.key]=byName||byIdx;
+    });
     insRawData.push({...row,stages});
   });
 }
