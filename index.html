@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>draft-1-</title>
+<title>draft-2-</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -270,10 +270,21 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .ins-tbl .th-group{background:#374151;color:#fff;text-align:center;font-size:9px;font-weight:700;border-bottom:1px solid #4b5563}
 .ins-tbl .th-pct{background:#e5e7eb;color:#4b5563;font-size:8.5px;font-weight:600;text-align:center;border-bottom:1px solid #d1d5db}
 .ins-tbl td{padding:5px 9px;border-bottom:1px solid var(--border-lt);vertical-align:middle;color:var(--text)}
-.ins-paid{display:inline-block;width:16px;height:16px;border-radius:3px;background:#16a34a;vertical-align:middle;flex-shrink:0}
-.ins-unpaid{display:inline-block;width:16px;height:16px;border-radius:3px;background:#e2e8f0;vertical-align:middle;flex-shrink:0}
+.ins-paid{display:inline-block;padding:2px 8px;border-radius:4px;background:#dcfce7;color:#166534;font-size:10px;font-weight:600;white-space:nowrap}
+.ins-unpaid{display:inline-block;padding:2px 8px;border-radius:4px;background:#f1f5f9;color:#94a3b8;font-size:10px;font-weight:600;white-space:nowrap}
 .ins-legend{display:flex;align-items:center;gap:14px;margin-left:auto;flex-wrap:wrap}
 .ins-leg-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-2)}
+.ins-view-tabs{display:flex;gap:4px;flex-shrink:0}
+.ins-view-tab{padding:5px 13px;border-radius:7px;border:1px solid var(--border);background:var(--bg);font-size:11px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;white-space:nowrap}
+.ins-view-tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.ins-view-tab:hover:not(.active){background:var(--primary-bg);border-color:var(--primary-bg);color:var(--primary-md)}
+.thn-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.thn-tbl thead{position:sticky;top:0;z-index:2;background:#f8fafc}
+.thn-tbl th{padding:8px 10px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap}
+.thn-tbl th.right,.thn-tbl td.right{text-align:right}
+.thn-tbl td{padding:7px 10px;border-bottom:1px solid var(--border-lt);vertical-align:middle;color:var(--text)}
+.thn-tbl tr:hover td{background:#f8fafc}
+.thn-tbl tr.ins-hidden{display:none}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 </style>
@@ -658,29 +669,58 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         <button class="modal-close-btn" onclick="closeModal('insentifModal')">✕</button>
       </div>
     </div>
-    <div class="tab-bar" id="insentifTabBar"></div>
-    <div class="modal-toolbar" style="padding:8px 16px">
+
+    <!-- Tab tahun (kiri) + tab view program (kanan) -->
+    <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:#f8fafc;flex-shrink:0;padding:0 16px 0 0">
+      <div class="tab-bar" id="insentifTabBar" style="border-bottom:none;padding:0;flex:1;overflow-x:auto"></div>
+      <div class="ins-view-tabs">
+        <button class="ins-view-tab active" id="insViewReg" onclick="switchInsView('reguler')">Reguler</button>
+        <button class="ins-view-tab" id="insViewThn" onclick="switchInsView('tahunan')">Program Tahunan</button>
+      </div>
+    </div>
+
+    <!-- TOOLBAR REGULER -->
+    <div class="modal-toolbar" id="insToolbarReg" style="padding:8px 16px">
       <div class="search-wrap" style="max-width:200px">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" id="insSearch" placeholder="Cari nama petani..." oninput="filterInsentifTable()"/>
       </div>
       <select class="modal-sel" id="insSelProg" onchange="filterInsentifTable()">
-        <option value="">Semua Program</option>
+        <option value="">Semua</option>
         <option value="Agro_Reg">Agroforestri Reguler</option>
-        <option value="Agro_BPO">Bantuan Pupuk Organik</option>
         <option value="Temb_Reg">Tembawang Reguler</option>
-        <option value="Temb_MTL">Menjaga Tutupan Lahan</option>
       </select>
       <select class="modal-sel" id="insSelDesa" onchange="filterInsentifTable()"><option value="">Semua Desa</option></select>
-      <div class="ins-legend">
-        <div class="ins-leg-item"><span class="ins-paid"></span> Sudah Bayar</div>
-        <div class="ins-leg-item"><span class="ins-unpaid"></span> Belum Bayar</div>
-      </div>
       <span class="row-count" style="margin-left:auto" id="insRowCount">—</span>
     </div>
-    <div class="modal-body-scroll">
+    <!-- TOOLBAR TAHUNAN -->
+    <div class="modal-toolbar" id="insToolbarThn" style="padding:8px 16px;display:none">
+      <div class="search-wrap" style="max-width:200px">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="insSearchThn" placeholder="Cari nama petani..." oninput="filterTahunanTable()"/>
+      </div>
+      <select class="modal-sel" id="insSelProgThn" onchange="filterTahunanTable()">
+        <option value="">Semua</option>
+        <option value="Agro_BPO">Bantuan Pupuk Organik</option>
+        <option value="Temb_MTL">Menjaga Tutupan Lahan</option>
+      </select>
+      <select class="modal-sel" id="insSelDesaThn" onchange="filterTahunanTable()"><option value="">Semua Desa</option></select>
+      <div class="ins-legend">
+        <div class="ins-leg-item"><span class="ins-paid">Sudah</span> Sudah Bayar</div>
+        <div class="ins-leg-item"><span class="ins-unpaid">Belum</span> Belum Bayar</div>
+      </div>
+      <span class="row-count" style="margin-left:auto" id="insThnRowCount">—</span>
+    </div>
+
+    <!-- TABEL REGULER -->
+    <div class="modal-body-scroll" id="insBodyReg">
       <table class="ins-tbl"><thead id="insThead"></thead><tbody id="insTbody"></tbody></table>
       <div class="no-results" id="insNoResults" style="display:none">Tidak ada hasil</div>
+    </div>
+    <!-- TABEL TAHUNAN -->
+    <div class="modal-body-scroll" id="insBodyThn" style="display:none">
+      <table class="thn-tbl"><thead id="thnThead"></thead><tbody id="thnTbody"></tbody></table>
+      <div class="no-results" id="thnNoResults" style="display:none">Tidak ada hasil</div>
     </div>
   </div>
 </div>
@@ -800,13 +840,20 @@ function openGrafikModal(){document.getElementById('grafikModal').style.display=
 function openInsentifModal(){
   buildInsData();
   insActiveYear='all';
+  insActiveView='reguler';
   document.getElementById('insSearch').value='';
+  document.getElementById('insSearchThn').value='';
   document.getElementById('insSelProg').value='';
-  const desaList=[...new Set(insRawData.map(r=>r.desa).filter(Boolean))].sort();
-  const desaSel=document.getElementById('insSelDesa');
-  desaSel.innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
-  desaSel.value='';
-  buildInsTabs();renderInsTable();
+  document.getElementById('insSelProgThn').value='';
+  // Reset view tabs
+  document.getElementById('insViewReg').classList.add('active');
+  document.getElementById('insViewThn').classList.remove('active');
+  document.getElementById('insToolbarReg').style.display='flex';
+  document.getElementById('insToolbarThn').style.display='none';
+  document.getElementById('insBodyReg').style.display='block';
+  document.getElementById('insBodyThn').style.display='none';
+  buildInsTabs();
+  renderInsTable();
   document.getElementById('insentifModal').style.display='flex';
 }
 
@@ -927,8 +974,15 @@ function parseSheet(csv){
     const tReg=num(raw['Temb_Reg']||raw['Temb Reg']||raw['N']||0),tMTL=num(raw['Temb_MTL']||raw['Temb MTL']||raw['O']||0);
     const tanamanKarbon=num(raw['Total_Tanaman_Karbon']||raw['Total Tanaman Karbon']||raw['P']||0);
     const link=str(raw['Link']||raw['link']||raw['Q']||'');
+    // Kolom baru: AC=pupuk cair, AD=pupuk padat, AE=tgl BPO, AF=insentif MTL, AG=tgl MTL
+    const keys=Object.keys(raw);
+    const pupukCair=num(raw['AC']||raw['Pupuk_Cair']||raw['pupuk_cair']||(keys[28]?raw[keys[28]]:'') ||0);
+    const pupukPadat=num(raw['AD']||raw['Pupuk_Padat']||raw['pupuk_padat']||(keys[29]?raw[keys[29]]:'')||0);
+    const tglBPO=str(raw['AE']||raw['Tgl_BPO']||raw['tgl_bpo']||(keys[30]?raw[keys[30]]:'')||'');
+    const insentifMTL=num(raw['AF']||raw['Insentif_MTL']||raw['insentif_mtl']||(keys[31]?raw[keys[31]]:'')||0);
+    const tglMTL=str(raw['AG']||raw['Tgl_MTL']||raw['tgl_mtl']||(keys[32]?raw[keys[32]]:'')||'');
     const prog=resolveProgram(aReg,aBPO,tReg,tMTL,tipe);if(!prog)return;
-    sheetMap[id]={id,kth,grid,luas:aReg+aBPO+tReg+tMTL,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,tanamanKarbon,link,prog};
+    sheetMap[id]={id,kth,grid,luas:aReg+aBPO+tReg+tMTL,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,tanamanKarbon,link,prog,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
   });
 }
 
@@ -1461,11 +1515,26 @@ function buildInsData(){
   });
 }
 
+let insActiveView='reguler'; // 'reguler' | 'tahunan'
+
 function closeInsentifModal(){closeModal('insentifModal');}
+
+function switchInsView(view){
+  insActiveView=view;
+  document.getElementById('insViewReg').classList.toggle('active',view==='reguler');
+  document.getElementById('insViewThn').classList.toggle('active',view==='tahunan');
+  document.getElementById('insToolbarReg').style.display=view==='reguler'?'flex':'none';
+  document.getElementById('insToolbarThn').style.display=view==='tahunan'?'flex':'none';
+  document.getElementById('insBodyReg').style.display=view==='reguler'?'block':'none';
+  document.getElementById('insBodyThn').style.display=view==='tahunan'?'block':'none';
+  if(view==='tahunan')renderTahunanTable();
+  else renderInsTable();
+}
+
 function buildInsTabs(){
   const years=[...new Set(insRawData.map(r=>yearOf(r)).filter(Boolean))].sort();
   document.getElementById('insentifTabBar').innerHTML=
-    [{label:'Semua Tahun',val:'all'},...years.map(y=>({label:`${y} (${insRawData.filter(r=>yearOf(r)===y).length} lahan)`,val:String(y)}))].map(t=>
+    [{label:'Semua Tahun',val:'all'},...years.map(y=>({label:`${y} (${insRawData.filter(r=>yearOf(r)===y).length})`,val:String(y)}))].map(t=>
       `<button class="tab-btn${t.val===insActiveYear?' active':''}" onclick="switchInsTab('${t.val}')">${t.label}</button>`
     ).join('');
 }
@@ -1475,21 +1544,39 @@ function switchInsTab(year){
     b.classList.toggle('active',b.textContent.startsWith(year==='all'?'Semua':year));
   });
   document.getElementById('insSearch').value='';
+  document.getElementById('insSearchThn').value='';
   document.getElementById('insSelProg').value='';
+  document.getElementById('insSelProgThn').value='';
   document.getElementById('insSelDesa').value='';
+  document.getElementById('insSelDesaThn').value='';
   renderInsTable();
+  if(insActiveView==='tahunan')renderTahunanTable();
 }
 
+// Rows for current year tab
+function getInsYearRows(){
+  return insActiveYear==='all'?insRawData:insRawData.filter(r=>yearOf(r)===+insActiveYear);
+}
+
+// ── TABEL REGULER (Agro_Reg + Temb_Reg) ──
 function renderInsTable(){
-  const rows=insActiveYear==='all'?insRawData:insRawData.filter(r=>yearOf(r)===+insActiveYear);
+  const rows=getInsYearRows().filter(r=>r.prog==='Agro_Reg'||r.prog==='Temb_Reg');
   insFilteredRows=rows;
-  setText('insentifSub',`Tahun Bergabung: ${insActiveYear==='all'?'Semua':insActiveYear} · ${rows.length} lahan · ${new Set(rows.map(r=>r.petani.toLowerCase())).size} petani`);
+  updateInsentifSub();
+  // Populate desa filter for reguler
+  const desaList=[...new Set(rows.map(r=>r.desa).filter(Boolean))].sort();
+  document.getElementById('insSelDesa').innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
   buildInsThead(rows);
   buildInsTbody(rows);
   filterInsentifTable();
 }
 
-// Compute paid % for a given rows array
+function updateInsentifSub(){
+  const all=getInsYearRows();
+  setText('insentifSub',`Tahun Bergabung: ${insActiveYear==='all'?'Semua':insActiveYear} · ${all.length} lahan · ${new Set(all.map(r=>r.petani.toLowerCase())).size} petani`);
+}
+
+// Compute paid % for stages
 function calcInsPcts(rows){
   return INS_STAGES.map(s=>{
     if(!rows.length)return'—';
@@ -1521,10 +1608,9 @@ function buildInsTbody(rows){
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
       <td style="font-weight:600">${fmt(r.luas)}</td>
       <td style="text-align:center;font-weight:700;color:var(--primary-md)">${yearOf(r)||'—'}</td>
-      ${INS_STAGES.map(s=>`<td class="cell-center"><span class="${isPaid(r.stages[s.key])?'ins-paid':'ins-unpaid'}" title="${isPaid(r.stages[s.key])?'Sudah Bayar':'Belum Bayar'}"></span></td>`).join('')}
+      ${INS_STAGES.map(s=>`<td class="cell-center"><span class="${isPaid(r.stages[s.key])?'ins-paid':'ins-unpaid'}">${isPaid(r.stages[s.key])?'Sudah':'Belum'}</span></td>`).join('')}
     </tr>`;
-}
-).join('');}
+  }).join('');}
 
 function filterInsentifTable(){
   const q=document.getElementById('insSearch').value.toLowerCase().trim();
@@ -1537,7 +1623,7 @@ function filterInsentifTable(){
   });
   setText('insRowCount',visibleIds.length+' lahan');
   document.getElementById('insNoResults').style.display=visibleIds.length===0?'block':'none';
-  // Update % header from visible rows
+  // Update % header
   const idSet=new Set(visibleIds);
   const visRows=insFilteredRows.filter(r=>idSet.has(r.id));
   document.querySelectorAll('#insPctRow th[data-stage]').forEach(cell=>{
@@ -1545,11 +1631,81 @@ function filterInsentifTable(){
   });
 }
 
+// ── TABEL TAHUNAN (Agro_BPO + Temb_MTL) ──
+let thnFilteredRows=[];
+
+function renderTahunanTable(){
+  const rows=getInsYearRows().filter(r=>r.prog==='Agro_BPO'||r.prog==='Temb_MTL');
+  thnFilteredRows=rows;
+  // Populate desa filter for tahunan
+  const desaList=[...new Set(rows.map(r=>r.desa).filter(Boolean))].sort();
+  document.getElementById('insSelDesaThn').innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  buildTahunanTable(rows);
+  filterTahunanTable();
+}
+
+function buildTahunanTable(rows){
+  // Header: kolom tetap + kolom kondisional per program
+  document.getElementById('thnThead').innerHTML=`<tr>
+    <th>No</th><th>ID Lahan</th><th>Nama Petani</th><th>Desa</th><th>Program</th><th class="right">Luas (ha)</th>
+    <th>Pupuk Cair (L)</th><th>Pupuk Padat (kg)</th><th>Status BPO</th>
+    <th class="right">Insentif MTL (Rp)</th><th>Status MTL</th>
+  </tr>`;
+
+  document.getElementById('thnTbody').innerHTML=rows.map((r,i)=>{
+    const st=PROG[r.prog];
+    const isBPO=r.prog==='Agro_BPO',isMTL=r.prog==='Temb_MTL';
+    // BPO: sudah bayar jika tglBPO ada
+    const bpoSudah=isBPO&&!!r.tglBPO;
+    // MTL: sudah bayar jika tglMTL ada
+    const mtlSudah=isMTL&&!!r.tglMTL;
+
+    return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}" data-desa="${esc(r.desa)}">
+      <td style="color:var(--text-3);font-size:10px">${i+1}</td>
+      <td style="font-family:monospace;font-size:10px">${esc(r.id)}</td>
+      <td style="font-weight:600">${esc(r.petani)}</td>
+      <td>${esc(r.desa)}</td>
+      <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
+      <td class="right" style="font-weight:600">${fmt(r.luas)}</td>
+      <td class="right">${isBPO?(r.pupukCair>0?fmtInt(r.pupukCair)+' L':'—'):'—'}</td>
+      <td class="right">${isBPO?(r.pupukPadat>0?fmtInt(r.pupukPadat)+' kg':'—'):'—'}</td>
+      <td>${isBPO?`<span class="${bpoSudah?'ins-paid':'ins-unpaid'}">${bpoSudah?'Sudah':'Belum'}</span>${bpoSudah?` <small style="color:var(--text-3);font-size:9px">${fmtDate(r.tglBPO)}</small>`:''}` :'—'}</td>
+      <td class="right">${isMTL?(r.insentifMTL>0?'Rp '+fmtInt(r.insentifMTL):'—'):'—'}</td>
+      <td>${isMTL?`<span class="${mtlSudah?'ins-paid':'ins-unpaid'}">${mtlSudah?'Sudah':'Belum'}</span>${mtlSudah?` <small style="color:var(--text-3);font-size:9px">${fmtDate(r.tglMTL)}</small>`:''}` :'—'}</td>
+    </tr>`;
+  }).join('');}
+
+function filterTahunanTable(){
+  const q=document.getElementById('insSearchThn').value.toLowerCase().trim();
+  const prog=$v('insSelProgThn'),desa=$v('insSelDesaThn');
+  let v=0;
+  document.querySelectorAll('#thnTbody tr').forEach(tr=>{
+    const show=(!q||(tr.dataset.petani||'').includes(q))&&(!prog||tr.dataset.prog===prog)&&(!desa||(tr.dataset.desa||'')===desa);
+    tr.classList.toggle('ins-hidden',!show);if(show)v++;
+  });
+  setText('insThnRowCount',v+' lahan');
+  document.getElementById('thnNoResults').style.display=v===0?'block':'none';
+}
+
 function downloadInsentifCSV(){
-  if(!insFilteredRows.length){alert('Tidak ada data.');return;}
-  const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tahun Bergabung',...INS_STAGES.map(s=>s.label)];
-  const body=insFilteredRows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),yearOf(r)||'—',...INS_STAGES.map(s=>isPaid(r.stages[s.key])?'Sudah Bayar':'Belum Bayar')]);
-  dlCSV([hdr,...body],`Insentif_Program_${insActiveYear==='all'?'SemuaTahun':insActiveYear}.csv`);
+  const isReg=insActiveView==='reguler';
+  if(isReg){
+    if(!insFilteredRows.length){alert('Tidak ada data.');return;}
+    const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tahun Bergabung',...INS_STAGES.map(s=>s.label)];
+    const body=insFilteredRows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),yearOf(r)||'—',...INS_STAGES.map(s=>isPaid(r.stages[s.key])?'Sudah Bayar':'Belum Bayar')]);
+    dlCSV([hdr,...body],`Insentif_Reguler_${insActiveYear==='all'?'SemuaTahun':insActiveYear}.csv`);
+  }else{
+    if(!thnFilteredRows.length){alert('Tidak ada data.');return;}
+    const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Pupuk Cair (L)','Pupuk Padat (kg)','Status BPO','Tgl BPO','Insentif MTL (Rp)','Status MTL','Tgl MTL'];
+    const body=thnFilteredRows.map((r,i)=>{
+      const isBPO=r.prog==='Agro_BPO',isMTL=r.prog==='Temb_MTL';
+      return[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),
+        isBPO?fmtInt(r.pupukCair):'',isBPO?fmtInt(r.pupukPadat):'',
+        isBPO?(r.tglBPO?'Sudah Bayar':'Belum Bayar'):'',isBPO?fmtDate(r.tglBPO)||'':'',
+        isMTL?fmtInt(r.insentifMTL):'',isMTL?(r.tglMTL?'Sudah Bayar':'Belum Bayar'):'',isMTL?fmtDate(r.tglMTL)||'':''];
+    });
+    dlCSV([hdr,...body],`Insentif_Tahunan_${insActiveYear==='all'?'SemuaTahun':insActiveYear}.csv`);
+  }
 }
 
 // ── LAYER & MAP HELPERS ──
