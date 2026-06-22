@@ -24,8 +24,6 @@
   --shadow-sm:0 1px 3px rgba(0,0,0,.07);--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 20px 60px rgba(0,0,0,.2);
 }
 html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;color:var(--text);background:var(--bg);overflow:hidden}
-
-/* HDR */
 .hdr{height:var(--hdr-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:relative;z-index:999;flex-shrink:0}
 .hdr-left{display:flex;align-items:center;gap:10px}
 .hdr-logo{height:36px;width:auto;object-fit:contain}
@@ -42,8 +40,6 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .menu-item{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;font-weight:500;color:var(--text);text-decoration:none;cursor:pointer;border:none;background:none;width:100%;text-align:left}
 .menu-item:hover{background:var(--primary-bg);color:var(--primary-md)}
 .menu-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;color:var(--text-2)}
-
-/* FILTER BAR */
 .filter-bar{height:var(--filter-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 16px;flex-shrink:0;z-index:10;overflow-x:auto}
 .filter-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);white-space:nowrap}
 .filter-presets{display:flex;gap:4px}
@@ -58,8 +54,6 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .btn-bar{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--bg);font-size:11px;font-weight:600;color:var(--text-2);cursor:pointer;white-space:nowrap;font-family:inherit;display:flex;align-items:center;gap:5px;flex-shrink:0}
 .btn-bar:hover{background:var(--primary-bg);border-color:var(--primary-bg);color:var(--primary-md)}
 .btn-bar svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-/* STATS BAR */
 .stats-bar{height:var(--stats-h);background:var(--bg);display:flex;align-items:stretch;gap:8px;padding:8px 12px;overflow-x:auto;flex-shrink:0}
 .sc{flex:1;min-width:195px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;gap:5px;box-shadow:var(--shadow-sm);overflow:hidden}
 .sc-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3)}
@@ -100,11 +94,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .sc-pot-row-petani{font-size:9.5px;color:var(--text-3)}
 .btn-detail-pot{padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:10px;font-weight:700;color:var(--text-2);cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
 .btn-detail-pot:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
-
-/* APP BODY */
 .app-body{height:calc(100vh - var(--hdr-h) - var(--filter-h) - var(--stats-h));display:flex;overflow:hidden;gap:8px;padding:0 12px 10px 12px}
-
-/* SIDEBAR */
 .sb{width:var(--sb-w);flex-shrink:0;display:flex;flex-direction:column;gap:0;overflow:hidden}
 .sb-unified-card{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column;min-height:0}
 .sb-header-inner{padding:12px 14px;border-bottom:1px solid var(--border-lt);flex-shrink:0}
@@ -149,14 +139,10 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-2)}
 .leg-sq{width:10px;height:10px;border-radius:2px;flex-shrink:0;border:2px solid rgba(0,0,0,.2)}
 .leg-dash{width:16px;border-top:2px dashed #94a3b8;flex-shrink:0}
-
-/* MAP */
 .map-panel{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-sm);overflow:hidden;position:relative;min-width:0;min-height:0}
 .map-wrap{position:absolute;inset:0;border-radius:14px;overflow:hidden}
 #map{width:100%;height:100%;z-index:1}
 .leaflet-control{z-index:900!important}
-
-/* BASEMAP */
 .basemap-panel{position:absolute;bottom:10px;left:12px;z-index:900;background:rgba(255,255,255,.97);padding:4px 8px;border-radius:8px;box-shadow:var(--shadow-md);border:1px solid var(--border);min-width:unset}
 .basemap-toggle-btn{display:flex;align-items:center;gap:4px;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;width:100%}
 .bm-toggle-label{font-size:9px;font-weight:600;color:#374151;flex:1;text-align:left}
@@ -169,13 +155,10 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .bm-thumb-wrap{width:40px;height:32px;border-radius:7px;overflow:hidden;border:1.5px solid rgba(255,255,255,.7);box-shadow:0 1px 4px rgba(0,0,0,.22);opacity:.82}
 .bm-thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .bm-name{font-size:7px;font-weight:600;color:#374151;background:rgba(255,255,255,.88);padding:1px 4px;border-radius:4px;text-align:center;max-width:42px}
-
 .loading-overlay{position:absolute;inset:0;z-index:998;background:rgba(255,255,255,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border-radius:14px}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-txt{font-size:13px;color:var(--text-2);font-weight:500}
-
-/* DETAIL SIDEBAR */
 .detail-sb{width:var(--detail-w);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
 .detail-card{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column;min-height:0}
 .detail-card-hd{padding:12px 14px;border-bottom:1px solid var(--border-lt);flex-shrink:0;background:var(--primary-bg)}
@@ -205,8 +188,6 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .d-carbon-block{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px}
 .d-carbon-val{font-size:19px;font-weight:800;color:var(--text);letter-spacing:-.5px;line-height:1}
 .d-carbon-lbl{font-size:9px;font-weight:600;color:var(--text-2);margin-top:2px;line-height:1.3}
-
-/* SHARED MODAL PARTS */
 .modal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;padding:20px}
 .modal-hd-green{padding:14px 20px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .modal-close-btn{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:17px;cursor:pointer;display:grid;place-items:center}
@@ -230,8 +211,6 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .dl-item svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .no-results,.empty-state{text-align:center;padding:28px 16px;color:var(--text-3);font-size:13px}
 .modal-body-scroll{overflow-y:auto;flex:1;min-height:0}
-
-/* STRIP CARDS */
 .strip-bar{display:flex;gap:8px;padding:10px 16px;background:#f8fafc;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
 .strip-card{flex:1;min-width:110px;background:#fff;border:1px solid var(--border);border-radius:9px;padding:9px 12px}
 .strip-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);margin-bottom:3px}
@@ -240,14 +219,10 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .pct-badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;background:#e8f5e9;color:#166534}
 .pct-badge.mid{background:#fef9c3;color:#854d0e}
 .pct-badge.low{background:#fef2f2;color:#991b1b}
-
-/* TAB BAR */
 .tab-bar{display:flex;gap:0;padding:0 16px;background:#f8fafc;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
 .tab-btn{padding:10px 18px;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;border-top:none;border-left:none;border-right:none;background:none;font-family:inherit;white-space:nowrap}
 .tab-btn.active{color:var(--primary-md);border-bottom:2px solid var(--primary-md)}
 .tab-btn:hover:not(.active){color:var(--text);background:var(--bg)}
-
-/* KTH MODAL */
 .kth-modal{background:#fff;border-radius:14px;width:min(960px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
 .kth-tbl{width:100%;border-collapse:collapse;font-size:12px}
 .kth-tbl thead{position:sticky;top:0;z-index:1;background:#f8fafc}
@@ -268,8 +243,6 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .row-link-btn{width:24px;height:24px;border-radius:6px;border:1px solid #fed7aa;background:#fff7ed;cursor:pointer;display:grid;place-items:center;color:#c2410c;text-decoration:none}
 .row-link-btn:hover{background:#ffedd5;border-color:#fb923c}
 .row-link-btn.no-link{opacity:.3;cursor:not-allowed;pointer-events:none}
-
-/* CAPAIAN MODAL */
 .cp-modal{background:#fff;border-radius:14px;width:min(1100px,97vw);max-height:92vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
 .cp-tbl{width:100%;border-collapse:collapse;font-size:11px;color:#1a2332}
 .cp-tbl thead{position:sticky;top:0;z-index:2}
@@ -280,8 +253,6 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .mtag{display:inline-block;font-size:10px;font-weight:700;color:#1a2332;white-space:nowrap}
 .mtag+.mtag::before{content:' · ';font-weight:400;color:var(--text-3)}
 .stag{display:inline-block;padding:2px 7px;border-radius:5px;font-size:9.5px;font-weight:600;white-space:nowrap;color:#1a2332}
-
-/* GRAFIK MODAL */
 .grafik-modal{background:#fff;border-radius:14px;width:min(860px,96vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
 .grafik-sel{padding:5px 10px;border-radius:7px;border:1px solid var(--border);font-size:11px;font-family:inherit;color:var(--text);background:#f8fafc;outline:none;cursor:pointer}
 .grafik-legend{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}
@@ -291,41 +262,18 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .grafik-canvas-wrap{flex:1;min-height:0;position:relative}
 .btn-png{padding:6px 12px;border-radius:7px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);font-size:11px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit}
 .btn-png:hover{background:rgba(255,255,255,.22)}
-
-/* ================================================================
-   INSENTIF MODAL — Updated header colors (gray scheme)
-   ================================================================ */
 .ins-modal{background:#fff;border-radius:14px;width:min(1200px,97vw);height:90vh;max-height:90vh;min-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
 .ins-tbl{width:100%;border-collapse:collapse;font-size:11px}
 .ins-tbl thead{position:sticky;top:0;z-index:2}
 .ins-tbl th{padding:6px 9px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap;background:#f8fafc;text-align:left}
 .ins-tbl th.center,.ins-tbl td.cell-center{text-align:center}
-
-/* Header atas (nama tahap) → abu gelap */
-.ins-tbl .th-group{
-  background:#374151;
-  color:#fff;
-  text-align:center;
-  font-size:9px;
-  font-weight:700;
-  border-bottom:1px solid #4b5563;
-}
-/* Header bawah (persentase dinamis) → abu light */
-.ins-tbl .th-pct{
-  background:#e5e7eb;
-  color:#4b5563;
-  font-size:8.5px;
-  font-weight:600;
-  text-align:center;
-  border-bottom:1px solid #d1d5db;
-}
-
+.ins-tbl .th-group{background:#374151;color:#fff;text-align:center;font-size:9px;font-weight:700;border-bottom:1px solid #4b5563}
+.ins-tbl .th-pct{background:#e5e7eb;color:#4b5563;font-size:8.5px;font-weight:600;text-align:center;border-bottom:1px solid #d1d5db}
 .ins-tbl td{padding:5px 9px;border-bottom:1px solid var(--border-lt);vertical-align:middle;color:var(--text)}
 .ins-paid{display:inline-block;width:16px;height:16px;border-radius:3px;background:#16a34a;vertical-align:middle;flex-shrink:0}
 .ins-unpaid{display:inline-block;width:16px;height:16px;border-radius:3px;background:#e2e8f0;vertical-align:middle;flex-shrink:0}
 .ins-legend{display:flex;align-items:center;gap:14px;margin-left:auto;flex-wrap:wrap}
 .ins-leg-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-2)}
-
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 </style>
@@ -557,11 +505,11 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 </div>
 
 <!-- KTH MODAL -->
-<div class="modal-overlay" id="kthModal" style="display:none" onclick="if(event.target===this)closeKTHModal()">
+<div class="modal-overlay" id="kthModal" style="display:none" onclick="if(event.target===this)closeModal('kthModal')">
   <div class="kth-modal" onclick="event.stopPropagation()">
     <div class="modal-hd-green">
       <div><div class="modal-title" id="modalTitle">—</div><div class="modal-sub-txt" id="modalSub">—</div></div>
-      <button class="modal-close-btn" onclick="closeKTHModal()">✕</button>
+      <button class="modal-close-btn" onclick="closeModal('kthModal')">✕</button>
     </div>
     <div class="strip-bar" id="modalStats"></div>
     <div class="modal-toolbar">
@@ -601,11 +549,11 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 </div>
 
 <!-- CAPAIAN MODAL -->
-<div class="modal-overlay" id="cpModal" style="display:none" onclick="if(event.target===this)closeCPModal()">
+<div class="modal-overlay" id="cpModal" style="display:none" onclick="if(event.target===this)closeModal('cpModal')">
   <div class="cp-modal" onclick="event.stopPropagation()">
     <div class="modal-hd-green">
       <div><div class="modal-title">Capaian Progres Petani</div><div class="modal-sub-txt" id="cpSub">—</div></div>
-      <button class="modal-close-btn" onclick="closeCPModal()">✕</button>
+      <button class="modal-close-btn" onclick="closeModal('cpModal')">✕</button>
     </div>
     <div class="strip-bar">
       <div class="strip-card"><div class="strip-lbl">Agroforestri Reguler</div><div class="strip-val" id="csAR">—</div><div class="strip-sub" id="csARsub"></div></div>
@@ -652,7 +600,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 </div>
 
 <!-- GRAFIK MODAL -->
-<div class="modal-overlay" id="grafikModal" style="display:none" onclick="if(event.target===this)closeGrafikModal()">
+<div class="modal-overlay" id="grafikModal" style="display:none" onclick="if(event.target===this)closeModal('grafikModal')">
   <div class="grafik-modal" onclick="event.stopPropagation()">
     <div class="modal-hd-green">
       <div><div class="modal-title">Grafik Partisipasi Lahan</div><div class="modal-sub-txt">Progres luasan lahan partisipasi program</div></div>
@@ -660,7 +608,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         <button class="btn-png" onclick="downloadGrafikPNG()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG
         </button>
-        <button class="modal-close-btn" onclick="closeGrafikModal()">✕</button>
+        <button class="modal-close-btn" onclick="closeModal('grafikModal')">✕</button>
       </div>
     </div>
     <div class="tab-bar">
@@ -669,7 +617,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
     </div>
     <div class="modal-toolbar" id="gToolbarBulanan" style="padding:10px 16px">
       <span style="font-size:11px;font-weight:700;color:var(--text-2)">Tahun:</span>
-      <select class="grafik-sel" id="gBulananYear" onchange="renderGrafikBulanan()"></select>
+      <select class="grafik-sel" id="gBulananYear" onchange="renderGrafik()"></select>
       <div class="grafik-legend">
         <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#2d7a55"></div>Agroforestri</div>
         <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#b84c00"></div>Tembawang</div>
@@ -677,8 +625,8 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
     </div>
     <div class="modal-toolbar" id="gToolbarMingguan" style="display:none;padding:10px 16px">
       <span style="font-size:11px;font-weight:700;color:var(--text-2)">Bulan:</span>
-      <select class="grafik-sel" id="gMingguanYear" onchange="renderGrafikMingguan()"></select>
-      <select class="grafik-sel" id="gMingguanMonth" onchange="renderGrafikMingguan()">
+      <select class="grafik-sel" id="gMingguanYear" onchange="renderGrafik()"></select>
+      <select class="grafik-sel" id="gMingguanMonth" onchange="renderGrafik()">
         <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option>
         <option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option>
         <option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option>
@@ -694,7 +642,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 </div>
 
 <!-- INSENTIF MODAL -->
-<div class="modal-overlay" id="insentifModal" style="display:none" onclick="if(event.target===this)closeInsentifModal()">
+<div class="modal-overlay" id="insentifModal" style="display:none" onclick="if(event.target===this)closeModal('insentifModal')">
   <div class="ins-modal" onclick="event.stopPropagation()">
     <div class="modal-hd-green">
       <div><div class="modal-title">Data Pembayaran Insentif Program</div><div class="modal-sub-txt" id="insentifSub">—</div></div>
@@ -707,10 +655,9 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
             <button class="dl-item" onclick="downloadInsentifCSV();closeAllDlMenus()"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="13" x2="16" y2="13"/></svg>CSV</button>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="closeInsentifModal()">✕</button>
+        <button class="modal-close-btn" onclick="closeModal('insentifModal')">✕</button>
       </div>
     </div>
-
     <div class="tab-bar" id="insentifTabBar"></div>
     <div class="modal-toolbar" style="padding:8px 16px">
       <div class="search-wrap" style="max-width:200px">
@@ -724,10 +671,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         <option value="Temb_Reg">Tembawang Reguler</option>
         <option value="Temb_MTL">Menjaga Tutupan Lahan</option>
       </select>
-      <!-- Filter Desa (menggantikan filter Status) -->
-      <select class="modal-sel" id="insSelDesa" onchange="filterInsentifTable()">
-        <option value="">Semua Desa</option>
-      </select>
+      <select class="modal-sel" id="insSelDesa" onchange="filterInsentifTable()"><option value="">Semua Desa</option></select>
       <div class="ins-legend">
         <div class="ins-leg-item"><span class="ins-paid"></span> Sudah Bayar</div>
         <div class="ins-leg-item"><span class="ins-unpaid"></span> Belum Bayar</div>
@@ -753,7 +697,7 @@ const MN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','Se
 const CP_CLASS={
   agro_reg:{label:'Agroforestri Reguler',short:'A-REG',color:'#1a6b3a',fEst:'est_agr_reg',fUkur:'ukur_agr_reg',fPot:'pot_agr_reg'},
   bpo:     {label:'Bantuan Pupuk Organik',short:'A-BPO',color:'#0d5c8a',fEst:'est_bpo',fUkur:'ukur_bpo',fPot:'pot_bpo'},
-  temb_reg:{label:'Tembawang Reguler',   short:'T-REG',color:'#b84c00',fEst:'est_tbw',fUkur:'ukur_tbw',fPot:'pot_tbw'},
+  temb_reg:{label:'Tembawang Reguler',    short:'T-REG',color:'#b84c00',fEst:'est_tbw',fUkur:'ukur_tbw',fPot:'pot_tbw'},
   mtl:     {label:'Menjaga Tutupan Lahan',short:'T-MTL',color:'#7b1fa2',fEst:'est_mtl',fUkur:'ukur_mtl',fPot:'pot_mtl'},
 };
 const PROG={
@@ -781,6 +725,19 @@ let currentKTH=null,currentPreset='ytd',filterYear=null,filterMonth=null,selecte
 let cpFilteredRows=[],cpActiveMinat='',insRawData=[],insActiveYear='all',insFilteredRows=[];
 let grafikChart=null,grafikTab='bulanan',bmOpen=false;
 const layerState={agro:true,temb:true,cmi:true},kthVis={};
+
+// ── UTILS ──
+const str=v=>(v??'').toString().trim();
+const num=v=>parseFloat(str(v))||0;
+const fmt=v=>(+v).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtInt=v=>(+v).toLocaleString('id-ID',{minimumFractionDigits:0,maximumFractionDigits:0});
+const fmtHa=v=>(+v).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});
+const setText=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+const esc=x=>str(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $v=id=>document.getElementById(id)?.value||'';
+const nn=v=>{const s=str(v);if(!s||s==='-'||s.toLowerCase()==='null')return null;const n=parseFloat(s);return isNaN(n)?null:n;};
+const isPaid=v=>/^y$/i.test((v||'').trim());
+const cap=s=>s[0].toUpperCase()+s.slice(1);
 
 // ── MAP ──
 const BASEMAPS={
@@ -834,6 +791,25 @@ function closeMenuOut(e){
   }
 }
 
+// ── MODAL HELPERS ──
+function closeModal(id){
+  document.getElementById(id).style.display='none';
+  if(id==='kthModal')currentKTH=null;
+}
+function openGrafikModal(){document.getElementById('grafikModal').style.display='flex';switchGrafikTab(grafikTab);}
+function openInsentifModal(){
+  buildInsData();
+  insActiveYear='all';
+  document.getElementById('insSearch').value='';
+  document.getElementById('insSelProg').value='';
+  const desaList=[...new Set(insRawData.map(r=>r.desa).filter(Boolean))].sort();
+  const desaSel=document.getElementById('insSelDesa');
+  desaSel.innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  desaSel.value='';
+  buildInsTabs();renderInsTable();
+  document.getElementById('insentifModal').style.display='flex';
+}
+
 // ── WEEK HELPERS ──
 function getWeeksInMonth(yr,mo){
   let sat=new Date(yr,mo,1);sat.setDate(sat.getDate()-((sat.getDay()+1)%7));
@@ -841,20 +817,19 @@ function getWeeksInMonth(yr,mo){
   while(sat<=last){const fri=new Date(sat);fri.setDate(fri.getDate()+6);weeks.push({sat:new Date(sat),fri,label:`Minggu ke-${n++}`});sat.setDate(sat.getDate()+7);}
   return weeks;
 }
+function fmtD(d,t){return d.toLocaleDateString('id-ID',t==='s'?{day:'numeric',month:'short'}:t==='l'?{day:'numeric',month:'long',year:'numeric'}:{day:'numeric',month:'short',year:'numeric'});}
 function populateWeekDropdown(){
   const yr=+$v('fWeekYear'),mo=+$v('fWeekMonth'),weeks=getWeeksInMonth(yr,mo);
   const sel=document.getElementById('fWeekPick');
   sel.innerHTML=weeks.map((w,i)=>`<option value="${i}">${w.label} (${fmtD(w.sat,'s')}–${fmtD(w.fri,'s')})</option>`).join('');
   const now=new Date();let best=0;weeks.forEach((w,i)=>{if(w.sat<=now&&now<=w.fri)best=i;});sel.value=best;
 }
-function fmtD(d,t){return d.toLocaleDateString('id-ID',t==='s'?{day:'numeric',month:'short'}:t==='l'?{day:'numeric',month:'long',year:'numeric'}:{day:'numeric',month:'short',year:'numeric'});}
 function onWeekYearChange(){populateWeekDropdown();applyFilter();}
 function onWeekMonthChange(){populateWeekDropdown();applyFilter();}
 function getSelectedWeek(){
   const yr=+$v('fWeekYear'),mo=+$v('fWeekMonth'),idx=+$v('fWeekPick')||0;
   return getWeeksInMonth(yr,mo)[idx]||null;
 }
-function $v(id){return document.getElementById(id)?.value||'';}
 
 function populateYearDropdowns(){
   const yrs=[...new Set(Object.values(sheetMap).map(r=>parseDate(r.tglPartisipasi)).filter(Boolean).map(d=>d.getFullYear()))];
@@ -981,7 +956,6 @@ function classifyMinat(raw){
   if(/pupuk|organik|bpo/i.test(raw))out.push('bpo');
   return out;
 }
-const nn=v=>{const s=str(v);if(!s||s==='-'||s.toLowerCase()==='null')return null;const n=parseFloat(s);return isNaN(n)?null:n;};
 
 function parseFollowUp(csv){
   const {data}=Papa.parse(csv,{header:false,skipEmptyLines:true});
@@ -1057,10 +1031,8 @@ function updateFilterInfo(n){
   if(currentPreset==='ytd')lbl=`Year to Date ${now.getFullYear()}`;
   else if(currentPreset==='month')lbl=`${MN[filterMonth]} ${filterYear}`;
   else if(currentPreset==='year')lbl=`Tahun ${filterYear}`;
-  else if(currentPreset==='week'){
-    const wk=getSelectedWeek();
-    lbl=wk?`${fmtD(wk.sat,'s')}–${fmtD(wk.fri,'l')}`:'Mingguan';
-  }else lbl='Semua Data';
+  else if(currentPreset==='week'){const wk=getSelectedWeek();lbl=wk?`${fmtD(wk.sat,'s')}–${fmtD(wk.fri,'l')}`:'Mingguan';}
+  else lbl='Semua Data';
   document.getElementById('filterInfo').innerHTML=`${lbl}: <span>${n} lahan</span>`;
 }
 
@@ -1092,6 +1064,7 @@ function calcStats(ids){
     }
   }
 
+  // Shared target UI setter
   function setTgtUI(pctId,barId,tgtId,riId,real,tgtVal){
     let dispReal=real;
     if(currentPreset==='week'){
@@ -1133,7 +1106,7 @@ function calcStats(ids){
 // ── SVG ICONS ──
 const SEYE=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const STBL=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`;
-const SVON=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const SVON=SEYE;
 const SVOF=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-5.07 5.93"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 const SLNK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`;
 
@@ -1256,64 +1229,84 @@ function openKTH(name,ids){
   }).join('');
   document.getElementById('kthModal').style.display='flex';
 }
-function filterModalTable(){
-  const t=document.getElementById('modalSearchInput').value.toLowerCase().trim();
-  const prog=document.getElementById('modalProgFilter').value.toLowerCase().trim();
+
+// Generic table row filter — handles kthModal and other simple cases
+function filterTableRows(tbodyId,noResultsId,countId,countSuffix,filters){
   let v=0;
-  document.querySelectorAll('#modalTbody tr').forEach(tr=>{
-    const show=(!t||(tr.dataset.petani||'').includes(t))&&(!prog||(tr.dataset.prog||'')===prog);
+  document.querySelectorAll(`#${tbodyId} tr`).forEach(tr=>{
+    const show=filters.every(({key,value})=>!value||(tr.dataset[key]||'').includes(value));
     tr.classList.toggle('hidden-row',!show);if(show)v++;
   });
-  setText('modalRowCount',v+' lahan');document.getElementById('noResults').style.display=v===0?'block':'none';
+  setText(countId,v+countSuffix);
+  document.getElementById(noResultsId).style.display=v===0?'block':'none';
 }
-function closeKTHModal(){document.getElementById('kthModal').style.display='none';currentKTH=null;}
+function filterModalTable(){
+  filterTableRows('modalTbody','noResults','modalRowCount',' lahan',[
+    {key:'petani',value:document.getElementById('modalSearchInput').value.toLowerCase().trim()},
+    {key:'prog',value:document.getElementById('modalProgFilter').value.toLowerCase().trim()},
+  ]);
+}
+
+function closeKTHModal(){closeModal('kthModal');}
 function zoomToLahan(id){
   const e=featureMap[id];if(!e)return;
   try{map.fitBounds(L.geoJSON(e.feature).getBounds().pad(0.5));}catch(ex){}
-  showDetail(id);closeKTHModal();
+  showDetail(id);closeModal('kthModal');
 }
 
-// ── DOWNLOADS KTH ──
+// ── DOWNLOADS: shared helpers ──
 function getKTHRows(){
   if(!currentKTH)return[];
   const ids=new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
   return Object.values(sheetMap).filter(r=>r.kth===currentKTH&&ids.has(r.id));
 }
+
+// Unified PDF download
+function makePDF(orient,hdr,body,title,sub,fname){
+  if(!window.jspdf){alert('Library PDF belum dimuat.');return;}
+  const {jsPDF}=window.jspdf,doc=new jsPDF({orientation:orient,unit:'pt',format:'a4'});
+  pdfHeader(doc,title,sub);
+  doc.autoTable({head:[hdr],body,startY:60,styles:{fontSize:8,cellPadding:4},headStyles:{fillColor:[27,94,64],textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[248,250,252]}});
+  doc.save(fname);
+}
+
+// Unified Word download
+async function makeWord(orient,title,sub,hdr,body,fname){
+  if(!docx){alert('Library docx belum dimuat.');return;}
+  const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,AlignmentType,WidthType,BorderStyle,ShadingType,VerticalAlign}=docx;
+  const libObj={Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,AlignmentType,WidthType,BorderStyle,ShadingType,VerticalAlign};
+  const isLandscape=orient==='landscape';
+  const sectionProps=isLandscape?{page:{size:{width:20160,height:12240},margin:{top:720,right:720,bottom:720,left:720},orientation:'landscape'}}:{properties:{page:{margin:{top:720,right:720,bottom:720,left:720}}}};
+  const doc=new Document({styles:{default:{document:{run:{font:'Arial',size:20}}}},sections:[{
+    ...(isLandscape?{properties:sectionProps}:sectionProps),
+    children:[
+      new Paragraph({children:[new TextRun({text:title,bold:true,size:32,color:'1B5E40',font:'Arial'})]}),
+      new Paragraph({children:[new TextRun({text:sub,size:18,color:'64748B',font:'Arial'})]}),
+      new Paragraph({children:[new TextRun({text:''})]}),
+      wordTable(libObj,hdr,body)
+    ]
+  }]});
+  try{const blob=await Packer.toBlob(doc);dlBlob(blob,fname);}catch(e){alert('Gagal membuat Word.');}
+}
+
 function downloadCSV(){
   const rows=getKTHRows();if(!rows.length)return;
   const hdr=['No','ID Lahan','Grid','Nama Petani','KTH','Desa','Tipe','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi','Link Dokumen'];
-  const body=rows.map((r,i)=>[i+1,r.id,r.grid,r.petani,r.kth,r.desa,r.tipe,PROG[r.prog]?.label||r.prog,r.luas,r.tglPartisipasi,r.tglRealisasi,r.link||'']);
-  dlCSV([hdr,...body],`KTH_${currentKTH.replace(/\s+/g,'_')}.csv`);
+  dlCSV([hdr,...rows.map((r,i)=>[i+1,r.id,r.grid,r.petani,r.kth,r.desa,r.tipe,PROG[r.prog]?.label||r.prog,r.luas,r.tglPartisipasi,r.tglRealisasi,r.link||''])],`KTH_${currentKTH.replace(/\s+/g,'_')}.csv`);
 }
 function downloadKTHPDF(){
   const rows=getKTHRows();if(!rows.length){alert('Tidak ada data.');return;}
-  if(!window.jspdf){alert('Library PDF belum dimuat.');return;}
-  const {jsPDF}=window.jspdf,doc=new jsPDF({orientation:'landscape',unit:'pt',format:'a4'});
-  pdfHeader(doc,currentKTH,rows.length);
-  doc.autoTable({
-    head:[['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi']],
-    body:rows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),fmtDate(r.tglPartisipasi)||'—',fmtDate(r.tglRealisasi)||'—']),
-    startY:60,styles:{fontSize:8,cellPadding:4},headStyles:{fillColor:[27,94,64],textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[248,250,252]}
-  });
-  doc.save(`KTH_${currentKTH.replace(/\s+/g,'_')}.pdf`);
+  makePDF('landscape',['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi'],
+    rows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),fmtDate(r.tglPartisipasi)||'—',fmtDate(r.tglRealisasi)||'—']),
+    currentKTH,rows.length,`KTH_${currentKTH.replace(/\s+/g,'_')}.pdf`);
 }
 async function downloadKTHWord(){
   const rows=getKTHRows();if(!rows.length){alert('Tidak ada data.');return;}
-  if(!docx){alert('Library docx belum dimuat.');return;}
-  const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,AlignmentType,WidthType,BorderStyle,ShadingType,VerticalAlign}=docx;
-  const doc=new Document({styles:{default:{document:{run:{font:'Arial',size:20}}}},sections:[{
-    properties:{page:{margin:{top:720,right:720,bottom:720,left:720}}},
-    children:[
-      new Paragraph({children:[new TextRun({text:currentKTH,bold:true,size:32,color:'1B5E40',font:'Arial'})]}),
-      new Paragraph({children:[new TextRun({text:`PT Citra Mulia Inti | ${rows.length} lahan | ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`,size:18,color:'64748B',font:'Arial'})]}),
-      new Paragraph({children:[new TextRun({text:''})]}),
-      wordTable({Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,AlignmentType,WidthType,BorderStyle,ShadingType,VerticalAlign},
-        ['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi'],
-        rows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),fmtDate(r.tglPartisipasi)||'—',fmtDate(r.tglRealisasi)||'—'])
-      )
-    ]
-  }]});
-  try{const blob=await Packer.toBlob(doc);dlBlob(blob,`KTH_${currentKTH.replace(/\s+/g,'_')}.docx`);}catch(e){alert('Gagal membuat Word.');}
+  const sub=`PT Citra Mulia Inti | ${rows.length} lahan | ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`;
+  await makeWord('portrait',currentKTH,sub,
+    ['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tgl Partisipasi','Tgl Realisasi'],
+    rows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),fmtDate(r.tglPartisipasi)||'—',fmtDate(r.tglRealisasi)||'—']),
+    `KTH_${currentKTH.replace(/\s+/g,'_')}.docx`);
 }
 
 // ── CAPAIAN MODAL ──
@@ -1328,7 +1321,7 @@ function openCapaianModal(){
   setText('cpSub',`${followUpData.length} petani terdaftar`);document.getElementById('cpEmpty').style.display='none';
   runCPFilter();
 }
-function closeCPModal(){document.getElementById('cpModal').style.display='none';}
+function closeCPModal(){closeModal('cpModal');}
 
 function runCPFilter(){
   const q=document.getElementById('cpSearch').value.toLowerCase().trim();
@@ -1373,59 +1366,40 @@ const nc=v=>v===null||v===undefined?`<td class="nil">—</td>`:`<td class="num">
 const stag=s=>{const v=(s||'').toLowerCase();let st='background:#f1f5f9;color:#1a2332';if(v.includes('sudah'))st='background:#dcfce7;color:#166534';else if(v.includes('belum'))st='background:#fef2f2;color:#991b1b';else if(v.includes('proses')||v.includes('dalam'))st='background:#fef9c3;color:#854d0e';return`<span class="stag" style="${st}">${esc(s)||'—'}</span>`;};
 
 // ── CAPAIAN DOWNLOADS ──
-function downloadCPCSV(){
-  if(!cpFilteredRows.length){alert('Tidak ada data.');return;}
+function getCPData(){
   const vk=cpActiveMinat?[cpActiveMinat]:Object.keys(CP_CLASS);
   const hdr=['No','Nama Petani','Desa','Dusun','Minat',...vk.flatMap(k=>[`Est. ${CP_CLASS[k].short}`,`Ukur ${CP_CLASS[k].short}`,`Pot. ${CP_CLASS[k].short}`]),'Tgl Update','Status'];
-  const body=cpFilteredRows.map((r,i)=>[i+1,r.nama,r.desa,r.dusun||'',r.minatKelas.length?r.minatKelas.map(k=>CP_CLASS[k].short).join(' · '):(r.minat||''),...vk.flatMap(k=>{const d=CP_CLASS[k];return[r[d.fEst]!=null?fmtHa(r[d.fEst]):'',r[d.fUkur]!=null?fmtHa(r[d.fUkur]):'',r[d.fPot]!=null?fmtHa(r[d.fPot]):''];}),r.tgl_update||'',r.status||'']);
-  dlCSV([hdr,...body],'Capaian_Progres.csv');
+  const body=cpFilteredRows.map((r,i)=>[i+1,r.nama,r.desa,r.dusun||'—',r.minatKelas.length?r.minatKelas.map(k=>CP_CLASS[k].short).join(' · '):(r.minat||'—'),...vk.flatMap(k=>{const d=CP_CLASS[k];return[r[d.fEst]!=null?fmtHa(r[d.fEst]):'—',r[d.fUkur]!=null?fmtHa(r[d.fUkur]):'—',r[d.fPot]!=null?fmtHa(r[d.fPot]):'—'];}),r.tgl_update||'—',r.status||'—']);
+  const suffix=(($v('cpSelDesa')?'_'+$v('cpSelDesa'):'')+($v('cpSelTahun')?'_'+$v('cpSelTahun'):'')).replace(/\s+/g,'_');
+  return{vk,hdr,body,suffix};
+}
+function downloadCPCSV(){
+  if(!cpFilteredRows.length){alert('Tidak ada data.');return;}
+  const {hdr,body,suffix}=getCPData();
+  dlCSV([hdr,...body],`Capaian_Progres${suffix}.csv`);
 }
 function downloadCPPDF(){
   if(!cpFilteredRows.length){alert('Tidak ada data.');return;}
-  if(!window.jspdf){alert('Library PDF belum dimuat.');return;}
-  const {jsPDF}=window.jspdf,vk=cpActiveMinat?[cpActiveMinat]:Object.keys(CP_CLASS);
-  const doc=new jsPDF({orientation:'landscape',unit:'pt',format:'a4'});
-  pdfHeader(doc,'Capaian Progres Petani',cpFilteredRows.length);
-  doc.autoTable({
-    head:[['No','Nama Petani','Desa','Dusun','Minat',...vk.flatMap(k=>{const d=CP_CLASS[k];return[`Est. ${d.short}`,`Ukur ${d.short}`,`Pot. ${d.short}`];})]],
-    body:cpFilteredRows.map((r,i)=>[i+1,r.nama,r.desa,r.dusun||'—',r.minatKelas.length?r.minatKelas.map(k=>CP_CLASS[k].short).join(' · '):(r.minat||'—'),...vk.flatMap(k=>{const d=CP_CLASS[k];return[r[d.fEst]!=null?fmtHa(r[d.fEst]):'—',r[d.fUkur]!=null?fmtHa(r[d.fUkur]):'—',r[d.fPot]!=null?fmtHa(r[d.fPot]):'—'];})]),
-    startY:60,styles:{fontSize:7,cellPadding:3},headStyles:{fillColor:[27,94,64],textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[248,250,252]}
-  });
-  const dv=$v('cpSelDesa'),tv=$v('cpSelTahun');
-  doc.save(`Capaian_Progres${dv?'_'+dv:''}${tv?'_'+tv:''}.pdf`);
+  const {hdr,body,suffix}=getCPData();
+  makePDF('landscape',hdr,body,'Capaian Progres Petani',cpFilteredRows.length,`Capaian_Progres${suffix}.pdf`);
 }
 async function downloadCPWord(){
   if(!cpFilteredRows.length){alert('Tidak ada data.');return;}
-  if(!docx){alert('Library docx belum dimuat.');return;}
-  const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,AlignmentType,WidthType,BorderStyle,ShadingType,VerticalAlign}=docx;
-  const vk=cpActiveMinat?[cpActiveMinat]:Object.keys(CP_CLASS);
-  const hdr=['No','Nama Petani','Desa','Dusun','Minat',...vk.flatMap(k=>{const d=CP_CLASS[k];return[`Est. ${d.short}`,`Ukur ${d.short}`,`Pot. ${d.short}`];}),'Tgl Update','Status'];
-  const body=cpFilteredRows.map((r,i)=>[i+1,r.nama,r.desa,r.dusun||'—',r.minatKelas.length?r.minatKelas.map(k=>CP_CLASS[k].short).join(' · '):(r.minat||'—'),...vk.flatMap(k=>{const d=CP_CLASS[k];return[r[d.fEst]!=null?fmtHa(r[d.fEst]):'—',r[d.fUkur]!=null?fmtHa(r[d.fUkur]):'—',r[d.fPot]!=null?fmtHa(r[d.fPot]):'—'];}),r.tgl_update||'—',r.status||'—']);
-  const libObj={Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,AlignmentType,WidthType,BorderStyle,ShadingType,VerticalAlign};
-  const doc=new Document({styles:{default:{document:{run:{font:'Arial',size:20}}}},sections:[{
-    properties:{page:{size:{width:20160,height:12240},margin:{top:720,right:720,bottom:720,left:720},orientation:'landscape'}},
-    children:[
-      new Paragraph({children:[new TextRun({text:'CAPAIAN PROGRES PETANI',bold:true,size:32,color:'1B5E40',font:'Arial'})]}),
-      new Paragraph({children:[new TextRun({text:`PT Citra Mulia Inti | ${cpFilteredRows.length} petani | ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`,size:18,color:'64748B',font:'Arial'})]}),
-      new Paragraph({children:[new TextRun({text:''})]}),
-      wordTable(libObj,hdr,body)
-    ]
-  }]});
-  try{const blob=await Packer.toBlob(doc);const dv=$v('cpSelDesa'),tv=$v('cpSelTahun');dlBlob(blob,`Capaian_Progres${dv?'_'+dv:''}${tv?'_'+tv:''}.docx`);}catch(e){alert('Gagal membuat Word.');}
+  const {hdr,body,suffix}=getCPData();
+  const sub=`PT Citra Mulia Inti | ${cpFilteredRows.length} petani | ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`;
+  await makeWord('landscape','CAPAIAN PROGRES PETANI',sub,hdr,body,`Capaian_Progres${suffix}.docx`);
 }
 
 // ── GRAFIK MODAL ──
-function openGrafikModal(){document.getElementById('grafikModal').style.display='flex';switchGrafikTab(grafikTab);}
-function closeGrafikModal(){document.getElementById('grafikModal').style.display='none';}
+function closeGrafikModal(){closeModal('grafikModal');}
 function switchGrafikTab(tab){
   grafikTab=tab;
   ['bulanan','mingguan'].forEach(t=>{
     document.getElementById('gTab'+cap(t)).classList.toggle('active',t===tab);
     document.getElementById('gToolbar'+cap(t)).style.display=t===tab?'flex':'none';
   });
-  setTimeout(()=>tab==='bulanan'?renderGrafikBulanan():renderGrafikMingguan(),30);
+  setTimeout(()=>renderGrafik(),30);
 }
-function cap(s){return s[0].toUpperCase()+s.slice(1);}
 function destroyChart(){if(grafikChart){grafikChart.destroy();grafikChart=null;}}
 function downloadGrafikPNG(){
   if(!grafikChart){alert('Grafik belum siap.');return;}
@@ -1435,13 +1409,28 @@ function downloadGrafikPNG(){
   const fname=grafikTab==='bulanan'?`Grafik_Bulanan_${$v('gBulananYear')}.png`:`Grafik_Mingguan_${MN[+$v('gMingguanMonth')]}_${$v('gMingguanYear')}.png`;
   dlA(bg.toDataURL('image/png'),fname);
 }
-function makeGrafikChart(labels,dAgro,dTemb,title){
+
+// Unified chart renderer (replaces renderGrafikBulanan + renderGrafikMingguan)
+function renderGrafik(){
+  let labels,dA,dT,title;
+  if(grafikTab==='bulanan'){
+    const yr=+$v('gBulananYear');
+    dA=Array(12).fill(0);dT=Array(12).fill(0);
+    Object.values(sheetMap).forEach(r=>{const d=parseDate(r.tglPartisipasi);if(!d||d.getFullYear()!==yr)return;const m=d.getMonth();dA[m]+=r.aReg+r.aBPO;dT[m]+=r.tReg+r.tMTL;});
+    labels=MN;title=`Realisasi Partisipasi Bulanan — Tahun ${yr}`;
+  }else{
+    const yr=+$v('gMingguanYear'),mo=+$v('gMingguanMonth'),weeks=getWeeksInMonth(yr,mo);
+    dA=weeks.map(()=>0);dT=weeks.map(()=>0);
+    Object.values(sheetMap).forEach(r=>{const d=parseDate(r.tglPartisipasi);if(!d)return;weeks.forEach((wk,i)=>{if(d>=wk.sat&&d<=wk.fri){dA[i]+=r.aReg+r.aBPO;dT[i]+=r.tReg+r.tMTL;}});});
+    labels=weeks.map((w,i)=>`Mgg ke-${i+1} (${fmtD(w.sat,'s')}–${fmtD(w.fri,'s')})`);
+    title=`Realisasi Partisipasi Mingguan — ${MN[mo]} ${yr}`;
+  }
   destroyChart();
   grafikChart=new Chart(document.getElementById('grafikChart'),{
     type:'bar',
     data:{labels,datasets:[
-      {label:'Agroforestri',data:dAgro.map(v=>+v.toFixed(2)),backgroundColor:'#2d7a55',borderRadius:4,barPercentage:.7},
-      {label:'Tembawang',   data:dTemb.map(v=>+v.toFixed(2)),backgroundColor:'#b84c00',borderRadius:4,barPercentage:.7},
+      {label:'Agroforestri',data:dA.map(v=>+v.toFixed(2)),backgroundColor:'#2d7a55',borderRadius:4,barPercentage:.7},
+      {label:'Tembawang',   data:dT.map(v=>+v.toFixed(2)),backgroundColor:'#b84c00',borderRadius:4,barPercentage:.7},
     ]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{display:false},title:{display:true,text:title,font:{size:13,weight:'bold'},color:'#1a2332',padding:{bottom:12}},
@@ -1451,24 +1440,11 @@ function makeGrafikChart(labels,dAgro,dTemb,title){
     }
   });
 }
-function renderGrafikBulanan(){
-  const yr=+$v('gBulananYear'),dA=Array(12).fill(0),dT=Array(12).fill(0);
-  Object.values(sheetMap).forEach(r=>{const d=parseDate(r.tglPartisipasi);if(!d||d.getFullYear()!==yr)return;const m=d.getMonth();dA[m]+=r.aReg+r.aBPO;dT[m]+=r.tReg+r.tMTL;});
-  makeGrafikChart(MN,dA,dT,`Realisasi Partisipasi Bulanan — Tahun ${yr}`);
-}
-function renderGrafikMingguan(){
-  const yr=+$v('gMingguanYear'),mo=+$v('gMingguanMonth'),weeks=getWeeksInMonth(yr,mo);
-  const dA=weeks.map(()=>0),dT=weeks.map(()=>0);
-  Object.values(sheetMap).forEach(r=>{
-    const d=parseDate(r.tglPartisipasi);if(!d)return;
-    weeks.forEach((wk,i)=>{if(d>=wk.sat&&d<=wk.fri){dA[i]+=r.aReg+r.aBPO;dT[i]+=r.tReg+r.tMTL;}});
-  });
-  makeGrafikChart(weeks.map((w,i)=>`Mgg ke-${i+1} (${fmtD(w.sat,'s')}–${fmtD(w.fri,'s')})`),dA,dT,`Realisasi Partisipasi Mingguan — ${MN[mo]} ${yr}`);
-}
+// aliases kept for onchange handlers in HTML
+function renderGrafikBulanan(){renderGrafik();}
+function renderGrafikMingguan(){renderGrafik();}
 
 // ── INSENTIF MODAL ──
-const isPaid=v=>/^y$/i.test((v||'').trim());
-
 function buildInsData(){
   insRawData=[];
   _rawRows.forEach(raw=>{
@@ -1485,24 +1461,7 @@ function buildInsData(){
   });
 }
 
-function openInsentifModal(){
-  buildInsData();
-  insActiveYear='all';
-  document.getElementById('insSearch').value='';
-  document.getElementById('insSelProg').value='';
-
-  // Populate desa filter
-  const desaList=[...new Set(insRawData.map(r=>r.desa).filter(Boolean))].sort();
-  const desaSel=document.getElementById('insSelDesa');
-  desaSel.innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
-  desaSel.value='';
-
-  buildInsTabs();
-  renderInsTable();
-  document.getElementById('insentifModal').style.display='flex';
-}
-function closeInsentifModal(){document.getElementById('insentifModal').style.display='none';}
-
+function closeInsentifModal(){closeModal('insentifModal');}
 function buildInsTabs(){
   const years=[...new Set(insRawData.map(r=>yearOf(r)).filter(Boolean))].sort();
   document.getElementById('insentifTabBar').innerHTML=
@@ -1521,22 +1480,6 @@ function switchInsTab(year){
   renderInsTable();
 }
 
-// ── INSENTIF: hitung persentase dinamis dari baris visible ──
-function calcInsPct(){
-  // Hitung per kolom: berapa % baris visible yang sudah bayar
-  const visRows=insFilteredRows.filter(r=>{
-    // cek apakah tr-nya tidak hidden — gunakan data langsung dari insFilteredRows
-    // karena filterInsentifTable sudah set insFilteredRows
-    return true; // insFilteredRows sudah filtered
-  });
-  const total=visRows.length;
-  return INS_STAGES.map(s=>{
-    if(!total)return'—';
-    const paidCount=visRows.filter(r=>isPaid(r.stages[s.key])).length;
-    return Math.round(paidCount/total*100)+'%';
-  });
-}
-
 function renderInsTable(){
   const rows=insActiveYear==='all'?insRawData:insRawData.filter(r=>yearOf(r)===+insActiveYear);
   insFilteredRows=rows;
@@ -1546,23 +1489,20 @@ function renderInsTable(){
   filterInsentifTable();
 }
 
-function buildInsThead(rows){
-  // Hitung pct dari rows yang diberikan
-  const total=rows.length;
-  const pcts=INS_STAGES.map(s=>{
-    if(!total)return'—';
-    const paidCount=rows.filter(r=>isPaid(r.stages[s.key])).length;
-    return Math.round(paidCount/total*100)+'%';
+// Compute paid % for a given rows array
+function calcInsPcts(rows){
+  return INS_STAGES.map(s=>{
+    if(!rows.length)return'—';
+    return Math.round(rows.filter(r=>isPaid(r.stages[s.key])).length/rows.length*100)+'%';
   });
+}
+
+function buildInsThead(rows){
+  const pcts=calcInsPcts(rows);
   document.getElementById('insThead').innerHTML=
     `<tr>
-      <th rowspan="2">No</th>
-      <th rowspan="2">ID Lahan</th>
-      <th rowspan="2">Nama Petani</th>
-      <th rowspan="2">Desa</th>
-      <th rowspan="2">Program</th>
-      <th rowspan="2">Luas (ha)</th>
-      <th rowspan="2">Thn Bergabung</th>
+      <th rowspan="2">No</th><th rowspan="2">ID Lahan</th><th rowspan="2">Nama Petani</th>
+      <th rowspan="2">Desa</th><th rowspan="2">Program</th><th rowspan="2">Luas (ha)</th><th rowspan="2">Thn Bergabung</th>
       ${INS_STAGES.map(s=>`<th class="th-group">${s.label}</th>`).join('')}
     </tr>
     <tr id="insPctRow">
@@ -1581,49 +1521,27 @@ function buildInsTbody(rows){
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
       <td style="font-weight:600">${fmt(r.luas)}</td>
       <td style="text-align:center;font-weight:700;color:var(--primary-md)">${yearOf(r)||'—'}</td>
-      ${INS_STAGES.map(s=>isPaid(r.stages[s.key])?`<td class="cell-center"><span class="ins-paid" title="Sudah Bayar"></span></td>`:`<td class="cell-center"><span class="ins-unpaid" title="Belum Bayar"></span></td>`).join('')}
+      ${INS_STAGES.map(s=>`<td class="cell-center"><span class="${isPaid(r.stages[s.key])?'ins-paid':'ins-unpaid'}" title="${isPaid(r.stages[s.key])?'Sudah Bayar':'Belum Bayar'}"></span></td>`).join('')}
     </tr>`;
-  }).join('');
 }
+).join('');}
 
-// ── Filter & update persentase dinamis ──
 function filterInsentifTable(){
   const q=document.getElementById('insSearch').value.toLowerCase().trim();
-  const prog=$v('insSelProg');
-  const desa=$v('insSelDesa');
-
-  const allRows=document.querySelectorAll('#insTbody tr');
+  const prog=$v('insSelProg'),desa=$v('insSelDesa');
   const visibleIds=[];
-
-  allRows.forEach(tr=>{
-    const nm=!q||(tr.dataset.petani||'').includes(q);
-    const pr=!prog||tr.dataset.prog===prog;
-    const ds=!desa||(tr.dataset.desa||'')===desa;
-    const show=nm&&pr&&ds;
+  document.querySelectorAll('#insTbody tr').forEach(tr=>{
+    const show=(!q||(tr.dataset.petani||'').includes(q))&&(!prog||tr.dataset.prog===prog)&&(!desa||(tr.dataset.desa||'')===desa);
     tr.classList.toggle('ins-hidden',!show);
     if(show)visibleIds.push(tr.dataset.id);
   });
-
   setText('insRowCount',visibleIds.length+' lahan');
   document.getElementById('insNoResults').style.display=visibleIds.length===0?'block':'none';
-
-  // Update persentase di header baris ke-2 sesuai baris visible
-  updateInsPct(visibleIds);
-}
-
-function updateInsPct(visibleIds){
+  // Update % header from visible rows
   const idSet=new Set(visibleIds);
   const visRows=insFilteredRows.filter(r=>idSet.has(r.id));
-  const total=visRows.length;
-
-  // Update setiap sel th-pct
-  const pctCells=document.querySelectorAll('#insPctRow th[data-stage]');
-  pctCells.forEach(cell=>{
-    const stageKey=cell.dataset.stage;
-    if(!total){cell.textContent='—';return;}
-    const paidCount=visRows.filter(r=>isPaid(r.stages[stageKey])).length;
-    const pct=Math.round(paidCount/total*100);
-    cell.textContent=pct+'%';
+  document.querySelectorAll('#insPctRow th[data-stage]').forEach(cell=>{
+    cell.textContent=visRows.length?Math.round(visRows.filter(r=>isPaid(r.stages[cell.dataset.stage])).length/visRows.length*100)+'%':'—';
   });
 }
 
@@ -1657,10 +1575,11 @@ function dlCSV(rows,name){
   const csv=rows.map(r=>r.map(v=>`"${str(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   dlBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),name);
 }
-function pdfHeader(doc,title,n){
+function pdfHeader(doc,title,sub){
   doc.setFontSize(14);doc.setTextColor(27,94,64);doc.text(title,40,32);
   doc.setFontSize(9);doc.setTextColor(100,116,139);
-  doc.text(`PT Citra Mulia Inti | ${n} baris | ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`,40,48);
+  const subTxt=typeof sub==='number'?`PT Citra Mulia Inti | ${sub} baris | ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`:sub;
+  doc.text(subTxt,40,48);
 }
 function wordTable(lib,headers,rows){
   const {Table,TableRow,TableCell,Paragraph,TextRun,AlignmentType,WidthType,BorderStyle,ShadingType,VerticalAlign}=lib;
@@ -1683,15 +1602,6 @@ function toggleDlMenu(wrapId){
 }
 function closeDlOut(e){if(!e.target.closest('.dl-dropdown-wrap'))closeAllDlMenus();}
 function closeAllDlMenus(){document.querySelectorAll('.dl-dropdown-menu').forEach(m=>m.classList.remove('open'));document.removeEventListener('click',closeDlOut);}
-
-// ── UTILS ──
-const str=v=>(v??'').toString().trim();
-const num=v=>parseFloat(str(v))||0;
-const fmt=v=>(+v).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});
-const fmtInt=v=>(+v).toLocaleString('id-ID',{minimumFractionDigits:0,maximumFractionDigits:0});
-const fmtHa=v=>(+v).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});
-const setText=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
-const esc=x=>str(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 </script>
 </body>
 </html>
