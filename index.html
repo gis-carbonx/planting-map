@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>planting monitoring</title>
+<title>draft--</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -273,6 +273,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .ins-tbl td{padding:5px 9px;border-bottom:1px solid var(--border-lt);vertical-align:middle;color:var(--text)}
 .ins-paid{display:inline-block;padding:2px 8px;border-radius:4px;background:#dcfce7;color:#166534;font-size:10px;font-weight:600;white-space:nowrap}
 .ins-unpaid{display:inline-block;padding:2px 8px;border-radius:4px;background:#f1f5f9;color:#94a3b8;font-size:10px;font-weight:600;white-space:nowrap}
+.ins-early{display:inline-block;padding:2px 8px;border-radius:4px;background:#1a1a1a;color:#9ca3af;font-size:10px;font-weight:600;white-space:nowrap}
 .ins-legend{display:flex;align-items:center;gap:14px;margin-left:auto;flex-wrap:wrap}
 .ins-leg-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-2)}
 .ins-view-tabs{display:flex;gap:4px;flex-shrink:0}
@@ -778,6 +779,13 @@ const esc=x=>str(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"
 const $v=id=>document.getElementById(id)?.value||'';
 const nn=v=>{const s=str(v);if(!s||s==='-'||s.toLowerCase()==='null')return null;const n=parseFloat(s);return isNaN(n)?null:n;};
 const isPaid=v=>/^y$/i.test((v||'').trim());
+const isEarly=v=>/^r$/i.test((v||'').trim());
+// 'paid' | 'early' | 'unpaid'
+const stageStatus=v=>isPaid(v)?'paid':isEarly(v)?'early':'unpaid';
+// badge HTML helper
+const stageBadge=v=>{const s=stageStatus(v);return s==='paid'?'<span class="ins-paid">Sudah</span>':s==='early'?'<span class="ins-early">Selesai</span>':'<span class="ins-unpaid">Belum</span>';};
+// label teks untuk export
+const stageLabel=v=>{const s=stageStatus(v);return s==='paid'?'Sudah Bayar':s==='early'?'Dibayar Diawal':'Belum Bayar';};
 const cap=s=>s[0].toUpperCase()+s.slice(1);
 
 // ── MAP ──
@@ -1585,7 +1593,7 @@ function updateInsentifSub(){
 function calcInsPcts(rows){
   return INS_STAGES.map(s=>{
     if(!rows.length)return'—';
-    return Math.round(rows.filter(r=>isPaid(r.stages[s.key])).length/rows.length*100)+'%';
+    return Math.round(rows.filter(r=>stageStatus(r.stages[s.key])!=='unpaid').length/rows.length*100)+'%';
   });
 }
 
@@ -1593,7 +1601,7 @@ function buildInsThead(rows){
   const pcts=calcInsPcts(rows);
   const subRow=INS_STAGES.map((s,i)=>{
     if(insShowNominal){
-      const total=rows.filter(r=>isPaid(r.stages[s.key])).reduce((a,r)=>a+(r.nominalStages[s.key]||0),0);
+      const total=rows.filter(r=>stageStatus(r.stages[s.key])!=='unpaid').reduce((a,r)=>a+(r.nominalStages[s.key]||0),0);
       return `<th class="th-pct center" data-stage="${s.key}">${total>0?'Rp '+fmtInt(total):'—'}</th>`;
     }
     return `<th class="th-pct center" data-stage="${s.key}">${pcts[i]}</th>`;
@@ -1611,15 +1619,16 @@ function buildInsTbody(rows){
   document.getElementById('insTbody').innerHTML=rows.map((r,i)=>{
     const st=PROG[r.prog];
     const stageCells=INS_STAGES.map(s=>{
-      const paid=isPaid(r.stages[s.key]);
+      const st=stageStatus(r.stages[s.key]);
       if(insShowNominal){
-        if(paid){
+        if(st!=='unpaid'){
           const nom=r.nominalStages[s.key]||0;
-          return `<td class="cell-center" style="color:var(--c-agro);font-weight:600;font-size:10px">${nom>0?'Rp '+fmtInt(nom):'Sudah'}</td>`;
+          const clr=st==='early'?'color:#9ca3af;background:#1a1a1a;padding:2px 6px;border-radius:3px':'color:var(--c-agro)';
+          return `<td class="cell-center" style="font-weight:600;font-size:10px"><span style="${clr}">${nom>0?'Rp '+fmtInt(nom):(st==='early'?'Selesai':'Sudah')}</span></td>`;
         }
         return `<td class="cell-center" style="color:var(--text-3);font-size:10px">—</td>`;
       }
-      return `<td class="cell-center"><span class="${paid?'ins-paid':'ins-unpaid'}">${paid?'Sudah':'Belum'}</span></td>`;
+      return `<td class="cell-center">${stageBadge(r.stages[s.key])}</td>`;
     }).join('');
     return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}" data-desa="${esc(r.desa)}">
       <td style="color:var(--text-3);font-size:10px">${i+1}</td>
@@ -1648,10 +1657,10 @@ function filterInsentifTable(){
   document.querySelectorAll('#insPctRow th[data-stage]').forEach(cell=>{
     const s=cell.dataset.stage;
     if(insShowNominal){
-      const total=visRows.filter(r=>isPaid(r.stages[s])).reduce((a,r)=>a+(r.nominalStages[s]||0),0);
+      const total=visRows.filter(r=>stageStatus(r.stages[s])!=='unpaid').reduce((a,r)=>a+(r.nominalStages[s]||0),0);
       cell.textContent=total>0?'Rp '+fmtInt(total):'—';
     }else{
-      cell.textContent=visRows.length?Math.round(visRows.filter(r=>isPaid(r.stages[s])).length/visRows.length*100)+'%':'—';
+      cell.textContent=visRows.length?Math.round(visRows.filter(r=>stageStatus(r.stages[s])!=='unpaid').length/visRows.length*100)+'%':'—';
     }
   });
 }
@@ -1762,8 +1771,8 @@ function getInsExportData(){
     const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tahun Bergabung',
       ...INS_STAGES.flatMap(s=>[s.label,'Nominal '+s.label])];
     const body=rows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),yearOf(r)||'—',
-      ...INS_STAGES.flatMap(s=>[isPaid(r.stages[s.key])?'Sudah Bayar':'Belum Bayar',
-        isPaid(r.stages[s.key])&&r.nominalStages[s.key]?fmtInt(r.nominalStages[s.key]):''])]);
+      ...INS_STAGES.flatMap(s=>[stageLabel(r.stages[s.key]),
+        stageStatus(r.stages[s.key])!=='unpaid'&&r.nominalStages[s.key]?fmtInt(r.nominalStages[s.key]):''])]);
     return{hdr,body,fname,rows};
   }else{
     const rows=thnFilteredRows;
