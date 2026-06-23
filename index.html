@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Planting Monitoring</title>
+<title>draft--</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -224,7 +224,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .tab-btn{padding:10px 18px;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;border-top:none;border-left:none;border-right:none;background:none;font-family:inherit;white-space:nowrap}
 .tab-btn.active{color:var(--primary-md);border-bottom:2px solid var(--primary-md)}
 .tab-btn:hover:not(.active){color:var(--text);background:var(--bg)}
-.kth-modal{background:#fff;border-radius:14px;width:min(960px,95vw);max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
+.kth-modal{background:#fff;border-radius:14px;width:min(960px,95vw);height:82vh;max-height:82vh;min-height:82vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden}
 .kth-tbl{width:100%;border-collapse:collapse;font-size:12px}
 .kth-tbl thead{position:sticky;top:0;z-index:1;background:#f8fafc}
 .kth-tbl th{padding:10px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap}
@@ -696,6 +696,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         <option value="Temb_Reg">Tembawang Reguler</option>
       </select>
       <select class="modal-sel" id="insSelDesa" onchange="filterInsentifTable()"><option value="">Semua Desa</option></select>
+      <select class="modal-sel" id="insSelDusun" onchange="filterInsentifTable()"><option value="">Semua Dusun</option></select>
       <button class="ins-view-tab" id="insNominalToggle" onclick="toggleNominal()" style="font-size:10px;padding:4px 11px">Nominal: OFF</button>
       <span class="row-count" style="margin-left:auto" id="insRowCount">—</span>
     </div>
@@ -711,6 +712,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         <option value="Temb_MTL">Menjaga Tutupan Lahan</option>
       </select>
       <select class="modal-sel" id="insSelDesaThn" onchange="filterTahunanTable()"><option value="">Semua Desa</option></select>
+      <select class="modal-sel" id="insSelDusunThn" onchange="filterTahunanTable()"><option value="">Semua Dusun</option></select>
       <span class="row-count" style="margin-left:auto" id="insThnRowCount">—</span>
     </div>
 
@@ -996,14 +998,15 @@ function parseSheet(csv){
     const tglBPO    =str(raw['AP']||raw['Tgl_BPO']    ||raw['tgl_bpo']    ||k(41)||'');
     const insentifMTL=num(raw['AQ']||raw['Insentif_MTL']||raw['insentif_mtl']||k(42)||0);
     const tglMTL    =str(raw['AR']||raw['Tgl_MTL']    ||raw['tgl_mtl']    ||k(43)||'');
-    // Kolom AT=luas agroforestri terukur(idx 45), AU=luas tembawang terukur(idx 46)
+    // Kolom AS=dusun(idx 44), AT=luas agroforestri terukur(idx 45), AU=luas tembawang terukur(idx 46)
+    const dusun     =str(raw['AS']||raw['Dusun']      ||raw['dusun']      ||k(44)||'');
     const luasAgro  =num(raw['AT']||raw['Luas_Agro']  ||raw['luas_agro']  ||k(45)||0);
     const luasTemb  =num(raw['AU']||raw['Luas_Temb']  ||raw['luas_temb']  ||k(46)||0);
     const prog=resolveProgram(aReg,aBPO,tReg,tMTL,tipe);if(!prog)return;
     // luas utama: gunakan AT/AU jika ada, fallback ke penjumlahan L-O
     const _luasAgro = luasAgro>0 ? luasAgro : aReg+aBPO;
     const _luasTemb = luasTemb>0 ? luasTemb : tReg+tMTL;
-    sheetMap[id]={id,kth,grid,luas:_luasAgro+_luasTemb,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,luasAgro:_luasAgro,luasTemb:_luasTemb,tanamanKarbon,link,prog,nominalStages,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
+    sheetMap[id]={id,kth,grid,luas:_luasAgro+_luasTemb,tipe,petani,jk,desa,dusun,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,luasAgro:_luasAgro,luasTemb:_luasTemb,tanamanKarbon,link,prog,nominalStages,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
   });
 }
 
@@ -1581,7 +1584,7 @@ function switchInsTab(year){
   insActiveYear=year;
   document.querySelectorAll('#insentifTabBar .tab-btn').forEach(b=>b.classList.toggle('active',b.textContent===(year==='all'?'Semua Tahun':year)));
   ['insSearch','insSearchThn'].forEach(id=>document.getElementById(id).value='');
-  ['insSelProg','insSelProgThn','insSelDesa','insSelDesaThn'].forEach(id=>document.getElementById(id).value='');
+  ['insSelProg','insSelProgThn','insSelDesa','insSelDesaThn','insSelDusun','insSelDusunThn'].forEach(id=>document.getElementById(id).value='');
   renderInsTable();
   if(insActiveView==='tahunan')renderTahunanTable();
 }
@@ -1597,6 +1600,8 @@ function renderInsTable(){
   updateInsentifSub();
   const desaList=[...new Set(rows.map(r=>r.desa).filter(Boolean))].sort();
   document.getElementById('insSelDesa').innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  const dusunList=[...new Set(rows.map(r=>r.dusun).filter(Boolean))].sort();
+  document.getElementById('insSelDusun').innerHTML='<option value="">Semua Dusun</option>'+dusunList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
   buildInsThead(rows);buildInsTbody(rows);filterInsentifTable();
 }
 
@@ -1624,7 +1629,7 @@ function buildInsThead(rows){
   document.getElementById('insThead').innerHTML=
     `<tr>
       <th rowspan="2">No</th><th rowspan="2">ID Lahan</th><th rowspan="2">Nama Petani</th>
-      <th rowspan="2">Desa</th><th rowspan="2">Program</th><th rowspan="2">Luas (ha)</th><th rowspan="2">Thn Bergabung</th>
+      <th rowspan="2">Desa</th><th rowspan="2">Dusun</th><th rowspan="2">Program</th><th rowspan="2">Luas (ha)</th><th rowspan="2">Thn Bergabung</th>
       ${INS_STAGES.map(s=>`<th class="th-group">${s.label}</th>`).join('')}
     </tr>
     <tr id="insPctRow">${subRow}</tr>`;
@@ -1645,11 +1650,12 @@ function buildInsTbody(rows){
       }
       return `<td class="cell-center">${stageBadge(r.stages[s.key])}</td>`;
     }).join('');
-    return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}" data-desa="${esc(r.desa)}">
+    return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}" data-desa="${esc(r.desa)}" data-dusun="${esc(r.dusun||'')}">
       <td style="color:var(--text-3);font-size:10px">${i+1}</td>
       <td style="font-family:monospace;font-size:10px">${esc(r.id)}</td>
       <td style="font-weight:600">${esc(r.petani)}</td>
       <td>${esc(r.desa)}</td>
+      <td style="color:var(--text-2)">${esc(r.dusun)||'—'}</td>
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
       <td style="font-weight:600;text-align:right">${fmt(r.luas)}</td>
       <td style="text-align:center;font-weight:700;color:var(--primary-md)">${yearOf(r)||'—'}</td>
@@ -1659,10 +1665,10 @@ function buildInsTbody(rows){
 
 function filterInsentifTable(){
   const q=document.getElementById('insSearch').value.toLowerCase().trim();
-  const prog=$v('insSelProg'),desa=$v('insSelDesa');
+  const prog=$v('insSelProg'),desa=$v('insSelDesa'),dusun=$v('insSelDusun');
   const visibleIds=[];
   document.querySelectorAll('#insTbody tr').forEach(tr=>{
-    const show=(!q||(tr.dataset.petani||'').includes(q))&&(!prog||tr.dataset.prog===prog)&&(!desa||(tr.dataset.desa||'')===desa);
+    const show=(!q||(tr.dataset.petani||'').includes(q))&&(!prog||tr.dataset.prog===prog)&&(!desa||(tr.dataset.desa||'')===desa)&&(!dusun||(tr.dataset.dusun||'')===dusun);
     tr.classList.toggle('ins-hidden',!show);if(show)visibleIds.push(tr.dataset.id);
   });
   setText('insRowCount',visibleIds.length+' lahan');
@@ -1696,6 +1702,8 @@ function renderTahunanTable(){
   progSel.innerHTML='<option value="">Semua</option>'+progList.map(p=>`<option value="${esc(p)}">${esc(PROG[p]?.label||p)}</option>`).join('');
   const desaList=[...new Set(rows.map(r=>r.desa).filter(Boolean))].sort();
   document.getElementById('insSelDesaThn').innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  const dusunListThn=[...new Set(rows.map(r=>r.dusun).filter(Boolean))].sort();
+  document.getElementById('insSelDusunThn').innerHTML='<option value="">Semua Dusun</option>'+dusunListThn.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
   buildTahunanTable(rows);filterTahunanTable();
 }
 
@@ -1714,7 +1722,7 @@ function calcThnTotals(rows){
 function buildTahunanTable(rows){
   const fmtL=v=>v>0?v.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
   document.getElementById('thnThead').innerHTML=`<tr>
-    <th rowspan="2">No</th><th rowspan="2">ID Lahan</th><th rowspan="2">Nama Petani</th><th rowspan="2">Desa</th><th rowspan="2">Program</th>
+    <th rowspan="2">No</th><th rowspan="2">ID Lahan</th><th rowspan="2">Nama Petani</th><th rowspan="2">Desa</th><th rowspan="2">Dusun</th><th rowspan="2">Program</th>
     <th rowspan="2" class="right">Luas (ha)</th>
     <th class="th-group">Pupuk Cair (L)</th><th class="th-group">Pupuk Padat (kg)</th>
     <th class="th-group">Status BPO</th>
@@ -1732,11 +1740,12 @@ function buildTahunanTable(rows){
     const hasCair=(r.pupukCair||0)>0, hasPadat=(r.pupukPadat||0)>0;
     const bpoSudah=!!r.tglBPO, mtlSudah=!!r.tglMTL;
     const hasIns=(r.insentifMTL||0)>0||!!r.tglMTL;
-    return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}" data-desa="${esc(r.desa)}">
+    return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}" data-desa="${esc(r.desa)}" data-dusun="${esc(r.dusun||'')}">
       <td style="color:var(--text-3);font-size:10px">${i+1}</td>
       <td style="font-family:monospace;font-size:10px">${esc(r.id)}</td>
       <td style="font-weight:600">${esc(r.petani)}</td>
       <td>${esc(r.desa)}</td>
+      <td style="color:var(--text-2)">${esc(r.dusun)||'—'}</td>
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
       <td class="right" style="font-weight:600">${fmt(r.luas)}</td>
       <td class="right">${hasCair?r.pupukCair.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+' L':'—'}</td>
@@ -1770,10 +1779,10 @@ function updateThnTotRow(vis){
 
 function filterTahunanTable(){
   const q=document.getElementById('insSearchThn').value.toLowerCase().trim();
-  const prog=$v('insSelProgThn'),desa=$v('insSelDesaThn');
+  const prog=$v('insSelProgThn'),desa=$v('insSelDesaThn'),dusun=$v('insSelDusunThn');
   const visIds=[];
   document.querySelectorAll('#thnTbody tr').forEach(tr=>{
-    const show=(!q||(tr.dataset.petani||'').includes(q))&&(!prog||tr.dataset.prog===prog)&&(!desa||(tr.dataset.desa||'')===desa);
+    const show=(!q||(tr.dataset.petani||'').includes(q))&&(!prog||tr.dataset.prog===prog)&&(!desa||(tr.dataset.desa||'')===desa)&&(!dusun||(tr.dataset.dusun||'')===dusun);
     tr.classList.toggle('ins-hidden',!show);if(show)visIds.push(tr.dataset.id);
   });
   setText('insThnRowCount',visIds.length+' lahan');
@@ -1788,19 +1797,19 @@ function getInsExportData(){
   const fname=`Insentif_${isReg?'Reguler':'Tahunan'}_${insActiveYear==='all'?'SemuaTahun':insActiveYear}`;
   if(isReg){
     const rows=insFilteredRows;
-    const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Tahun Bergabung',
+    const hdr=['No','ID Lahan','Nama Petani','Desa','Dusun','Program','Luas (ha)','Tahun Bergabung',
       ...INS_STAGES.flatMap(s=>[s.label,'Nominal '+s.label])];
-    const body=rows.map((r,i)=>[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),yearOf(r)||'—',
+    const body=rows.map((r,i)=>[i+1,r.id,r.petani,r.desa,r.dusun||'',PROG[r.prog]?.label||r.prog,fmt(r.luas),yearOf(r)||'—',
       ...INS_STAGES.flatMap(s=>[stageLabel(r.stages[s.key]),
         stageStatus(r.stages[s.key])!=='unpaid'&&r.nominalStages[s.key]?fmtInt(r.nominalStages[s.key]):''])]);
     return{hdr,body,fname,rows};
   }else{
     const rows=thnFilteredRows;
-    const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Pupuk Cair (L)','Pupuk Padat (kg)','Status BPO','Tgl BPO','Insentif MTL (Rp)','Status MTL','Tgl MTL'];
+    const hdr=['No','ID Lahan','Nama Petani','Desa','Dusun','Program','Luas (ha)','Pupuk Cair (L)','Pupuk Padat (kg)','Status BPO','Tgl BPO','Insentif MTL (Rp)','Status MTL','Tgl MTL'];
     const body=rows.map((r,i)=>{
       const hasBPO=(r.pupukCair||0)>0||(r.pupukPadat||0)>0||!!r.tglBPO;
       const hasMTL=(r.insentifMTL||0)>0||!!r.tglMTL;
-      return[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),
+      return[i+1,r.id,r.petani,r.desa,r.dusun||'',PROG[r.prog]?.label||r.prog,fmt(r.luas),
         hasBPO?r.pupukCair.toLocaleString('id-ID',{minimumFractionDigits:2}):'',
         hasBPO?r.pupukPadat.toLocaleString('id-ID',{minimumFractionDigits:2}):'',
         hasBPO?(r.tglBPO?'Sudah Bayar':'Belum Bayar'):'',hasBPO?fmtDate(r.tglBPO)||'':'',
