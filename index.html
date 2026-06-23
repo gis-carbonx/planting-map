@@ -996,8 +996,14 @@ function parseSheet(csv){
     const tglBPO    =str(raw['AP']||raw['Tgl_BPO']    ||raw['tgl_bpo']    ||k(41)||'');
     const insentifMTL=num(raw['AQ']||raw['Insentif_MTL']||raw['insentif_mtl']||k(42)||0);
     const tglMTL    =str(raw['AR']||raw['Tgl_MTL']    ||raw['tgl_mtl']    ||k(43)||'');
+    // Kolom AT=luas agroforestri terukur(idx 45), AU=luas tembawang terukur(idx 46)
+    const luasAgro  =num(raw['AT']||raw['Luas_Agro']  ||raw['luas_agro']  ||k(45)||0);
+    const luasTemb  =num(raw['AU']||raw['Luas_Temb']  ||raw['luas_temb']  ||k(46)||0);
     const prog=resolveProgram(aReg,aBPO,tReg,tMTL,tipe);if(!prog)return;
-    sheetMap[id]={id,kth,grid,luas:aReg+aBPO+tReg+tMTL,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,tanamanKarbon,link,prog,nominalStages,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
+    // luas utama: gunakan AT/AU jika ada, fallback ke penjumlahan L-O
+    const _luasAgro = luasAgro>0 ? luasAgro : aReg+aBPO;
+    const _luasTemb = luasTemb>0 ? luasTemb : tReg+tMTL;
+    sheetMap[id]={id,kth,grid,luas:_luasAgro+_luasTemb,tipe,petani,jk,desa,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,luasAgro:_luasAgro,luasTemb:_luasTemb,tanamanKarbon,link,prog,nominalStages,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
   });
 }
 
@@ -1106,19 +1112,28 @@ function updateFilterInfo(n){
 }
 
 function calcStats(ids){
-  let aReg=0,aBPO=0,tReg=0,tMTL=0;
+  let tA=0,tT=0;
   const uniq=new Set(),laki=new Set(),pmp=new Set();
   const pAR=new Set(),pAB=new Set(),pTR=new Set(),pTM=new Set();
+  // Sub-breakdown luas (untuk baris Agro Reguler / BPO / Temb Reguler / MTL)
+  // Proporsi: distribusikan luasAgro ke aReg & aBPO secara proporsional, idem temb
+  let aRegDisp=0,aBPODisp=0,tRegDisp=0,tMTLDisp=0;
   ids.forEach(id=>{
     const r=sheetMap[id];if(!r)return;
-    aReg+=r.aReg;aBPO+=r.aBPO;tReg+=r.tReg;tMTL+=r.tMTL;
+    tA+=r.luasAgro;tT+=r.luasTemb;
+    // Proporsional sub-breakdown
+    const rawA=r.aReg+r.aBPO,rawT=r.tReg+r.tMTL;
+    if(rawA>0){aRegDisp+=r.luasAgro*(r.aReg/rawA);aBPODisp+=r.luasAgro*(r.aBPO/rawA);}
+    else if(PROG[r.prog]?.group==='agro'){aRegDisp+=r.luasAgro;}
+    if(rawT>0){tRegDisp+=r.luasTemb*(r.tReg/rawT);tMTLDisp+=r.luasTemb*(r.tMTL/rawT);}
+    else if(PROG[r.prog]?.group==='temb'){tRegDisp+=r.luasTemb;}
     if(r.petani){
       const pk=r.petani.toLowerCase();uniq.add(pk);
       if(r.jk.toLowerCase().includes('laki'))laki.add(pk);else if(r.jk.toLowerCase().includes('perempuan'))pmp.add(pk);
       if(r.aReg>0)pAR.add(pk);if(r.aBPO>0)pAB.add(pk);if(r.tReg>0)pTR.add(pk);if(r.tMTL>0)pTM.add(pk);
     }
   });
-  const tA=aReg+aBPO,tT=tReg+tMTL,tR=tA+tT,tgt=getActiveTarget();
+  const tR=tA+tT,tgt=getActiveTarget();
 
   ['sWeekAcc','sAgroWeekAcc','sTembWeekAcc'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='';el.style.display='none';}});
   if(currentPreset==='week'){
@@ -1127,9 +1142,9 @@ function calcStats(ids){
       const yr=wk.fri.getFullYear(),mo=wk.fri.getMonth();
       const acc=rowsInMonth(yr,mo).filter(r=>{const d=parseDate(r.tglPartisipasi);return d&&d<=wk.fri;});
       const setAcc=(id,v)=>{const el=document.getElementById(id);if(el){el.textContent=`akumulasi bulan ${MN[mo]} ${fmt(v)} ha`;el.style.display='block';}};
-      setAcc('sWeekAcc',acc.reduce((s,r)=>s+r.luas,0));
-      setAcc('sAgroWeekAcc',acc.reduce((s,r)=>s+r.aReg+r.aBPO,0));
-      setAcc('sTembWeekAcc',acc.reduce((s,r)=>s+r.tReg+r.tMTL,0));
+      setAcc('sWeekAcc',  acc.reduce((s,r)=>s+r.luas,0));
+      setAcc('sAgroWeekAcc',acc.reduce((s,r)=>s+r.luasAgro,0));
+      setAcc('sTembWeekAcc',acc.reduce((s,r)=>s+r.luasTemb,0));
     }
   }
 
@@ -1141,8 +1156,8 @@ function calcStats(ids){
       if(wk){
         const acc=rowsInMonth(wk.fri.getFullYear(),wk.fri.getMonth()).filter(r=>{const d=parseDate(r.tglPartisipasi);return d&&d<=wk.fri;});
         if(pctId==='sTotalPct')dispReal=acc.reduce((s,r)=>s+r.luas,0);
-        else if(pctId==='sAgroPct')dispReal=acc.reduce((s,r)=>s+r.aReg+r.aBPO,0);
-        else if(pctId==='sTembPct')dispReal=acc.reduce((s,r)=>s+r.tReg+r.tMTL,0);
+        else if(pctId==='sAgroPct')dispReal=acc.reduce((s,r)=>s+r.luasAgro,0);
+        else if(pctId==='sTembPct')dispReal=acc.reduce((s,r)=>s+r.luasTemb,0);
       }
     }
     const ri=document.getElementById(riId);
@@ -1163,11 +1178,11 @@ function calcStats(ids){
 
   setText('sTotalHa',fmt(tR)+' ha');setText('sTotalAgroSub',fmt(tA)+' ha');setText('sTotalTembSub',fmt(tT)+' ha');
   setTgtUI('sTotalPct','sProgBar','sTotalTarget','sTotalRightInfo',tR,(tgt.agro!==null&&tgt.temb!==null)?tgt.agro+tgt.temb:null);
-  setText('sAgroHa',fmt(tA)+' ha');setText('sAgroRegHa',fmt(aReg)+' ha');setText('sAgroRegPetani',pAR.size?pAR.size+' petani':'');
-  setText('sAgroBPOHa',fmt(aBPO)+' ha');setText('sAgroBPOPetani',pAB.size?pAB.size+' petani':'');
+  setText('sAgroHa',fmt(tA)+' ha');setText('sAgroRegHa',fmt(aRegDisp)+' ha');setText('sAgroRegPetani',pAR.size?pAR.size+' petani':'');
+  setText('sAgroBPOHa',fmt(aBPODisp)+' ha');setText('sAgroBPOPetani',pAB.size?pAB.size+' petani':'');
   setTgtUI('sAgroPct','sAgroProgBar','sAgroTarget','sAgroRightInfo',tA,tgt.agro);
-  setText('sTembHa',fmt(tT)+' ha');setText('sTembRegHa',fmt(tReg)+' ha');setText('sTembRegPetani',pTR.size?pTR.size+' petani':'');
-  setText('sTembMTLHa',fmt(tMTL)+' ha');setText('sTembMTLPetani',pTM.size?pTM.size+' petani':'');
+  setText('sTembHa',fmt(tT)+' ha');setText('sTembRegHa',fmt(tRegDisp)+' ha');setText('sTembRegPetani',pTR.size?pTR.size+' petani':'');
+  setText('sTembMTLHa',fmt(tMTLDisp)+' ha');setText('sTembMTLPetani',pTM.size?pTM.size+' petani':'');
   setTgtUI('sTembPct','sTembProgBar','sTembTarget','sTembRightInfo',tT,tgt.temb);
   setText('sAnggota',uniq.size);setText('sLaki','L: '+laki.size);setText('sPmp','P: '+pmp.size);
 }
@@ -1183,10 +1198,10 @@ function renderKTHList(ids){
   const kf={};
   ids.forEach(id=>{
     const r=sheetMap[id];if(!r)return;
-    if(!kf[r.kth])kf[r.kth]={aReg:0,aBPO:0,tReg:0,tMTL:0,count:0,desa:r.desa};
-    kf[r.kth].aReg+=r.aReg;kf[r.kth].aBPO+=r.aBPO;kf[r.kth].tReg+=r.tReg;kf[r.kth].tMTL+=r.tMTL;kf[r.kth].count++;
+    if(!kf[r.kth])kf[r.kth]={agro:0,temb:0,count:0,desa:r.desa};
+    kf[r.kth].agro+=r.luasAgro;kf[r.kth].temb+=r.luasTemb;kf[r.kth].count++;
   });
-  const list=Object.entries(kf).map(([n,v])=>({name:n,agro:v.aReg+v.aBPO,temb:v.tReg+v.tMTL,count:v.count,desa:v.desa})).sort((a,b)=>(b.agro+b.temb)-(a.agro+a.temb));
+  const list=Object.entries(kf).map(([n,v])=>({name:n,agro:v.agro,temb:v.temb,count:v.count,desa:v.desa})).sort((a,b)=>(b.agro+b.temb)-(a.agro+a.temb));
   setText('kthCount',list.length);
   const el=document.getElementById('kthList');
   if(!list.length){el.innerHTML='<div class="empty-state">Tidak ada data</div>';return;}
@@ -1274,7 +1289,7 @@ function openKTH(name,ids){
   const rows=Object.values(sheetMap).filter(r=>r.kth===name&&ids.has(r.id));
   document.querySelectorAll('.kth-card').forEach(e=>e.classList.remove('active'));
   const c=document.querySelector(`.kth-card[data-kth="${name}"]`);if(c){c.classList.add('active');c.scrollIntoView({behavior:'smooth',block:'nearest'});}
-  const a=rows.reduce((s,r)=>s+r.aReg+r.aBPO,0),t=rows.reduce((s,r)=>s+r.tReg+r.tMTL,0);
+  const a=rows.reduce((s,r)=>s+r.luasAgro,0),t=rows.reduce((s,r)=>s+r.luasTemb,0);
   const ps=new Set(rows.map(r=>r.petani.toLowerCase()));
   setText('modalTitle',name);setText('modalSub',`${master.desa} · ${rows.length} lahan · ${ps.size} petani`);
   document.getElementById('modalStats').innerHTML=
@@ -1485,12 +1500,12 @@ function renderGrafik(){
   if(grafikTab==='bulanan'){
     const yr=+$v('gBulananYear');
     dA=Array(12).fill(0);dT=Array(12).fill(0);
-    Object.values(sheetMap).forEach(r=>{const d=parseDate(r.tglPartisipasi);if(!d||d.getFullYear()!==yr)return;const m=d.getMonth();dA[m]+=r.aReg+r.aBPO;dT[m]+=r.tReg+r.tMTL;});
+    Object.values(sheetMap).forEach(r=>{const d=parseDate(r.tglPartisipasi);if(!d||d.getFullYear()!==yr)return;const m=d.getMonth();dA[m]+=r.luasAgro;dT[m]+=r.luasTemb;});
     labels=MN;title=`Realisasi Partisipasi Bulanan — Tahun ${yr}`;
   }else{
     const yr=+$v('gMingguanYear'),mo=+$v('gMingguanMonth'),weeks=getWeeksInMonth(yr,mo);
     dA=weeks.map(()=>0);dT=weeks.map(()=>0);
-    Object.values(sheetMap).forEach(r=>{const d=parseDate(r.tglPartisipasi);if(!d)return;weeks.forEach((wk,i)=>{if(d>=wk.sat&&d<=wk.fri){dA[i]+=r.aReg+r.aBPO;dT[i]+=r.tReg+r.tMTL;}});});
+    Object.values(sheetMap).forEach(r=>{const d=parseDate(r.tglPartisipasi);if(!d)return;weeks.forEach((wk,i)=>{if(d>=wk.sat&&d<=wk.fri){dA[i]+=r.luasAgro;dT[i]+=r.luasTemb;}});});
     labels=weeks.map((w,i)=>`Mgg ke-${i+1} (${fmtD(w.sat,'s')}–${fmtD(w.fri,'s')})`);
     title=`Realisasi Partisipasi Mingguan — ${MN[mo]} ${yr}`;
   }
