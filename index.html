@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>planting</title>
+<title>planting monitoring</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -1660,18 +1660,36 @@ function filterInsentifTable(){
 let thnFilteredRows=[];
 
 function renderTahunanTable(){
-  const rows=getInsYearRows().filter(r=>r.prog==='Agro_BPO'||r.prog==='Temb_MTL');
+  // Tampilkan semua baris yang memiliki angka di pupuk cair, pupuk padat, ATAU insentif MTL
+  // (tidak hanya yang prog=Agro_BPO/Temb_MTL secara ketat)
+  const rows=getInsYearRows().filter(r=>
+    (r.pupukCair||0)>0||(r.pupukPadat||0)>0||(r.insentifMTL||0)>0||r.tglBPO||r.tglMTL
+  );
   thnFilteredRows=rows;
+  // Populate program filter dinamis dari data aktual
+  const progList=[...new Set(rows.map(r=>r.prog).filter(Boolean))].sort();
+  const progSel=document.getElementById('insSelProgThn');
+  progSel.innerHTML='<option value="">Semua</option>'+progList.map(p=>`<option value="${esc(p)}">${esc(PROG[p]?.label||p)}</option>`).join('');
   const desaList=[...new Set(rows.map(r=>r.desa).filter(Boolean))].sort();
   document.getElementById('insSelDesaThn').innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
   buildTahunanTable(rows);filterTahunanTable();
 }
 
+// Hitung totals dari array rows — tidak terikat prog
+function calcThnTotals(rows){
+  return{
+    cair: rows.reduce((a,r)=>a+(r.pupukCair||0),0),
+    padat:rows.reduce((a,r)=>a+(r.pupukPadat||0),0),
+    // total insentif MTL: semua baris yang punya tglMTL (sudah bayar)
+    mtl:  rows.filter(r=>!!r.tglMTL).reduce((a,r)=>a+(r.insentifMTL||0),0),
+    // total insentif keseluruhan: termasuk yang belum bayar (semua angka ada)
+    mtlAll: rows.reduce((a,r)=>a+(r.insentifMTL||0),0),
+  };
+}
+
 function buildTahunanTable(rows){
-  // Hitung total untuk sub-header
-  const totCair=rows.filter(r=>r.prog==='Agro_BPO').reduce((a,r)=>a+(r.pupukCair||0),0);
-  const totPadat=rows.filter(r=>r.prog==='Agro_BPO').reduce((a,r)=>a+(r.pupukPadat||0),0);
-  const totMTL=rows.filter(r=>r.prog==='Temb_MTL'&&!!r.tglMTL).reduce((a,r)=>a+(r.insentifMTL||0),0);
+  const tot=calcThnTotals(rows);
+  const fmtL=v=>v>0?v.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
   document.getElementById('thnThead').innerHTML=`<tr>
     <th rowspan="2">No</th><th rowspan="2">ID Lahan</th><th rowspan="2">Nama Petani</th><th rowspan="2">Desa</th><th rowspan="2">Program</th>
     <th rowspan="2" class="right">Luas (ha)</th>
@@ -1679,17 +1697,19 @@ function buildTahunanTable(rows){
     <th class="th-group">Status BPO</th>
     <th class="th-group">Insentif MTL (Rp)</th><th class="th-group">Status MTL</th>
   </tr>
-  <tr>
-    <th class="th-pct right">${totCair>0?totCair.toLocaleString('id-ID',{minimumFractionDigits:2}):'—'}</th>
-    <th class="th-pct right">${totPadat>0?totPadat.toLocaleString('id-ID',{minimumFractionDigits:2}):'—'}</th>
-    <th class="th-pct center">—</th>
-    <th class="th-pct right">${totMTL>0?'Rp '+fmtInt(totMTL):'—'}</th>
-    <th class="th-pct center">—</th>
+  <tr id="thnTotRow">
+    <th class="th-pct right">${fmtL(tot.cair)}</th>
+    <th class="th-pct right">${fmtL(tot.padat)}</th>
+    <th class="th-pct center" style="color:var(--text-3);font-size:9px">status</th>
+    <th class="th-pct right">${tot.mtl>0?'Rp '+fmtInt(tot.mtl)+' <span style="font-size:8px;font-weight:400;color:var(--text-3)">(sudah)</span>':tot.mtlAll>0?'Rp '+fmtInt(tot.mtlAll)+' <span style="font-size:8px;font-weight:400;color:var(--text-3)">(potensi)</span>':'—'}</th>
+    <th class="th-pct center" style="color:var(--text-3);font-size:9px">status</th>
   </tr>`;
   document.getElementById('thnTbody').innerHTML=rows.map((r,i)=>{
     const st=PROG[r.prog];
-    const isBPO=r.prog==='Agro_BPO',isMTL=r.prog==='Temb_MTL';
-    const bpoSudah=isBPO&&!!r.tglBPO,mtlSudah=isMTL&&!!r.tglMTL;
+    // Logika fleksibel: tampilkan nilai jika ada angka, apapun programnya
+    const hasCair=(r.pupukCair||0)>0, hasPadat=(r.pupukPadat||0)>0;
+    const bpoSudah=!!r.tglBPO, mtlSudah=!!r.tglMTL;
+    const hasIns=(r.insentifMTL||0)>0||r.tglMTL;
     return `<tr data-id="${esc(r.id)}" data-prog="${esc(r.prog)}" data-petani="${esc(r.petani.toLowerCase())}" data-desa="${esc(r.desa)}">
       <td style="color:var(--text-3);font-size:10px">${i+1}</td>
       <td style="font-family:monospace;font-size:10px">${esc(r.id)}</td>
@@ -1697,13 +1717,27 @@ function buildTahunanTable(rows){
       <td>${esc(r.desa)}</td>
       <td><span class="prog-tag ${st?.tagCls||''}">${esc(st?.label||r.prog)}</span></td>
       <td class="right" style="font-weight:600">${fmt(r.luas)}</td>
-      <td class="right">${isBPO?(r.pupukCair>0?r.pupukCair.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+' L':'—'):'—'}</td>
-      <td class="right">${isBPO?(r.pupukPadat>0?r.pupukPadat.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+' kg':'—'):'—'}</td>
-      <td>${isBPO?`<span class="${bpoSudah?'ins-paid':'ins-unpaid'}">${bpoSudah?'Sudah':'Belum'}</span>${bpoSudah?` <small style="color:var(--text-3);font-size:9px">${fmtDate(r.tglBPO)}</small>`:''}` :'—'}</td>
-      <td class="right">${isMTL?(r.insentifMTL>0?'Rp '+fmtInt(r.insentifMTL):'—'):'—'}</td>
-      <td>${isMTL?`<span class="${mtlSudah?'ins-paid':'ins-unpaid'}">${mtlSudah?'Sudah':'Belum'}</span>${mtlSudah?` <small style="color:var(--text-3);font-size:9px">${fmtDate(r.tglMTL)}</small>`:''}` :'—'}</td>
+      <td class="right">${hasCair?r.pupukCair.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+' L':'—'}</td>
+      <td class="right">${hasPadat?r.pupukPadat.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+' kg':'—'}</td>
+      <td>${(hasCair||hasPadat||r.tglBPO)?`<span class="${bpoSudah?'ins-paid':'ins-unpaid'}">${bpoSudah?'Sudah':'Belum'}</span>${bpoSudah?` <small style="color:var(--text-3);font-size:9px">${fmtDate(r.tglBPO)}</small>`:''}` :'—'}</td>
+      <td class="right">${(r.insentifMTL||0)>0?'Rp '+fmtInt(r.insentifMTL):'—'}</td>
+      <td>${(hasIns||r.tglMTL)?`<span class="${mtlSudah?'ins-paid':'ins-unpaid'}">${mtlSudah?'Sudah':'Belum'}</span>${mtlSudah?` <small style="color:var(--text-3);font-size:9px">${fmtDate(r.tglMTL)}</small>`:''}` :'—'}</td>
     </tr>`;
   }).join('');}
+
+function updateThnTotRow(vis){
+  const tot=calcThnTotals(vis);
+  const fmtL=v=>v>0?v.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+  const ths=document.querySelectorAll('#thnTotRow th');
+  if(ths.length<5)return;
+  ths[0].textContent=fmtL(tot.cair);
+  ths[1].textContent=fmtL(tot.padat);
+  ths[2].textContent='status';
+  // Insentif: tampilkan sudah bayar, lalu total potensi dalam kurung jika beda
+  const insText=tot.mtl>0?(tot.mtlAll>tot.mtl?`Rp ${fmtInt(tot.mtl)} / ${fmtInt(tot.mtlAll)}`:`Rp ${fmtInt(tot.mtl)}`):tot.mtlAll>0?`Rp ${fmtInt(tot.mtlAll)}`:'—';
+  ths[3].textContent=insText;
+  ths[4].textContent='status';
+}
 
 function filterTahunanTable(){
   const q=document.getElementById('insSearchThn').value.toLowerCase().trim();
@@ -1715,20 +1749,8 @@ function filterTahunanTable(){
   });
   setText('insThnRowCount',visIds.length+' lahan');
   document.getElementById('thnNoResults').style.display=visIds.length===0?'block':'none';
-  // Update sub-header totals
   const idSet=new Set(visIds);
-  const vis=thnFilteredRows.filter(r=>idSet.has(r.id));
-  const tC=vis.filter(r=>r.prog==='Agro_BPO').reduce((a,r)=>a+(r.pupukCair||0),0);
-  const tP=vis.filter(r=>r.prog==='Agro_BPO').reduce((a,r)=>a+(r.pupukPadat||0),0);
-  const tM=vis.filter(r=>r.prog==='Temb_MTL'&&!!r.tglMTL).reduce((a,r)=>a+(r.insentifMTL||0),0);
-  const thPcts=document.querySelectorAll('#thnThead tr:nth-child(2) th');
-  if(thPcts.length>=4){
-    thPcts[0].textContent=tC>0?tC.toLocaleString('id-ID',{minimumFractionDigits:2}):'—';
-    thPcts[1].textContent=tP>0?tP.toLocaleString('id-ID',{minimumFractionDigits:2}):'—';
-    thPcts[2].textContent='—';
-    thPcts[3].textContent=tM>0?'Rp '+fmtInt(tM):'—';
-    if(thPcts[4])thPcts[4].textContent='—';
-  }
+  updateThnTotRow(thnFilteredRows.filter(r=>idSet.has(r.id)));
 }
 
 // ── INSENTIF DOWNLOAD HELPERS ──
@@ -1747,12 +1769,13 @@ function getInsExportData(){
     const rows=thnFilteredRows;
     const hdr=['No','ID Lahan','Nama Petani','Desa','Program','Luas (ha)','Pupuk Cair (L)','Pupuk Padat (kg)','Status BPO','Tgl BPO','Insentif MTL (Rp)','Status MTL','Tgl MTL'];
     const body=rows.map((r,i)=>{
-      const isBPO=r.prog==='Agro_BPO',isMTL=r.prog==='Temb_MTL';
+      const hasBPO=(r.pupukCair||0)>0||(r.pupukPadat||0)>0||!!r.tglBPO;
+      const hasMTL=(r.insentifMTL||0)>0||!!r.tglMTL;
       return[i+1,r.id,r.petani,r.desa,PROG[r.prog]?.label||r.prog,fmt(r.luas),
-        isBPO?r.pupukCair.toLocaleString('id-ID',{minimumFractionDigits:2}):'',
-        isBPO?r.pupukPadat.toLocaleString('id-ID',{minimumFractionDigits:2}):'',
-        isBPO?(r.tglBPO?'Sudah Bayar':'Belum Bayar'):'',isBPO?fmtDate(r.tglBPO)||'':'',
-        isMTL?fmtInt(r.insentifMTL):'',isMTL?(r.tglMTL?'Sudah Bayar':'Belum Bayar'):'',isMTL?fmtDate(r.tglMTL)||'':''];
+        hasBPO?r.pupukCair.toLocaleString('id-ID',{minimumFractionDigits:2}):'',
+        hasBPO?r.pupukPadat.toLocaleString('id-ID',{minimumFractionDigits:2}):'',
+        hasBPO?(r.tglBPO?'Sudah Bayar':'Belum Bayar'):'',hasBPO?fmtDate(r.tglBPO)||'':'',
+        hasMTL?fmtInt(r.insentifMTL):'',hasMTL?(r.tglMTL?'Sudah Bayar':'Belum Bayar'):'',hasMTL?fmtDate(r.tglMTL)||'':''];
     });
     return{hdr,body,fname,rows};
   }
