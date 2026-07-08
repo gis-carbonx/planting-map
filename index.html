@@ -1119,17 +1119,18 @@ function calcStats(ids){
   const uniq=new Set(),laki=new Set(),pmp=new Set();
   const pAR=new Set(),pAB=new Set(),pTR=new Set(),pTM=new Set();
   // Sub-breakdown luas (untuk baris Agro Reguler / BPO / Temb Reguler / MTL)
-  // Proporsi: distribusikan luasAgro ke aReg & aBPO secara proporsional, idem temb
+  // Diambil LANGSUNG dari kolom L/M/N/O (Agro_Reg, Agro_BPO, Temb_Reg, Temb_MTL), dijumlah apa adanya.
+  // Total di atas (tA/tT) tetap dari AT/AU (luas_agro/luas_temb) sehingga TIDAK terpengaruh oleh
+  // kemungkinan "double counting" di rincian bawah ini (mis. 1 baris punya L & M sama-sama terisi).
   let aRegDisp=0,aBPODisp=0,tRegDisp=0,tMTLDisp=0;
   ids.forEach(id=>{
     const r=sheetMap[id];if(!r)return;
     tA+=r.luasAgro;tT+=r.luasTemb;
-    // Proporsional sub-breakdown
-    const rawA=r.aReg+r.aBPO,rawT=r.tReg+r.tMTL;
-    if(rawA>0){aRegDisp+=r.luasAgro*(r.aReg/rawA);aBPODisp+=r.luasAgro*(r.aBPO/rawA);}
-    else if(PROG[r.prog]?.group==='agro'){aRegDisp+=r.luasAgro;}
-    if(rawT>0){tRegDisp+=r.luasTemb*(r.tReg/rawT);tMTLDisp+=r.luasTemb*(r.tMTL/rawT);}
-    else if(PROG[r.prog]?.group==='temb'){tRegDisp+=r.luasTemb;}
+    // Sum langsung dari kolom L/M/N/O — tanpa proporsi, boleh double count antar sub-kategori
+    aRegDisp+=r.aReg;
+    aBPODisp+=r.aBPO;
+    tRegDisp+=r.tReg;
+    tMTLDisp+=r.tMTL;
     if(r.petani){
       const pk=r.petani.toLowerCase();uniq.add(pk);
       if(r.jk.toLowerCase().includes('laki'))laki.add(pk);else if(r.jk.toLowerCase().includes('perempuan'))pmp.add(pk);
