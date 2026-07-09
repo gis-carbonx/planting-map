@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Planting database 1</title>
+<title>Planting database draft</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -407,7 +407,10 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
     </div>
   </div>
   <div class="sc">
-    <div class="sc-lbl">Program Enrichment</div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px">
+      <div class="sc-lbl">Program Enrichment</div>
+      <button class="btn-detail-pot" onclick="openEnrichmentModal()">Detail</button>
+    </div>
     <div class="sc-top-row">
       <div class="sc-val" id="sEnrTotalHa">—</div>
       <div class="sc-right-info" id="sEnrRightInfo" style="display:none"><span class="sc-pct-badge" id="sEnrPct">—</span><span class="sc-target-inline" id="sEnrTarget">—</span></div>
@@ -625,7 +628,70 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
   </div>
 </div>
 
+<!-- ENRICHMENT MODAL -->
+<div class="modal-overlay" id="enrModal" style="display:none" onclick="if(event.target===this)closeModal('enrModal')">
+  <div class="cp-modal" onclick="event.stopPropagation()">
+    <div class="modal-hd-green">
+      <div><div class="modal-title">Detail Program Enrichment</div><div class="modal-sub-txt" id="enrSub">—</div></div>
+      <button class="modal-close-btn" onclick="closeModal('enrModal')">✕</button>
+    </div>
+    <div class="strip-bar">
+      <div class="strip-card"><div class="strip-lbl">ENP (Protected Area)</div><div class="strip-val" id="enrStripENP">—</div><div class="strip-sub" id="enrStripENPsub"></div></div>
+      <div class="strip-card"><div class="strip-lbl">ENL (Logged Over Area)</div><div class="strip-val" id="enrStripENL">—</div><div class="strip-sub" id="enrStripENLsub"></div></div>
+      <div class="strip-card"><div class="strip-lbl">Total Enrichment</div><div class="strip-val" id="enrStripTotal">—</div><div class="strip-sub" id="enrStripTotalsub"></div></div>
+      <div class="strip-card"><div class="strip-lbl">Jumlah Petani</div><div class="strip-val" id="enrStripPetani">—</div></div>
+      <div class="strip-card"><div class="strip-lbl">Jumlah Lahan</div><div class="strip-val" id="enrStripLahan">—</div></div>
+    </div>
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border);background:#f8fafc">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+        <span style="font-size:11px;font-weight:700;color:var(--text-2)">Grafik Perbandingan ENP vs ENL — Bulanan</span>
+        <span style="font-size:11px;font-weight:700;color:var(--text-2)">Tahun:</span>
+        <select class="grafik-sel" id="enrChartYear" onchange="renderEnrChart()"></select>
+        <div class="grafik-legend">
+          <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#0ea5e9"></div>ENP</div>
+          <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#f59e0b"></div>ENL</div>
+        </div>
+      </div>
+      <div style="height:190px;position:relative"><canvas id="enrChart"></canvas></div>
+    </div>
+    <div class="modal-toolbar" style="padding:8px 16px">
+      <div class="search-wrap" style="max-width:200px">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="enrSearch" placeholder="Cari nama petani..." oninput="runEnrFilter()"/>
+      </div>
+      <select class="modal-sel" id="enrSelDesa" onchange="runEnrFilter()"><option value="">Semua Desa</option></select>
+      <select class="modal-sel" id="enrSelKategori" onchange="runEnrFilter()">
+        <option value="">Semua Kategori</option>
+        <option value="enp">ENP (Protected Area)</option>
+        <option value="enl">ENL (Logged Over Area)</option>
+      </select>
+      <div style="display:flex;align-items:center;gap:6px;margin-left:auto">
+        <span class="row-count" id="enrCount">—</span>
+        <div class="dl-dropdown-wrap" id="enrDlWrap">
+          <button class="btn-dl-sm" onclick="toggleDlMenu('enrDlWrap')">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Unduh
+          </button>
+          <div class="dl-dropdown-menu" id="enrDlMenu">
+            <button class="dl-item" onclick="downloadEnrCSV();closeAllDlMenus()"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="13" x2="16" y2="13"/></svg>CSV</button>
+            <button class="dl-item" onclick="downloadEnrWord();closeAllDlMenus()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Word</button>
+            <button class="dl-item" onclick="downloadEnrPDF();closeAllDlMenus()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body-scroll">
+      <table class="cp-tbl"><thead><tr>
+        <th style="width:26px">No</th><th>ID Lahan</th><th>Nama Petani</th><th>Desa</th><th>Dusun</th>
+        <th>ENP (ha)</th><th>ENL (ha)</th><th>Tgl Partisipasi</th>
+      </tr></thead><tbody id="enrTbody"></tbody></table>
+      <div class="no-results" id="enrNoResults" style="display:none">Tidak ada hasil</div>
+      <div class="empty-state" id="enrEmpty" style="display:none">Belum ada data ENP/ENL.</div>
+    </div>
+  </div>
+</div>
+
 <!-- GRAFIK MODAL -->
+
 <div class="modal-overlay" id="grafikModal" style="display:none" onclick="if(event.target===this)closeModal('grafikModal')">
   <div class="grafik-modal" onclick="event.stopPropagation()">
     <div class="modal-hd-green">
@@ -1040,10 +1106,11 @@ function parseSheet(csv){
     // Total diambil MURNI dari kolom AV/AW di sheet — tanpa fallback ke penjumlahan kolom lain.
     // Pencarian header pakai pickCI (case-insensitive + trim) dulu, baru fallback ke posisi indeks kolom,
     // supaya tidak diam-diam gagal hanya karena beda kapital/spasi pada nama header di sheet.
-    const enlRaw=pickCI(raw,keys,'AV','ENL');
-    const enpRaw=pickCI(raw,keys,'AW','ENP');
-    const luasENL=num(enlRaw!==undefined&&enlRaw!==''?enlRaw:k(47));
-    const luasENP=num(enpRaw!==undefined&&enpRaw!==''?enpRaw:k(48));
+    // Kolom ENL dan ENP diambil MURNI berdasarkan nama header "ENL" / "ENP" di sheet
+    // (pencarian case-insensitive + trim). TIDAK ADA fallback ke kolom lain (L/M/N/O)
+    // atau ke posisi indeks kolom — kalau header tidak ketemu, nilainya 0.
+    const luasENL=num(pickCI(raw,keys,'ENL'));
+    const luasENP=num(pickCI(raw,keys,'ENP'));
     const prog=resolveProgram(aReg,aBPO,tReg,tMTL,tipe);if(!prog)return;
     // luas utama: gunakan AT/AU jika ada, fallback ke penjumlahan L-O
     const _luasAgro = luasAgro>0 ? luasAgro : aReg+aBPO;
@@ -1542,6 +1609,130 @@ async function downloadCPWord(){
   const {hdr,body,suffix}=getCPData();
   const sub=`PT Citra Mulia Inti | ${cpFilteredRows.length} petani | ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`;
   await makeWord('landscape','CAPAIAN PROGRES PETANI',sub,hdr,body,`Capaian_Progres${suffix}.docx`);
+}
+
+// ── ENRICHMENT MODAL (ENP & ENL) ──
+let enrFilteredRows=[],enrChartInst=null;
+
+function getEnrRows(){
+  // Konsisten dengan angka di card: pakai filter tanggal aktif (top filter), bukan seluruh data.
+  const ids=new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
+  return Object.values(sheetMap).filter(r=>ids.has(r.id)&&(r.luasENP>0||r.luasENL>0));
+}
+
+function openEnrichmentModal(){
+  const rows=getEnrRows();
+  enrFilteredRows=rows;
+  const desaList=[...new Set(rows.map(r=>r.desa).filter(Boolean))].sort();
+  document.getElementById('enrSelDesa').innerHTML='<option value="">Semua Desa</option>'+desaList.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  document.getElementById('enrSearch').value='';document.getElementById('enrSelKategori').value='';document.getElementById('enrSelDesa').value='';
+  setText('enrSub',`Rincian ENP & ENL sesuai filter aktif · ${rows.length} lahan`);
+  renderEnrStrip(rows);
+  populateEnrChartYear();
+  renderEnrChart();
+  renderEnrTable(rows);
+  document.getElementById('enrModal').style.display='flex';
+}
+
+function renderEnrStrip(rows){
+  const tENP=rows.reduce((s,r)=>s+r.luasENP,0),tENL=rows.reduce((s,r)=>s+r.luasENL,0);
+  const pAll=new Set(rows.map(r=>r.petani?.toLowerCase()).filter(Boolean));
+  setText('enrStripENP',fmt(tENP)+' ha');
+  setText('enrStripENL',fmt(tENL)+' ha');
+  setText('enrStripTotal',fmt(tENP+tENL)+' ha');
+  setText('enrStripPetani',pAll.size);
+  setText('enrStripLahan',rows.length);
+}
+
+function populateEnrChartYear(){
+  const yrs=[...new Set(Object.values(sheetMap).map(r=>parseDate(r.tglPartisipasi)).filter(Boolean).map(d=>d.getFullYear()))].sort();
+  const sel=document.getElementById('enrChartYear');
+  const cur=new Date().getFullYear();
+  sel.innerHTML=yrs.map(y=>`<option value="${y}"${y===cur?' selected':''}>${y}</option>`).join('');
+  if(!yrs.includes(cur)&&yrs.length)sel.value=yrs[yrs.length-1];
+}
+
+function renderEnrChart(){
+  const yr=+$v('enrChartYear');
+  const dENP=Array(12).fill(0),dENL=Array(12).fill(0);
+  Object.values(sheetMap).forEach(r=>{
+    const d=parseDate(r.tglPartisipasi);if(!d||d.getFullYear()!==yr)return;
+    const m=d.getMonth();dENP[m]+=r.luasENP;dENL[m]+=r.luasENL;
+  });
+  if(enrChartInst){enrChartInst.destroy();enrChartInst=null;}
+  enrChartInst=new Chart(document.getElementById('enrChart'),{
+    type:'bar',
+    data:{labels:MN,datasets:[
+      {label:'ENP',data:dENP.map(v=>+v.toFixed(2)),backgroundColor:'#0ea5e9',borderRadius:4,barPercentage:.7},
+      {label:'ENL',data:dENL.map(v=>+v.toFixed(2)),backgroundColor:'#f59e0b',borderRadius:4,barPercentage:.7},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:2})} ha`}}
+      },
+      scales:{x:{ticks:{font:{size:10},color:'#64748b'},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:10},color:'#64748b',callback:v=>v+' ha'},grid:{color:'#f1f5f9'}}}
+    }
+  });
+}
+
+function runEnrFilter(){
+  const q=document.getElementById('enrSearch').value.toLowerCase().trim();
+  const desa=$v('enrSelDesa'),kat=$v('enrSelKategori');
+  const base=getEnrRows();
+  const rows=base.filter(r=>{
+    if(q&&!r.petani.toLowerCase().includes(q))return false;
+    if(desa&&r.desa!==desa)return false;
+    if(kat==='enp'&&!(r.luasENP>0))return false;
+    if(kat==='enl'&&!(r.luasENL>0))return false;
+    return true;
+  });
+  enrFilteredRows=rows;
+  renderEnrStrip(rows);
+  renderEnrTable(rows);
+}
+
+function renderEnrTable(rows){
+  setText('enrCount',rows.length+' lahan');
+  document.getElementById('enrEmpty').style.display=rows.length===0&&!enrFilteredRows.length?'none':'none';
+  if(!rows.length){
+    document.getElementById('enrTbody').innerHTML='';
+    document.getElementById('enrNoResults').style.display='block';
+    return;
+  }
+  document.getElementById('enrNoResults').style.display='none';
+  document.getElementById('enrTbody').innerHTML=rows.map((r,i)=>`
+    <tr>
+      <td style="color:#94a3b8;font-size:10px">${i+1}</td>
+      <td style="font-family:monospace;font-size:10px">${esc(r.id)}</td>
+      <td style="font-weight:600">${esc(r.petani)}</td>
+      <td>${esc(r.desa)}</td>
+      <td>${esc(r.dusun)||'—'}</td>
+      <td class="num" style="color:#0369a1">${r.luasENP>0?fmtHa(r.luasENP):'—'}</td>
+      <td class="num" style="color:#b45309">${r.luasENL>0?fmtHa(r.luasENL):'—'}</td>
+      <td style="color:#64748b;font-size:10px;white-space:nowrap">${fmtDate(r.tglPartisipasi)||'—'}</td>
+    </tr>`).join('');
+}
+
+function getEnrExportData(){
+  const hdr=['No','ID Lahan','Nama Petani','Desa','Dusun','ENP (ha)','ENL (ha)','Tgl Partisipasi'];
+  const body=enrFilteredRows.map((r,i)=>[i+1,r.id,r.petani,r.desa,r.dusun||'—',r.luasENP>0?fmtHa(r.luasENP):'—',r.luasENL>0?fmtHa(r.luasENL):'—',fmtDate(r.tglPartisipasi)||'—']);
+  return{hdr,body};
+}
+function downloadEnrCSV(){
+  if(!enrFilteredRows.length){alert('Tidak ada data.');return;}
+  const{hdr,body}=getEnrExportData();
+  dlCSV([hdr,...body],'Detail_Program_Enrichment.csv');
+}
+function downloadEnrPDF(){
+  if(!enrFilteredRows.length){alert('Tidak ada data.');return;}
+  const{hdr,body}=getEnrExportData();
+  makePDF('landscape',hdr,body,'Detail Program Enrichment (ENP & ENL)',enrFilteredRows.length,'Detail_Program_Enrichment.pdf');
+}
+async function downloadEnrWord(){
+  if(!enrFilteredRows.length){alert('Tidak ada data.');return;}
+  const{hdr,body}=getEnrExportData();
+  const sub=`PT Citra Mulia Inti | ${enrFilteredRows.length} lahan | ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}`;
+  await makeWord('landscape','DETAIL PROGRAM ENRICHMENT (ENP & ENL)',sub,hdr,body,'Detail_Program_Enrichment.docx');
 }
 
 // ── GRAFIK MODAL ──
