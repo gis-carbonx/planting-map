@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Planting database draft</title>
+<title>Planting database 1</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -404,6 +404,19 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
     <div class="sc-subs">
       <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#ff8c38"></span><span class="sc-sub-label">Temb. Reguler</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="sTembRegHa">—</span><span class="sc-sub-petani" id="sTembRegPetani"></span></div></div>
       <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#ce6be8"></span><span class="sc-sub-label">Menjaga Tutupan Lahan</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="sTembMTLHa">—</span><span class="sc-sub-petani" id="sTembMTLPetani"></span></div></div>
+    </div>
+  </div>
+  <div class="sc">
+    <div class="sc-lbl">Program Enrichment</div>
+    <div class="sc-top-row">
+      <div class="sc-val" id="sEnrTotalHa">—</div>
+      <div class="sc-right-info" id="sEnrRightInfo" style="display:none"><span class="sc-pct-badge" id="sEnrPct">—</span><span class="sc-target-inline" id="sEnrTarget">—</span></div>
+    </div>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="sEnrProgBar" style="width:0%;background:linear-gradient(90deg,#38bdf8,#0369a1)"></div></div>
+    <div class="sc-week-acc" id="sEnrWeekAcc" style="display:none"></div>
+    <div class="sc-subs">
+      <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#0ea5e9"></span><span class="sc-sub-label">ENP (Protected Area)</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="sENPHa">—</span></div></div>
+      <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#f59e0b"></span><span class="sc-sub-label">ENL (Logged Over Area)</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="sENLHa">—</span></div></div>
     </div>
   </div>
   <div class="sc-anggota">
@@ -947,6 +960,13 @@ function getActiveTarget(){
   if(currentPreset==='week'){const wk=getSelectedWeek();if(!wk)return{agro:null,temb:null};const td=targetData[wk.fri.getFullYear()];if(!td?.monthly)return{agro:null,temb:null};const mo=td.monthly[wk.fri.getMonth()]||{};return{agro:mo.agro??null,temb:mo.temb??null};}
   return{agro:null,temb:null};
 }
+function getActiveEnrTarget(){
+  if(currentPreset==='all'){let p=0,l=0,f=false;Object.values(targetData).forEach(td=>{p+=td.enp_utama||0;l+=td.enl_utama||0;f=true;});return f?{enp:p,enl:l}:{enp:null,enl:null};}
+  if(currentPreset==='ytd'||currentPreset==='year'){const yr=currentPreset==='ytd'?new Date().getFullYear():filterYear;const td=targetData[yr];return td?{enp:td.enp_total??null,enl:td.enl_total??null}:{enp:null,enl:null};}
+  if(currentPreset==='month'){const td=targetData[filterYear];if(!td?.monthlyEnr)return{enp:null,enl:null};const mo=td.monthlyEnr[filterMonth]||{};return{enp:mo.enp??null,enl:mo.enl??null};}
+  if(currentPreset==='week'){const wk=getSelectedWeek();if(!wk)return{enp:null,enl:null};const td=targetData[wk.fri.getFullYear()];if(!td?.monthlyEnr)return{enp:null,enl:null};const mo=td.monthlyEnr[wk.fri.getMonth()]||{};return{enp:mo.enp??null,enl:mo.enl??null};}
+  return{enp:null,enl:null};
+}
 
 // ── FETCH HELPERS ──
 async function getText(u){const r=await fetch(u);if(!r.ok)throw Error(r.status+" "+u);return r.text();}
@@ -1006,11 +1026,17 @@ function parseSheet(csv){
     const dusun     =str(raw['AS']||raw['Dusun']      ||raw['dusun']      ||k(44)||'');
     const luasAgro  =num(raw['AT']||raw['Luas_Agro']  ||raw['luas_agro']  ||k(45)||0);
     const luasTemb  =num(raw['AU']||raw['Luas_Temb']  ||raw['luas_temb']  ||k(46)||0);
+    // Kolom AV=ENL (Enrichment Logged Over Area, idx 47), AW=ENP (Enrichment Protected Area, idx 48)
+    // Total diambil langsung dari sheet; fallback ke penjumlahan kolom sumber bila kosong.
+    const luasENLraw=num(raw['AV']||raw['ENL']||raw['enl']||k(47)||0);
+    const luasENPraw=num(raw['AW']||raw['ENP']||raw['enp']||k(48)||0);
+    const luasENL = luasENLraw>0 ? luasENLraw : (tReg+tMTL);
+    const luasENP = luasENPraw>0 ? luasENPraw : (aBPO+tReg+tMTL);
     const prog=resolveProgram(aReg,aBPO,tReg,tMTL,tipe);if(!prog)return;
     // luas utama: gunakan AT/AU jika ada, fallback ke penjumlahan L-O
     const _luasAgro = luasAgro>0 ? luasAgro : aReg+aBPO;
     const _luasTemb = luasTemb>0 ? luasTemb : tReg+tMTL;
-    sheetMap[id]={id,kth,grid,luas:_luasAgro+_luasTemb,tipe,petani,jk,desa,dusun,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,luasAgro:_luasAgro,luasTemb:_luasTemb,tanamanKarbon,link,prog,nominalStages,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
+    sheetMap[id]={id,kth,grid,luas:_luasAgro+_luasTemb,tipe,petani,jk,desa,dusun,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,luasAgro:_luasAgro,luasTemb:_luasTemb,luasENL,luasENP,tanamanKarbon,link,prog,nominalStages,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
   });
 }
 
@@ -1020,13 +1046,26 @@ function parseTargetSheet(csv){
   data.forEach((row,i)=>{
     if(!i)return;
     const uraian=str(row[0]).toLowerCase(),tahun=parseInt(str(row[2]));
-    if(!uraian||(uraian!=='tembawang'&&!uraian.includes('agro'))||isNaN(tahun)||tahun<2000)return;
-    if(!targetData[tahun])targetData[tahun]={agro_utama:0,temb_utama:0,agro_total:0,temb_total:0,monthly:Array.from({length:12},()=>({agro:0,temb:0}))};
-    const td=targetData[tahun],isA=uraian.includes('agro'),isT=uraian==='tembawang';
+    if(!uraian||isNaN(tahun)||tahun<2000)return;
+    const isA=uraian.includes('agro')&&!uraian.includes('bpo');
+    const isT=uraian==='tembawang';
+    const isENP=uraian==='pa'||uraian.includes('protected');
+    const isENL=uraian==='loa'||uraian.includes('logged');
+    if(!isA&&!isT&&!isENP&&!isENL)return;
+    if(!targetData[tahun])targetData[tahun]={agro_utama:0,temb_utama:0,agro_total:0,temb_total:0,enp_utama:0,enl_utama:0,enp_total:0,enl_total:0,monthly:Array.from({length:12},()=>({agro:0,temb:0})),monthlyEnr:Array.from({length:12},()=>({enp:0,enl:0}))};
+    const td=targetData[tahun];
     const utama=parseFloat(str(row[1]))||0,total=parseFloat(str(row[15]))||0;
     if(isA){td.agro_utama+=utama;td.agro_total+=total;}
     if(isT){td.temb_utama+=utama;td.temb_total+=total;}
-    for(let m=0;m<12;m++){const v=parseFloat(str(row[3+m]))||0;if(isA)td.monthly[m].agro+=v;if(isT)td.monthly[m].temb+=v;}
+    if(isENP){td.enp_utama+=utama;td.enp_total+=total;}
+    if(isENL){td.enl_utama+=utama;td.enl_total+=total;}
+    for(let m=0;m<12;m++){
+      const v=parseFloat(str(row[3+m]))||0;
+      if(isA)td.monthly[m].agro+=v;
+      if(isT)td.monthly[m].temb+=v;
+      if(isENP)td.monthlyEnr[m].enp+=v;
+      if(isENL)td.monthlyEnr[m].enl+=v;
+    }
   });
 }
 
@@ -1119,7 +1158,7 @@ function updateFilterInfo(n){
 }
 
 function calcStats(ids){
-  let tA=0,tT=0;
+  let tA=0,tT=0,tENP=0,tENL=0;
   const uniq=new Set(),laki=new Set(),pmp=new Set();
   const pAR=new Set(),pAB=new Set(),pTR=new Set(),pTM=new Set();
   // Sub-breakdown luas (untuk baris Agro Reguler / BPO / Temb Reguler / MTL)
@@ -1130,6 +1169,7 @@ function calcStats(ids){
   ids.forEach(id=>{
     const r=sheetMap[id];if(!r)return;
     tA+=r.luasAgro;tT+=r.luasTemb;
+    tENP+=r.luasENP;tENL+=r.luasENL;
     // Sum langsung dari kolom L/M/N/O — tanpa proporsi, boleh double count antar sub-kategori
     aRegDisp+=r.aReg;
     aBPODisp+=r.aBPO;
@@ -1141,9 +1181,9 @@ function calcStats(ids){
       if(r.aReg>0)pAR.add(pk);if(r.aBPO>0)pAB.add(pk);if(r.tReg>0)pTR.add(pk);if(r.tMTL>0)pTM.add(pk);
     }
   });
-  const tR=tA+tT,tgt=getActiveTarget();
+  const tR=tA+tT,tgt=getActiveTarget(),tgtEnr=getActiveEnrTarget();
 
-  ['sWeekAcc','sAgroWeekAcc','sTembWeekAcc'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='';el.style.display='none';}});
+  ['sWeekAcc','sAgroWeekAcc','sTembWeekAcc','sEnrWeekAcc'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='';el.style.display='none';}});
   if(currentPreset==='week'){
     const wk=getSelectedWeek();
     if(wk){
@@ -1153,6 +1193,7 @@ function calcStats(ids){
       setAcc('sWeekAcc',  acc.reduce((s,r)=>s+r.luas,0));
       setAcc('sAgroWeekAcc',acc.reduce((s,r)=>s+r.luasAgro,0));
       setAcc('sTembWeekAcc',acc.reduce((s,r)=>s+r.luasTemb,0));
+      setAcc('sEnrWeekAcc',acc.reduce((s,r)=>s+r.luasENP+r.luasENL,0));
     }
   }
 
@@ -1166,6 +1207,7 @@ function calcStats(ids){
         if(pctId==='sTotalPct')dispReal=acc.reduce((s,r)=>s+r.luas,0);
         else if(pctId==='sAgroPct')dispReal=acc.reduce((s,r)=>s+r.luasAgro,0);
         else if(pctId==='sTembPct')dispReal=acc.reduce((s,r)=>s+r.luasTemb,0);
+        else if(pctId==='sEnrPct')dispReal=acc.reduce((s,r)=>s+r.luasENP+r.luasENL,0);
       }
     }
     const ri=document.getElementById(riId);
@@ -1193,6 +1235,13 @@ function calcStats(ids){
   setText('sTembMTLHa',fmt(tMTLDisp)+' ha');setText('sTembMTLPetani',pTM.size?pTM.size+' petani':'');
   setTgtUI('sTembPct','sTembProgBar','sTembTarget','sTembRightInfo',tT,tgt.temb);
   setText('sAnggota',uniq.size);setText('sLaki','L: '+laki.size);setText('sPmp','P: '+pmp.size);
+
+  // ── Program Enrichment (ENP + ENL) — TERPISAH dari Total Lahan, tidak dijumlah ke tR ──
+  const tEnr=tENP+tENL;
+  setText('sEnrTotalHa',fmt(tEnr)+' ha');
+  setText('sENPHa',fmt(tENP)+' ha');
+  setText('sENLHa',fmt(tENL)+' ha');
+  setTgtUI('sEnrPct','sEnrProgBar','sEnrTarget','sEnrRightInfo',tEnr,(tgtEnr.enp!==null&&tgtEnr.enl!==null)?tgtEnr.enp+tgtEnr.enl:null);
 }
 
 // ── SVG ICONS ──
@@ -1267,13 +1316,14 @@ function showDetail(id){
   const ds=tP||tR?`<div class="d-block"><div class="d-block-ttl">Tanggal</div>${tP?`<div class="d-row"><span class="d-lbl">Partisipasi</span><span class="d-val">${tP}</span></div>`:''} ${tR?`<div class="d-row"><span class="d-lbl">Realisasi</span><span class="d-val">${tR}</span></div>`:''}</div>`:'';
   const cb=row.tanamanKarbon>0?`<div class="d-block"><div class="d-block-ttl">Tanaman Karbon</div><div class="d-carbon-block"><div class="d-carbon-val">${fmtInt(row.tanamanKarbon)}</div><div class="d-carbon-lbl">Jumlah Tanaman Sekuritas Carbon</div></div></div>`:'';
   const pd=[row.aReg>0?`<div class="d-row"><span class="d-lbl">Agro Reguler</span><span class="d-val">${fmt(row.aReg)} ha</span></div>`:'',row.aBPO>0?`<div class="d-row"><span class="d-lbl">Agro BPO</span><span class="d-val">${fmt(row.aBPO)} ha</span></div>`:'',row.tReg>0?`<div class="d-row"><span class="d-lbl">Temb. Reguler</span><span class="d-val">${fmt(row.tReg)} ha</span></div>`:'',row.tMTL>0?`<div class="d-row"><span class="d-lbl">Temb. MTL</span><span class="d-val">${fmt(row.tMTL)} ha</span></div>`:'' ].filter(Boolean).join('');
+  const enr=(row.luasENP>0||row.luasENL>0)?`<div class="d-block"><div class="d-block-ttl">Program Enrichment</div>${row.luasENP>0?`<div class="d-row"><span class="d-lbl">ENP (Protected Area)</span><span class="d-val">${fmt(row.luasENP)} ha</span></div>`:''}${row.luasENL>0?`<div class="d-row"><span class="d-lbl">ENL (Logged Over Area)</span><span class="d-val">${fmt(row.luasENL)} ha</span></div>`:''}</div>`:'';
   const lk=row.link?`<div class="d-block"><div class="d-block-ttl">Dokumen</div><div class="d-row"><span class="d-lbl">Link</span><a href="${esc(row.link)}" target="_blank" style="font-size:11px;font-weight:600;color:var(--primary-md);text-decoration:none">Buka Dokumen ↗</a></div></div>`:'';
   document.getElementById('detailContent').innerHTML=`
     <div class="d-block"><div class="d-block-ttl">Luas Lahan</div><div style="padding:5px 0"><span class="d-luas">${fmt(row.luas)}</span><span class="d-luas-unit">ha</span></div></div>
     ${cb}${ds}
     <div class="d-block"><div class="d-block-ttl">Petani</div><div class="d-row"><span class="d-lbl">Nama</span><span class="d-val">${esc(row.petani)||'—'}</span></div><div class="d-row"><span class="d-lbl">Jenis Kelamin</span><span class="d-val">${esc(row.jk||'—')}</span></div></div>
     <div class="d-block"><div class="d-block-ttl">Lokasi</div><div class="d-row"><span class="d-lbl">KTH</span><span class="d-val">${esc(row.kth)||'—'}</span></div><div class="d-row"><span class="d-lbl">Desa</span><span class="d-val">${esc(row.desa)||'—'}</span></div>${row.grid?`<div class="d-row"><span class="d-lbl">Grid</span><span class="d-val mono">${esc(row.grid)}</span></div>`:''}</div>
-    ${pd?`<div class="d-block"><div class="d-block-ttl">Rincian Program</div>${pd}</div>`:''}${lk}`;
+    ${pd?`<div class="d-block"><div class="d-block-ttl">Rincian Program</div>${pd}</div>`:''}${enr}${lk}`;
   document.getElementById('detailEmpty').style.display='none';
   document.getElementById('detailContent').style.display='block';
 }
@@ -1532,7 +1582,6 @@ function renderGrafik(){
     }
   });
 }
-// aliases kept for onchange handlers in HTML
 function renderGrafikBulanan(){renderGrafik();}
 function renderGrafikMingguan(){renderGrafik();}
 
@@ -1695,13 +1744,10 @@ function filterInsentifTable(){
 let thnFilteredRows=[];
 
 function renderTahunanTable(){
-  // Tampilkan semua baris yang memiliki angka di pupuk cair, pupuk padat, ATAU insentif MTL
-  // (tidak hanya yang prog=Agro_BPO/Temb_MTL secara ketat)
   const rows=getInsYearRows().filter(r=>
     (r.pupukCair||0)>0||(r.pupukPadat||0)>0||(r.insentifMTL||0)>0||r.tglBPO||r.tglMTL
   );
   thnFilteredRows=rows;
-  // Populate program filter dinamis dari data aktual
   const progList=[...new Set(rows.map(r=>r.prog).filter(Boolean))].sort();
   const progSel=document.getElementById('insSelProgThn');
   progSel.innerHTML='<option value="">Semua</option>'+progList.map(p=>`<option value="${esc(p)}">${esc(PROG[p]?.label||p)}</option>`).join('');
@@ -1712,16 +1758,12 @@ function renderTahunanTable(){
   buildTahunanTable(rows);filterTahunanTable();
 }
 
-// Hitung totals dari array rows — tidak terikat prog
 function calcThnTotals(rows){
   return{
     cair: rows.reduce((a,r)=>a+(r.pupukCair||0),0),
     padat:rows.reduce((a,r)=>a+(r.pupukPadat||0),0),
-    // total insentif MTL: semua baris yang punya tglMTL (sudah bayar)
     mtl:  rows.filter(r=>!!r.tglMTL).reduce((a,r)=>a+(r.insentifMTL||0),0),
-    // total insentif keseluruhan: termasuk yang belum bayar (semua angka ada)
     mtlAll: rows.reduce((a,r)=>a+(r.insentifMTL||0),0),
-    // pupuk cair/padat yang sudah dibagikan (status BPO = sudah, i.e. tglBPO terisi)
     cairPaid: rows.filter(r=>!!r.tglBPO).reduce((a,r)=>a+(r.pupukCair||0),0),
     padatPaid:rows.filter(r=>!!r.tglBPO).reduce((a,r)=>a+(r.pupukPadat||0),0),
   };
@@ -1763,7 +1805,6 @@ function buildTahunanTable(rows){
       <td>${hasIns?`<span class="${mtlSudah?'ins-paid':'ins-unpaid'}">${mtlSudah?'Sudah':'Belum'}</span>${mtlSudah?` <small style="color:var(--text-3);font-size:9px">${fmtDate(r.tglMTL)}</small>`:''}` :'—'}</td>
     </tr>`;
   }).join('');
-  // Isi total row setelah DOM dibuat
   updateThnTotRow(rows);
 }
 
