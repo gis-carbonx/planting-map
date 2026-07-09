@@ -295,7 +295,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 
 <header class="hdr">
   <div class="hdr-left">
-    <img src="https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data/logo-cmi.png" class="hdr-logo" alt="CMI"
+    <img src="https://raw.githubusercontent.com/gis-carbonx/planting-map/main/data/logo-cmi.png" class="hdr-logo" alt="CMI"
       onerror="this.style.display='none';document.getElementById('logoFallback').style.display='grid'"/>
     <div class="hdr-logo-fallback" id="logoFallback" style="display:none">
       <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-8 2 2-5 6-5 6-5-5 0-9 2.5-9.5 7.5C10 8.5 17 8 17 8z"/></svg>
@@ -732,7 +732,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 <script>
 'use strict';
 const SHEET_ID='1ZWVhzR7k27Hb3hHorIfBvkglzRN8PH1YDsk4EUhCgx8',SHEET_NAME='ARR_SUMMARY',TARGET_NAME='TARGET_CAPAIAN',FOLLOWUP_NAME='FOLLOW_UP_PETANI';
-const REPO_RAW='https://raw.githubusercontent.com/gis-carbonx/agroforestry/main/data';
+const REPO_RAW='https://raw.githubusercontent.com/gis-carbonx/planting-map/main/data';
 const CSV_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
 const TARGET_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TARGET_NAME)}`;
 const FU_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(FOLLOWUP_NAME)}`;
