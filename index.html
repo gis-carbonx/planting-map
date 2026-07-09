@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Planting database 1</title>
+<title>Planting database draft</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -1027,11 +1027,9 @@ function parseSheet(csv){
     const luasAgro  =num(raw['AT']||raw['Luas_Agro']  ||raw['luas_agro']  ||k(45)||0);
     const luasTemb  =num(raw['AU']||raw['Luas_Temb']  ||raw['luas_temb']  ||k(46)||0);
     // Kolom AV=ENL (Enrichment Logged Over Area, idx 47), AW=ENP (Enrichment Protected Area, idx 48)
-    // Total diambil langsung dari sheet; fallback ke penjumlahan kolom sumber bila kosong.
-    const luasENLraw=num(raw['AV']||raw['ENL']||raw['enl']||k(47)||0);
-    const luasENPraw=num(raw['AW']||raw['ENP']||raw['enp']||k(48)||0);
-    const luasENL = luasENLraw>0 ? luasENLraw : (tReg+tMTL);
-    const luasENP = luasENPraw>0 ? luasENPraw : (aBPO+tReg+tMTL);
+    // Total diambil MURNI dari kolom AV/AW di sheet — tanpa fallback ke penjumlahan kolom lain.
+    const luasENL=num(raw['AV']||raw['ENL']||raw['enl']||k(47)||0);
+    const luasENP=num(raw['AW']||raw['ENP']||raw['enp']||k(48)||0);
     const prog=resolveProgram(aReg,aBPO,tReg,tMTL,tipe);if(!prog)return;
     // luas utama: gunakan AT/AU jika ada, fallback ke penjumlahan L-O
     const _luasAgro = luasAgro>0 ? luasAgro : aReg+aBPO;
