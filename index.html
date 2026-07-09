@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Planting database</title>
+<title>Planting database draft</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -295,7 +295,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 
 <header class="hdr">
   <div class="hdr-left">
-    <img src="https://raw.githubusercontent.com/gis-carbonx/planting-map/main/data/logo-cmi.png" class="hdr-logo" alt="CMI"
+    <img src="https://gis-carbonx.github.io/planting-map/data/logo-cmi.png" class="hdr-logo" alt="CMI"
       onerror="this.style.display='none';document.getElementById('logoFallback').style.display='grid'"/>
     <div class="hdr-logo-fallback" id="logoFallback" style="display:none">
       <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-8 2 2-5 6-5 6-5-5 0-9 2.5-9.5 7.5C10 8.5 17 8 17 8z"/></svg>
@@ -732,7 +732,11 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 <script>
 'use strict';
 const SHEET_ID='1ZWVhzR7k27Hb3hHorIfBvkglzRN8PH1YDsk4EUhCgx8',SHEET_NAME='ARR_SUMMARY',TARGET_NAME='TARGET_CAPAIAN',FOLLOWUP_NAME='FOLLOW_UP_PETANI';
-const REPO_RAW='https://raw.githubusercontent.com/gis-carbonx/planting-map/main/data';
+// FIX: repo data yang benar adalah "planting-map" (satu repo dengan index.html ini),
+// disajikan lewat GitHub Pages (CDN Fastly) — bukan raw.githubusercontent.com yang gampang kena rate limit 429.
+// Parameter ?v=timestamp untuk cache-busting supaya update data langsung terlihat tanpa delay cache.
+const REPO_RAW='https://gis-carbonx.github.io/planting-map/data';
+const CACHE_BUST='?v='+Date.now();
 const CSV_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
 const TARGET_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TARGET_NAME)}`;
 const FU_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(FOLLOWUP_NAME)}`;
@@ -958,7 +962,7 @@ async function getJSON(u){const r=await fetch(u);if(!r.ok)throw Error(r.status+"
     if(fuTxt)parseFollowUp(fuTxt);
     populateYearDropdowns();
     setLoad('Memuat GeoJSON...');
-    const [agroJ,cmiJ]=await Promise.all([getJSON(REPO_RAW+'/agro.json'),getJSON(REPO_RAW+'/CMI.json')]);
+    const [agroJ,cmiJ]=await Promise.all([getJSON(REPO_RAW+'/agro.json'+CACHE_BUST),getJSON(REPO_RAW+'/CMI.json'+CACHE_BUST)]);
     setLoad('Merender peta...');
     renderCMI(cmiJ);renderAgro(agroJ);
     setPreset('ytd');fitAll();hideLoad();updatePotCard();
