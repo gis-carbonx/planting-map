@@ -1721,6 +1721,9 @@ function calcThnTotals(rows){
     mtl:  rows.filter(r=>!!r.tglMTL).reduce((a,r)=>a+(r.insentifMTL||0),0),
     // total insentif keseluruhan: termasuk yang belum bayar (semua angka ada)
     mtlAll: rows.reduce((a,r)=>a+(r.insentifMTL||0),0),
+    // pupuk cair/padat yang sudah dibagikan (status BPO = sudah, i.e. tglBPO terisi)
+    cairPaid: rows.filter(r=>!!r.tglBPO).reduce((a,r)=>a+(r.pupukCair||0),0),
+    padatPaid:rows.filter(r=>!!r.tglBPO).reduce((a,r)=>a+(r.pupukPadat||0),0),
   };
 }
 
@@ -1770,8 +1773,22 @@ function updateThnTotRow(vis){
   const elC=document.getElementById('thnTotCair');
   const elP=document.getElementById('thnTotPadat');
   const elI=document.getElementById('thnTotInsentif');
-  if(elC)elC.textContent=fmtL(tot.cair);
-  if(elP)elP.textContent=fmtL(tot.padat);
+  if(elC){
+    if(tot.cair>0){
+      let html=`<span style="font-size:9px;font-weight:700;color:#1a2332">${fmtL(tot.cair)} L</span>`;
+      if(tot.cairPaid>0&&tot.cairPaid<tot.cair)html+=`<br><span style="font-size:8px;font-weight:400;color:#166534">dibagikan ${fmtL(tot.cairPaid)} L</span>`;
+      else if(tot.cairPaid>0)html+=`<br><span style="font-size:8px;font-weight:400;color:#166534">semua dibagikan</span>`;
+      elC.innerHTML=html;
+    }else elC.textContent='—';
+  }
+  if(elP){
+    if(tot.padat>0){
+      let html=`<span style="font-size:9px;font-weight:700;color:#1a2332">${fmtL(tot.padat)} kg</span>`;
+      if(tot.padatPaid>0&&tot.padatPaid<tot.padat)html+=`<br><span style="font-size:8px;font-weight:400;color:#166534">dibagikan ${fmtL(tot.padatPaid)} kg</span>`;
+      else if(tot.padatPaid>0)html+=`<br><span style="font-size:8px;font-weight:400;color:#166534">semua dibagikan</span>`;
+      elP.innerHTML=html;
+    }else elP.textContent='—';
+  }
   if(elI){
     if(tot.mtlAll>0){
       let html=`<span style="font-size:9px;font-weight:700;color:#1a2332">Rp ${fmtInt(tot.mtlAll)}</span>`;
