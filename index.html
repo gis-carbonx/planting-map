@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>P1</title>
+<title>Planting database draft</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -632,23 +632,12 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 <div class="modal-overlay" id="enrModal" style="display:none" onclick="if(event.target===this)closeModal('enrModal')">
   <div class="grafik-modal" onclick="event.stopPropagation()">
     <div class="modal-hd-green">
-      <div><div class="modal-title">Detail Program Enrichment</div><div class="modal-sub-txt" id="enrSub">—</div></div>
+      <div><div class="modal-title">Detail Program Enrichment</div><div class="modal-sub-txt">Rincian ENP & ENL</div></div>
       <div style="display:flex;align-items:center;gap:8px">
         <button class="btn-png" onclick="downloadEnrGrafikPNG()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG
         </button>
         <button class="modal-close-btn" onclick="closeModal('enrModal')">✕</button>
-      </div>
-    </div>
-    <div class="strip-bar">
-      <div class="strip-card"><div class="strip-lbl">ENP (Protected Area)</div><div class="strip-val" id="enrStripENP">—</div></div>
-      <div class="strip-card"><div class="strip-lbl">ENL (Logged Over Area)</div><div class="strip-val" id="enrStripENL">—</div></div>
-    </div>
-    <div style="padding:2px 16px 14px 16px;border-bottom:1px solid var(--border)">
-      <div class="sc-subs" style="gap:7px">
-        <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#ff8c38"></span><span class="sc-sub-label" style="font-size:12px">Tembawang Reguler</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="enrSubTR" style="font-size:13px">—</span><span class="sc-sub-petani" id="enrSubTRPetani"></span></div></div>
-        <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#38a3e0"></span><span class="sc-sub-label" style="font-size:12px">Bantuan Pupuk Organik</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="enrSubBPO" style="font-size:13px">—</span><span class="sc-sub-petani" id="enrSubBPOPetani"></span></div></div>
-        <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#ce6be8"></span><span class="sc-sub-label" style="font-size:12px">Menjaga Tutupan Lahan</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="enrSubMTL" style="font-size:13px">—</span><span class="sc-sub-petani" id="enrSubMTLPetani"></span></div></div>
       </div>
     </div>
     <div class="tab-bar">
@@ -677,7 +666,28 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#f59e0b"></div>ENL (Logged Over Area)</div>
       </div>
     </div>
-    <div class="grafik-body"><div class="grafik-canvas-wrap"><canvas id="enrChart"></canvas></div></div>
+    <div style="padding:16px 16px 4px 16px">
+      <div style="height:230px;position:relative"><canvas id="enrChart"></canvas></div>
+    </div>
+    <div style="padding:12px 16px 16px 16px;display:flex;gap:12px;flex-wrap:wrap;overflow-y:auto;border-top:1px solid var(--border)">
+      <div class="sc" style="flex:1;min-width:220px;box-shadow:none">
+        <div class="sc-lbl">ENP (Protected Area)</div>
+        <div class="sc-val" id="enrStripENP" style="margin:2px 0 8px">—</div>
+        <div class="sc-subs">
+          <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#ff8c38"></span><span class="sc-sub-label" style="font-size:12px">Tembawang Reguler</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="enrENP_TR" style="font-size:13px">—</span><span class="sc-sub-petani" id="enrENP_TR_p"></span></div></div>
+          <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#38a3e0"></span><span class="sc-sub-label" style="font-size:12px">Bantuan Pupuk Organik</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="enrENP_BPO" style="font-size:13px">—</span><span class="sc-sub-petani" id="enrENP_BPO_p"></span></div></div>
+          <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#ce6be8"></span><span class="sc-sub-label" style="font-size:12px">Menjaga Tutupan Lahan</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="enrENP_MTL" style="font-size:13px">—</span><span class="sc-sub-petani" id="enrENP_MTL_p"></span></div></div>
+        </div>
+      </div>
+      <div class="sc" style="flex:1;min-width:220px;box-shadow:none">
+        <div class="sc-lbl">ENL (Logged Over Area)</div>
+        <div class="sc-val" id="enrStripENL" style="margin:2px 0 8px">—</div>
+        <div class="sc-subs">
+          <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#ff8c38"></span><span class="sc-sub-label" style="font-size:12px">Tembawang Reguler</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="enrENL_TR" style="font-size:13px">—</span><span class="sc-sub-petani" id="enrENL_TR_p"></span></div></div>
+          <div class="sc-sub-row"><div class="sc-sub-left"><span class="dot" style="background:#ce6be8"></span><span class="sc-sub-label" style="font-size:12px">Menjaga Tutupan Lahan</span></div><div class="sc-sub-right"><span class="sc-sub-ha" id="enrENL_MTL" style="font-size:13px">—</span><span class="sc-sub-petani" id="enrENL_MTL_p"></span></div></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1618,7 +1628,6 @@ function getEnrRows(){
 
 function openEnrichmentModal(){
   const rows=getEnrRows();
-  setText('enrSub',`Rincian ENP & ENL sesuai filter aktif · ${rows.length} lahan`);
   renderEnrStrip(rows);
   populateEnrChartYear();
   enrChartTab='bulanan';
@@ -1649,19 +1658,24 @@ function populateEnrWeekYear(){
   document.getElementById('enrChartWeekMonth').value=new Date().getMonth();
 }
 
-// Ringkasan sederhana: total ENP/ENL + rincian sub-kategori (satu daftar saja, tidak diduplikasi
-// per ENP/ENL, karena angkanya memang sama — bersumber dari kolom M/N/O yang sama), gaya seperti
-// panel Agroforestri/Tembawang di dashboard utama (dot + label + ha + jumlah petani).
+// Ringkasan: total ENP + rincian sub-kategorinya, dan total ENL + rincian sub-kategorinya — terpisah,
+// nilai SELALU ditampilkan meski 0 (termasuk "0 petani") supaya jelas itu memang kosong, bukan hilang.
 function renderEnrStrip(rows){
   const tENP=rows.reduce((s,r)=>s+r.luasENP,0),tENL=rows.reduce((s,r)=>s+r.luasENL,0);
   setText('enrStripENP',fmt(tENP)+' ha');
   setText('enrStripENL',fmt(tENL)+' ha');
-  setText('enrSubTR',fmt(lastDisp.tReg)+' ha');
-  setText('enrSubTRPetani',lastDisp.pTReg?lastDisp.pTReg+' petani':'');
-  setText('enrSubBPO',fmt(lastDisp.aBPO)+' ha');
-  setText('enrSubBPOPetani',lastDisp.pBPO?lastDisp.pBPO+' petani':'');
-  setText('enrSubMTL',fmt(lastDisp.tMTL)+' ha');
-  setText('enrSubMTLPetani',lastDisp.pMTL?lastDisp.pMTL+' petani':'');
+  // ENP tersusun dari: Tembawang Reguler (N), Bantuan Pupuk Organik (M), Menjaga Tutupan Lahan (O)
+  setText('enrENP_TR',fmt(lastDisp.tReg)+' ha');
+  setText('enrENP_TR_p',lastDisp.pTReg+' petani');
+  setText('enrENP_BPO',fmt(lastDisp.aBPO)+' ha');
+  setText('enrENP_BPO_p',lastDisp.pBPO+' petani');
+  setText('enrENP_MTL',fmt(lastDisp.tMTL)+' ha');
+  setText('enrENP_MTL_p',lastDisp.pMTL+' petani');
+  // ENL tersusun dari: Tembawang Reguler (N), Menjaga Tutupan Lahan (O)
+  setText('enrENL_TR',fmt(lastDisp.tReg)+' ha');
+  setText('enrENL_TR_p',lastDisp.pTReg+' petani');
+  setText('enrENL_MTL',fmt(lastDisp.tMTL)+' ha');
+  setText('enrENL_MTL_p',lastDisp.pMTL+' petani');
 }
 
 function populateEnrChartYear(){
