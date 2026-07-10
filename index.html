@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Dashboard - Planting</title>
+<title>Planting database draft</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -646,7 +646,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
     </div>
     <div class="modal-toolbar" id="enrToolbarBulanan" style="padding:10px 16px">
       <span style="font-size:11px;font-weight:700;color:var(--text-2)">Tahun:</span>
-      <select class="grafik-sel" id="enrChartYear" onchange="renderEnrChart()"></select>
+      <select class="grafik-sel" id="enrChartYear" onchange="renderEnrChart();refreshEnrStrip()"></select>
       <div class="grafik-legend">
         <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#0ea5e9"></div>ENP (Protected Area)</div>
         <div class="grafik-leg-item"><div class="grafik-leg-dot" style="background:#f59e0b"></div>ENL (Logged Over Area)</div>
@@ -1625,10 +1625,24 @@ function getEnrRows(){
   const ids=new Set(Object.values(sheetMap).filter(r=>rowInRange(r)).map(r=>r.id));
   return Object.values(sheetMap).filter(r=>ids.has(r.id)&&(r.luasENP>0||r.luasENL>0));
 }
+// Baris Enrichment yang cocok dengan tahun terpilih di modal (atau 'all' = semua tahun),
+// dipakai supaya panel ringkasan ENP/ENL ikut berubah mengikuti filter Tahun di grafik.
+function getEnrRowsForYear(yr){
+  return Object.values(sheetMap).filter(r=>{
+    if(!(r.luasENP>0||r.luasENL>0))return false;
+    if(yr==='all'||!yr)return true;
+    const d=parseDate(r.tglPartisipasi);
+    return d&&d.getFullYear()===+yr;
+  });
+}
+function currentEnrYear(){
+  return enrChartTab==='mingguan'?$v('enrChartWeekYear'):$v('enrChartYear');
+}
+function refreshEnrStrip(){
+  renderEnrStrip(getEnrRowsForYear(currentEnrYear()));
+}
 
 function openEnrichmentModal(){
-  const rows=getEnrRows();
-  renderEnrStrip(rows);
   populateEnrChartYear();
   enrChartTab='bulanan';
   document.getElementById('enrTabBulanan').classList.add('active');
@@ -1636,6 +1650,7 @@ function openEnrichmentModal(){
   document.getElementById('enrToolbarBulanan').style.display='flex';
   document.getElementById('enrToolbarMingguan').style.display='none';
   renderEnrChart();
+  refreshEnrStrip();
   document.getElementById('enrModal').style.display='flex';
 }
 
@@ -1647,8 +1662,9 @@ function switchEnrChartTab(tab){
   document.getElementById('enrToolbarMingguan').style.display=tab==='mingguan'?'flex':'none';
   if(tab==='mingguan')populateEnrWeekYear();
   renderEnrChart();
+  refreshEnrStrip();
 }
-function onEnrWeekYearChange(){renderEnrChart();}
+function onEnrWeekYearChange(){renderEnrChart();refreshEnrStrip();}
 function populateEnrWeekYear(){
   const sel=document.getElementById('enrChartWeekYear');
   if(sel.options.length)return; // sudah terisi, tidak perlu diulang
@@ -1660,45 +1676,45 @@ function populateEnrWeekYear(){
 
 // Ringkasan: total ENP + rincian sub-kategorinya, dan total ENL + rincian sub-kategorinya — terpisah,
 // nilai SELALU ditampilkan meski 0 (termasuk "0 petani") supaya jelas itu memang kosong, bukan hilang.
-// PENTING: rincian kolom L/M/N/O di sini HANYA dijumlah dari baris yang memang bagian program
-// Enrichment (rows = getEnrRows(), yaitu baris dengan luasENP>0 atau luasENL>0 dari kolom AV/AW),
-// BUKAN dari seluruh baris sheet — supaya tidak tercampur dengan angka program Agroforestri/Tembawang reguler.
+// PENTING — satu lahan hanya masuk SALAH SATU: ENP (jika luasENP>0) atau ENL (jika luasENL>0),
+// TIDAK PERNAH dua-duanya sekaligus, sesuai kolom Tipe di sheet (ENP/ENL saling eksklusif per baris).
 function renderEnrStrip(rows){
   const tENP=rows.reduce((s,r)=>s+r.luasENP,0),tENL=rows.reduce((s,r)=>s+r.luasENL,0);
   setText('enrStripENP',fmt(tENP)+' ha');
   setText('enrStripENL',fmt(tENL)+' ha');
 
-  let tReg=0,aBPO=0,tMTL=0;
-  const pTReg=new Set(),pBPO=new Set(),pMTL=new Set();
+  let enpTReg=0,enpBPO=0,enpMTL=0,enlTReg=0,enlMTL=0;
+  const pENP_TR=new Set(),pENP_BPO=new Set(),pENP_MTL=new Set(),pENL_TR=new Set(),pENL_MTL=new Set();
   rows.forEach(r=>{
-    tReg+=r.tReg;aBPO+=r.aBPO;tMTL+=r.tMTL;
     const pk=r.petani?.toLowerCase();
-    if(pk){
-      if(r.tReg>0)pTReg.add(pk);
-      if(r.aBPO>0)pBPO.add(pk);
-      if(r.tMTL>0)pMTL.add(pk);
+    if(r.luasENP>0){
+      enpTReg+=r.tReg;enpBPO+=r.aBPO;enpMTL+=r.tMTL;
+      if(pk){if(r.tReg>0)pENP_TR.add(pk);if(r.aBPO>0)pENP_BPO.add(pk);if(r.tMTL>0)pENP_MTL.add(pk);}
+    }else if(r.luasENL>0){
+      enlTReg+=r.tReg;enlMTL+=r.tMTL;
+      if(pk){if(r.tReg>0)pENL_TR.add(pk);if(r.tMTL>0)pENL_MTL.add(pk);}
     }
   });
 
   // ENP tersusun dari: Tembawang Reguler (N), Bantuan Pupuk Organik (M), Menjaga Tutupan Lahan (O)
-  setText('enrENP_TR',fmt(tReg)+' ha');
-  setText('enrENP_TR_p',pTReg.size+' petani');
-  setText('enrENP_BPO',fmt(aBPO)+' ha');
-  setText('enrENP_BPO_p',pBPO.size+' petani');
-  setText('enrENP_MTL',fmt(tMTL)+' ha');
-  setText('enrENP_MTL_p',pMTL.size+' petani');
+  setText('enrENP_TR',fmt(enpTReg)+' ha');
+  setText('enrENP_TR_p',pENP_TR.size+' petani');
+  setText('enrENP_BPO',fmt(enpBPO)+' ha');
+  setText('enrENP_BPO_p',pENP_BPO.size+' petani');
+  setText('enrENP_MTL',fmt(enpMTL)+' ha');
+  setText('enrENP_MTL_p',pENP_MTL.size+' petani');
   // ENL tersusun dari: Tembawang Reguler (N), Menjaga Tutupan Lahan (O)
-  setText('enrENL_TR',fmt(tReg)+' ha');
-  setText('enrENL_TR_p',pTReg.size+' petani');
-  setText('enrENL_MTL',fmt(tMTL)+' ha');
-  setText('enrENL_MTL_p',pMTL.size+' petani');
+  setText('enrENL_TR',fmt(enlTReg)+' ha');
+  setText('enrENL_TR_p',pENL_TR.size+' petani');
+  setText('enrENL_MTL',fmt(enlMTL)+' ha');
+  setText('enrENL_MTL_p',pENL_MTL.size+' petani');
 }
 
 function populateEnrChartYear(){
   const yrs=[...new Set(Object.values(sheetMap).map(r=>parseDate(r.tglPartisipasi)).filter(Boolean).map(d=>d.getFullYear()))].sort();
   const sel=document.getElementById('enrChartYear');
   const cur=new Date().getFullYear();
-  sel.innerHTML=yrs.map(y=>`<option value="${y}"${y===cur?' selected':''}>${y}</option>`).join('');
+  sel.innerHTML=yrs.map(y=>`<option value="${y}"${y===cur?' selected':''}>${y}</option>`).join('')+'<option value="all">Semua Tahun</option>';
   if(!yrs.includes(cur)&&yrs.length)sel.value=yrs[yrs.length-1];
 }
 
@@ -1716,14 +1732,15 @@ function renderEnrChart(){
     labels=weeks.map((w,i)=>`Mgg ke-${i+1} (${fmtD(w.sat,'s')}–${fmtD(w.fri,'s')})`);
     title=`Perkembangan Program Enrichment Mingguan — ${MN[mo]} ${yr}`;
   }else{
-    const yr=+$v('enrChartYear');
+    const yrSel=$v('enrChartYear');
     dENP=Array(12).fill(0);dENL=Array(12).fill(0);
     Object.values(sheetMap).forEach(r=>{
-      const d=parseDate(r.tglPartisipasi);if(!d||d.getFullYear()!==yr)return;
+      const d=parseDate(r.tglPartisipasi);if(!d)return;
+      if(yrSel!=='all'&&d.getFullYear()!==+yrSel)return;
       const m=d.getMonth();dENP[m]+=r.luasENP;dENL[m]+=r.luasENL;
     });
     labels=MN;
-    title=`Perkembangan Program Enrichment Bulanan — Tahun ${yr}`;
+    title=yrSel==='all'?`Perkembangan Program Enrichment Bulanan — Semua Tahun`:`Perkembangan Program Enrichment Bulanan — Tahun ${yrSel}`;
   }
   if(enrChartInst){enrChartInst.destroy();enrChartInst=null;}
   enrChartInst=new Chart(document.getElementById('enrChart'),{
