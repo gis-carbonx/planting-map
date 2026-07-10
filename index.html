@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Planting database draft</title>
+<title>P2</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -1660,22 +1660,38 @@ function populateEnrWeekYear(){
 
 // Ringkasan: total ENP + rincian sub-kategorinya, dan total ENL + rincian sub-kategorinya — terpisah,
 // nilai SELALU ditampilkan meski 0 (termasuk "0 petani") supaya jelas itu memang kosong, bukan hilang.
+// PENTING: rincian kolom L/M/N/O di sini HANYA dijumlah dari baris yang memang bagian program
+// Enrichment (rows = getEnrRows(), yaitu baris dengan luasENP>0 atau luasENL>0 dari kolom AV/AW),
+// BUKAN dari seluruh baris sheet — supaya tidak tercampur dengan angka program Agroforestri/Tembawang reguler.
 function renderEnrStrip(rows){
   const tENP=rows.reduce((s,r)=>s+r.luasENP,0),tENL=rows.reduce((s,r)=>s+r.luasENL,0);
   setText('enrStripENP',fmt(tENP)+' ha');
   setText('enrStripENL',fmt(tENL)+' ha');
+
+  let tReg=0,aBPO=0,tMTL=0;
+  const pTReg=new Set(),pBPO=new Set(),pMTL=new Set();
+  rows.forEach(r=>{
+    tReg+=r.tReg;aBPO+=r.aBPO;tMTL+=r.tMTL;
+    const pk=r.petani?.toLowerCase();
+    if(pk){
+      if(r.tReg>0)pTReg.add(pk);
+      if(r.aBPO>0)pBPO.add(pk);
+      if(r.tMTL>0)pMTL.add(pk);
+    }
+  });
+
   // ENP tersusun dari: Tembawang Reguler (N), Bantuan Pupuk Organik (M), Menjaga Tutupan Lahan (O)
-  setText('enrENP_TR',fmt(lastDisp.tReg)+' ha');
-  setText('enrENP_TR_p',lastDisp.pTReg+' petani');
-  setText('enrENP_BPO',fmt(lastDisp.aBPO)+' ha');
-  setText('enrENP_BPO_p',lastDisp.pBPO+' petani');
-  setText('enrENP_MTL',fmt(lastDisp.tMTL)+' ha');
-  setText('enrENP_MTL_p',lastDisp.pMTL+' petani');
+  setText('enrENP_TR',fmt(tReg)+' ha');
+  setText('enrENP_TR_p',pTReg.size+' petani');
+  setText('enrENP_BPO',fmt(aBPO)+' ha');
+  setText('enrENP_BPO_p',pBPO.size+' petani');
+  setText('enrENP_MTL',fmt(tMTL)+' ha');
+  setText('enrENP_MTL_p',pMTL.size+' petani');
   // ENL tersusun dari: Tembawang Reguler (N), Menjaga Tutupan Lahan (O)
-  setText('enrENL_TR',fmt(lastDisp.tReg)+' ha');
-  setText('enrENL_TR_p',lastDisp.pTReg+' petani');
-  setText('enrENL_MTL',fmt(lastDisp.tMTL)+' ha');
-  setText('enrENL_MTL_p',lastDisp.pMTL+' petani');
+  setText('enrENL_TR',fmt(tReg)+' ha');
+  setText('enrENL_TR_p',pTReg.size+' petani');
+  setText('enrENL_MTL',fmt(tMTL)+' ha');
+  setText('enrENL_MTL_p',pMTL.size+' petani');
 }
 
 function populateEnrChartYear(){
