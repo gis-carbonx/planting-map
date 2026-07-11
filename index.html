@@ -811,7 +811,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 
 <script>
 'use strict';
-const SHEET_ID='1ZWVhzR7k27Hb3hHorIfBvkglzRN8PH1YDsk4EUhCgx8',SHEET_NAME='ARR_SUMMARY',TARGET_NAME='TARGET_CAPAIAN',FOLLOWUP_NAME='FOLLOW_UP_PETANI';
+const SHEET_ID='1-LHCIUy1iD154WczY4Da_-iRaILtvL0mOW4gRW6YQac',SHEET_NAME='ARR_SUMMARY',TARGET_NAME='TARGET_CAPAIAN',FOLLOWUP_NAME='FOLLOW_UP_PETANI';
 // FIX: repo data yang benar adalah "planting-map" (satu repo dengan index.html ini),
 // disajikan lewat GitHub Pages (CDN Fastly) — bukan raw.githubusercontent.com yang gampang kena rate limit 429.
 // Parameter ?v=timestamp untuk cache-busting supaya update data langsung terlihat tanpa delay cache.
@@ -1253,7 +1253,9 @@ function calcStats(ids){
   ids.forEach(id=>{
     const r=sheetMap[id];if(!r)return;
     tA+=r.luasAgro;tT+=r.luasTemb;
-    tENP+=r.luasENP;tENL+=r.luasENL;
+    // Enrichment (ENP/ENL) hanya dihitung jika baris punya tanggal partisipasi (kolom J) yang valid.
+    // Baris tanpa tanggal dianggap belum berpartisipasi, jadi luasannya belum ditampilkan.
+    if(parseDate(r.tglPartisipasi)){tENP+=r.luasENP;tENL+=r.luasENL;}
     // Sum langsung dari kolom L/M/N/O — tanpa proporsi, boleh double count antar sub-kategori
     aRegDisp+=r.aReg;
     aBPODisp+=r.aBPO;
@@ -1627,12 +1629,15 @@ function getEnrRows(){
 }
 // Baris Enrichment yang cocok dengan tahun terpilih di modal (atau 'all' = semua tahun),
 // dipakai supaya panel ringkasan ENP/ENL ikut berubah mengikuti filter Tahun di grafik.
+// Hanya baris yang punya tanggal partisipasi valid (kolom J) yang dihitung — tanpa tanggal
+// dianggap belum berpartisipasi sehingga luasannya belum muncul di ringkasan ini.
 function getEnrRowsForYear(yr){
   return Object.values(sheetMap).filter(r=>{
     if(!(r.luasENP>0||r.luasENL>0))return false;
-    if(yr==='all'||!yr)return true;
     const d=parseDate(r.tglPartisipasi);
-    return d&&d.getFullYear()===+yr;
+    if(!d)return false;
+    if(yr==='all'||!yr)return true;
+    return d.getFullYear()===+yr;
   });
 }
 function currentEnrYear(){
