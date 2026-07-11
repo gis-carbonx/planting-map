@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Draft - 1</title>
+<title>Dashboard - Planting</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -1120,7 +1120,11 @@ function parseSheet(csv){
     // luas utama: gunakan AT/AU jika ada, fallback ke penjumlahan L-O
     const _luasAgro = luasAgro>0 ? luasAgro : aReg+aBPO;
     const _luasTemb = luasTemb>0 ? luasTemb : tReg+tMTL;
-    sheetMap[id]={id,kth,grid,luas:_luasAgro+_luasTemb,tipe,petani,jk,desa,dusun,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,luasAgro:_luasAgro,luasTemb:_luasTemb,luasENL,luasENP,tanamanKarbon,link,prog,nominalStages,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
+    // luasAgroAT/luasTembAU: MURNI dari kolom AT & AU, TANPA fallback ke L+M/N+O.
+    // Dipakai khusus untuk kartu ringkasan atas (Total Lahan / Agroforestri / Tembawang),
+    // digabung dengan syarat baris harus punya tanggal partisipasi (kolom J) yang valid.
+    const luasAgroAT=luasAgro,luasTembAU=luasTemb;
+    sheetMap[id]={id,kth,grid,luas:_luasAgro+_luasTemb,tipe,petani,jk,desa,dusun,tglPartisipasi,tglRealisasi,aReg,aBPO,tReg,tMTL,luasAgro:_luasAgro,luasTemb:_luasTemb,luasAgroAT,luasTembAU,luasENL,luasENP,tanamanKarbon,link,prog,nominalStages,pupukCair,pupukPadat,tglBPO,insentifMTL,tglMTL};
   });
 }
 
@@ -1252,7 +1256,10 @@ function calcStats(ids){
   let aRegDisp=0,aBPODisp=0,tRegDisp=0,tMTLDisp=0;
   ids.forEach(id=>{
     const r=sheetMap[id];if(!r)return;
-    tA+=r.luasAgro;tT+=r.luasTemb;
+    // Total Lahan / Agroforestri / Tembawang (kartu atas) HANYA dari kolom AT (Luas_Agro) & AU (Luas_Temb),
+    // TANPA fallback ke penjumlahan L+M/N+O, dan hanya dihitung jika baris punya tanggal partisipasi
+    // (kolom J "Tgl_Partisipasi") yang valid. Baris tanpa tanggal dianggap belum berpartisipasi.
+    if(parseDate(r.tglPartisipasi)){tA+=r.luasAgroAT;tT+=r.luasTembAU;}
     // Enrichment (ENP/ENL) hanya dihitung jika baris punya tanggal partisipasi (kolom J) yang valid.
     // Baris tanpa tanggal dianggap belum berpartisipasi, jadi luasannya belum ditampilkan.
     if(parseDate(r.tglPartisipasi)){tENP+=r.luasENP;tENL+=r.luasENL;}
@@ -1276,9 +1283,9 @@ function calcStats(ids){
       const yr=wk.fri.getFullYear(),mo=wk.fri.getMonth();
       const acc=rowsInMonth(yr,mo).filter(r=>{const d=parseDate(r.tglPartisipasi);return d&&d<=wk.fri;});
       const setAcc=(id,v)=>{const el=document.getElementById(id);if(el){el.textContent=`akumulasi bulan ${MN[mo]} ${fmt(v)} ha`;el.style.display='block';}};
-      setAcc('sWeekAcc',  acc.reduce((s,r)=>s+r.luas,0));
-      setAcc('sAgroWeekAcc',acc.reduce((s,r)=>s+r.luasAgro,0));
-      setAcc('sTembWeekAcc',acc.reduce((s,r)=>s+r.luasTemb,0));
+      setAcc('sWeekAcc',  acc.reduce((s,r)=>s+r.luasAgroAT+r.luasTembAU,0));
+      setAcc('sAgroWeekAcc',acc.reduce((s,r)=>s+r.luasAgroAT,0));
+      setAcc('sTembWeekAcc',acc.reduce((s,r)=>s+r.luasTembAU,0));
       setAcc('sEnrWeekAcc',acc.reduce((s,r)=>s+r.luasENP+r.luasENL,0));
     }
   }
@@ -1290,9 +1297,9 @@ function calcStats(ids){
       const wk=getSelectedWeek();
       if(wk){
         const acc=rowsInMonth(wk.fri.getFullYear(),wk.fri.getMonth()).filter(r=>{const d=parseDate(r.tglPartisipasi);return d&&d<=wk.fri;});
-        if(pctId==='sTotalPct')dispReal=acc.reduce((s,r)=>s+r.luas,0);
-        else if(pctId==='sAgroPct')dispReal=acc.reduce((s,r)=>s+r.luasAgro,0);
-        else if(pctId==='sTembPct')dispReal=acc.reduce((s,r)=>s+r.luasTemb,0);
+        if(pctId==='sTotalPct')dispReal=acc.reduce((s,r)=>s+r.luasAgroAT+r.luasTembAU,0);
+        else if(pctId==='sAgroPct')dispReal=acc.reduce((s,r)=>s+r.luasAgroAT,0);
+        else if(pctId==='sTembPct')dispReal=acc.reduce((s,r)=>s+r.luasTembAU,0);
         else if(pctId==='sEnrPct')dispReal=acc.reduce((s,r)=>s+r.luasENP+r.luasENL,0);
       }
     }
