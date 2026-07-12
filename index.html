@@ -1700,11 +1700,13 @@ function renderEnrStrip(rows){
   rows.forEach(r=>{
     const pk=r.petani?.toLowerCase();
     if(r.luasENP>0){
-      enpTReg+=r.tReg;enpBPO+=r.aBPO;enpMTL+=r.tMTL;
-      if(pk){if(r.tReg>0)pENP_TR.add(pk);if(r.aBPO>0)pENP_BPO.add(pk);if(r.tMTL>0)pENP_MTL.add(pk);}
+      const pengkayaanENP=r.luasENP-r.aBPO-r.tMTL;
+      enpTReg+=pengkayaanENP;enpBPO+=r.aBPO;enpMTL+=r.tMTL;
+      if(pk){if(pengkayaanENP>0)pENP_TR.add(pk);if(r.aBPO>0)pENP_BPO.add(pk);if(r.tMTL>0)pENP_MTL.add(pk);}
     }else if(r.luasENL>0){
-      enlTReg+=r.tReg;enlMTL+=r.tMTL;
-      if(pk){if(r.tReg>0)pENL_TR.add(pk);if(r.tMTL>0)pENL_MTL.add(pk);}
+      const pengkayaanENL=r.luasENL-r.tMTL;
+      enlTReg+=pengkayaanENL;enlMTL+=r.tMTL;
+      if(pk){if(pengkayaanENL>0)pENL_TR.add(pk);if(r.tMTL>0)pENL_MTL.add(pk);}
     }
   });
 
